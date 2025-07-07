@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Y6W-OH-hqX">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Random View Controller-->
+        <scene sceneID="s0d-6b-0kx">
+            <objects>
+                <viewController id="Y6W-OH-hqX" customClass="RandomViewController" customModule="SeSAC7Week2" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tI9-PJ-yNy">
+                                <rect key="frame" x="24" y="142" width="160.66666666666666" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="eG0-nN-6kZ"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                                <connections>
+                                    <action selector="randomButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="kwT-As-ZPB"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iot-XO-DD1">
+                                <rect key="frame" x="208.66666666666663" y="142" width="160.33333333333337" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="1ki-OX-q85"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uh9-Yw-9e1">
+                                <rect key="frame" x="24" y="210" width="160.66666666666666" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="fEE-g4-ybN"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                                <connections>
+                                    <action selector="twoButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="gmx-PT-cjw"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xmy-j2-1gG">
+                                <rect key="frame" x="208.66666666666663" y="210" width="160.33333333333337" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="MKZ-KQ-5pI"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ov6-ya-skb">
+                                <rect key="frame" x="24" y="278" width="345" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="Lct-0W-8Ec"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1K6-Z1-1wu">
+                                <rect key="frame" x="24" y="346" width="345" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="OTG-jq-A8p"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                                <connections>
+                                    <action selector="checkButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="tpc-zC-PFH"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oZn-gT-ae3">
+                                <rect key="frame" x="24" y="414" width="345" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="WHh-g2-TZ3"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                                <connections>
+                                    <action selector="alertButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="0Ai-xs-z2y"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="uh9-Yw-9e1" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="24" id="2Nn-BH-Hcw"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="ov6-ya-skb" secondAttribute="trailing" constant="24" id="46j-Hu-z1O"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="1K6-Z1-1wu" secondAttribute="trailing" constant="24" id="ApV-kt-sGR"/>
+                            <constraint firstItem="ov6-ya-skb" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="24" id="O6A-gT-CUv"/>
+                            <constraint firstItem="uh9-Yw-9e1" firstAttribute="top" secondItem="tI9-PJ-yNy" secondAttribute="bottom" constant="24" id="PFn-Ns-Zyn"/>
+                            <constraint firstItem="1K6-Z1-1wu" firstAttribute="top" secondItem="ov6-ya-skb" secondAttribute="bottom" constant="24" id="bPh-Nx-dc4"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="xmy-j2-1gG" secondAttribute="trailing" constant="24" id="cPQ-eb-uVY"/>
+                            <constraint firstItem="tI9-PJ-yNy" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="24" id="ff3-1p-ahb"/>
+                            <constraint firstItem="xmy-j2-1gG" firstAttribute="top" secondItem="iot-XO-DD1" secondAttribute="bottom" constant="24" id="hkY-aj-Xdz"/>
+                            <constraint firstItem="ov6-ya-skb" firstAttribute="top" secondItem="uh9-Yw-9e1" secondAttribute="bottom" constant="24" id="i6u-q4-vrC"/>
+                            <constraint firstItem="tI9-PJ-yNy" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="24" id="iWh-Xs-uOu"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="oZn-gT-ae3" secondAttribute="trailing" constant="24" id="lNC-I8-GSt"/>
+                            <constraint firstItem="iot-XO-DD1" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="24" id="o28-bl-Xq4"/>
+                            <constraint firstItem="oZn-gT-ae3" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="24" id="oqq-I2-1ee"/>
+                            <constraint firstItem="oZn-gT-ae3" firstAttribute="top" secondItem="1K6-Z1-1wu" secondAttribute="bottom" constant="24" id="poH-8L-okf"/>
+                            <constraint firstItem="xmy-j2-1gG" firstAttribute="leading" secondItem="uh9-Yw-9e1" secondAttribute="trailing" constant="24" id="saC-X2-M0P"/>
+                            <constraint firstItem="xmy-j2-1gG" firstAttribute="leading" secondItem="uh9-Yw-9e1" secondAttribute="trailing" constant="24" id="uLd-l7-dVd"/>
+                            <constraint firstItem="iot-XO-DD1" firstAttribute="leading" secondItem="tI9-PJ-yNy" secondAttribute="trailing" constant="24" id="usn-e0-S2w"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="iot-XO-DD1" secondAttribute="trailing" constant="24" id="xFt-7i-Ps7"/>
+                            <constraint firstItem="xmy-j2-1gG" firstAttribute="width" secondItem="uh9-Yw-9e1" secondAttribute="width" id="ypP-FU-wUQ"/>
+                            <constraint firstItem="iot-XO-DD1" firstAttribute="width" secondItem="tI9-PJ-yNy" secondAttribute="width" id="zgC-ul-JC1"/>
+                            <constraint firstItem="1K6-Z1-1wu" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="24" id="zwV-Oa-yL1"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="checkButton" destination="1K6-Z1-1wu" id="2l8-ji-1Rk"/>
+                        <outlet property="phoneTextField" destination="ov6-ya-skb" id="0ND-Cu-O2l"/>
+                        <outlet property="randomButton" destination="tI9-PJ-yNy" id="jXW-Y5-lL5"/>
+                        <outlet property="randomLabel" destination="iot-XO-DD1" id="cjp-mh-Qia"/>
+                        <outlet property="twoButton" destination="uh9-Yw-9e1" id="EnI-Y0-sF4"/>
+                        <outlet property="twoLabel" destination="xmy-j2-1gG" id="qvd-P3-09s"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="72.51908396946564" y="-34.507042253521128"/>
+        </scene>
+    </scenes>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
