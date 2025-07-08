@@ -20,6 +20,11 @@ class RandomViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+//        phoneTextField.text = UserDefaults.standard.string(forKey: "Nick")
+//        
+//        print(UserDefaults.standard.integer(forKey: "Age"))
+//        print(UserDefaults.standard.string(forKey: "Nick")!)
 
         randomButton.setTitle("name", for: .normal)
         twoButton.setTitle("nick", for: .normal
@@ -47,6 +52,10 @@ class RandomViewController: UIViewController {
     }
     
     @IBAction func alertButtonTapped(_ sender: UIButton) {
+        
+//        UserDefaults.standard.set(phoneTextField.text!, forKey: "Nick")
+//        UserDefaults.standard.set(27, forKey: "Age")
+        
         let alert = UIAlertController(
             title: nil,
             message: nil,

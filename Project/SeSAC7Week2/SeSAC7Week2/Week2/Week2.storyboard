@@ -127,6 +127,53 @@
             </objects>
             <point key="canvasLocation" x="72.51908396946564" y="-34.507042253521128"/>
         </scene>
+        <!--Movie View Controller-->
+        <scene sceneID="PwF-PK-g2f">
+            <objects>
+                <viewController id="Q7a-rw-c6f" customClass="MovieViewController" customModule="SeSAC7Week2" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="yuw-FP-qjv">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vy7-E4-oIP">
+                                <rect key="frame" x="24" y="142" width="345" height="22"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="22" id="LVo-Z9-khj"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QGj-Cw-mU9">
+                                <rect key="frame" x="24" y="188" width="345" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="Qhe-qT-Zuv"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="SAy-ka-Jv1"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="SAy-ka-Jv1" firstAttribute="trailing" secondItem="QGj-Cw-mU9" secondAttribute="trailing" constant="24" id="9dQ-yI-dgt"/>
+                            <constraint firstItem="QGj-Cw-mU9" firstAttribute="top" secondItem="vy7-E4-oIP" secondAttribute="bottom" constant="24" id="A9c-TM-a1L"/>
+                            <constraint firstItem="vy7-E4-oIP" firstAttribute="leading" secondItem="SAy-ka-Jv1" secondAttribute="leading" constant="24" id="CnW-QI-sG5"/>
+                            <constraint firstItem="SAy-ka-Jv1" firstAttribute="trailing" secondItem="vy7-E4-oIP" secondAttribute="trailing" constant="24" id="N68-Va-MJN"/>
+                            <constraint firstItem="QGj-Cw-mU9" firstAttribute="leading" secondItem="SAy-ka-Jv1" secondAttribute="leading" constant="24" id="Utb-gZ-uhj"/>
+                            <constraint firstItem="vy7-E4-oIP" firstAttribute="top" secondItem="SAy-ka-Jv1" secondAttribute="top" constant="24" id="sr8-hR-Cyp"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="dateLabel" destination="vy7-E4-oIP" id="d5D-eB-EJg"/>
+                        <outlet property="movieLabel" destination="QGj-Cw-mU9" id="Td8-bu-mlj"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qcI-o4-uvb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="863.35877862595419" y="-34.507042253521128"/>
+        </scene>
     </scenes>
     <resources>
         <systemColor name="systemBackgroundColor">
