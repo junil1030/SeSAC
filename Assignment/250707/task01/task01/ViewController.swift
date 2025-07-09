@@ -81,7 +81,19 @@ class ViewController: UIViewController {
     
     
     private func refreshData() {
-        levelLabel.text = String("LV \(tamagotch.level)")
+        // C Style의 포맷 방식은 정밀성을 요구할 때 사용된다.
+        // 예를 들어 지역화와 소수점
+        let number = 1234.561234
+
+        // 미국 지역 (en_US) → 소수점 기호는 .
+        let usFormat = String(format: "%.2f", locale: Locale(identifier: "en_US"), number)
+        print(usFormat)  // "1234.56"
+
+        // 독일 지역 (de_DE) → 소수점 기호는 ,
+        let deFormat = String(format: "%.2f", locale: Locale(identifier: "de_DE"), number)
+        print(deFormat)  // "1234,56"
+        
+        levelLabel.text = String("LV \(tamagotch.level)") // string interpolation과 무슨 차이가 있을까?
         riceLabel.text = String("밥알 \(tamagotch.rice)개")
         waterLabel.text = String("물방울 \(tamagotch.water)개")
         tamagotchImage.image = UIImage(named: tamagotch.imageText)
