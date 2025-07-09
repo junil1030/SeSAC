@@ -12,6 +12,7 @@ class ViewController: UIViewController {
     @IBOutlet var levelLabel: UILabel!
     @IBOutlet var riceLabel: UILabel!
     @IBOutlet var waterLabel: UILabel!
+    @IBOutlet var messageLabel: UILabel!
     
     @IBOutlet var riceTextField: UITextField!
     @IBOutlet var waterTextField: UITextField!
@@ -19,23 +20,71 @@ class ViewController: UIViewController {
     @IBOutlet var riceButton: UIButton!
     @IBOutlet var waterButton: UIButton!
     
-    var levelManager = Tamagotch()
+    @IBOutlet var tamagotchImage: UIImageView!
+    @IBOutlet var tamagotchNameView: UIView!
+    
+    @IBOutlet var resetButton: UIButton!
+    
+    var tamagotch = TamagotchManager.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupUI()
+        setupData()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        setupData()
+    }
+    
+    private func setupData() {
+        let nickName = tamagotch.nickName
+        navigationItem.title = "\(nickName)님의 다마고치"
+        messageLabel.text = tamagotch.randomMessage(for: nickName)
+        refreshData()
     }
 
     private func setupUI() {
+        let appearance = UINavigationBarAppearance()
+        appearance.titleTextAttributes = [
+            .foregroundColor: Constants.baseColor
+        ]
+        
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.tintColor = Constants.baseColor
+        // 스크롤이 필요한 경우에는
+        // navigationController?.navigationBar.scrollEdgeAppearance = appearance
         riceTextField.borderStyle = .none
         waterTextField.borderStyle = .none
+        
+        tamagotchNameView.layer.borderColor = Constants.baseColor.cgColor
+        tamagotchNameView.layer.borderWidth = 1
+        tamagotchNameView.layer.cornerRadius = 5
+        
+        riceButton.layer.borderColor = Constants.baseColor.cgColor
+        riceButton.layer.cornerRadius = 10
+        riceButton.layer.borderWidth = 1
+        riceButton.layer.masksToBounds = true
+        
+        waterButton.layer.borderColor = Constants.baseColor.cgColor
+        waterButton.layer.cornerRadius = 10
+        waterButton.layer.borderWidth = 1
+        waterButton.layer.masksToBounds = true
+        
+        resetButton.setTitle("초기화 하기", for: .normal)
+        resetButton.tintColor = .red
+        resetButton.titleLabel?.font = .systemFont(ofSize: 12)
     }
     
+    
     private func refreshData() {
-        levelLabel.text = String("LV \(levelManager.getLevel())")
-        riceLabel.text = String("밥알 \(levelManager.getRice())개")
-        waterLabel.text = String("물방울 \(levelManager.getWater())개")
+        levelLabel.text = String("LV \(tamagotch.level)")
+        riceLabel.text = String("밥알 \(tamagotch.rice)개")
+        waterLabel.text = String("물방울 \(tamagotch.water)개")
+        tamagotchImage.image = UIImage(named: tamagotch.imageText)
     }
     
     private func eatingRice() -> Int {
@@ -60,14 +109,24 @@ class ViewController: UIViewController {
     
     @IBAction func addButtonTapped(_ sender: UIButton) {
         if sender.tag == 0 {
-            levelManager.eatRice(eatingRice())
+            tamagotch.eatRice(eatingRice())
             refreshData()
         } else if sender.tag == 1 {
-            levelManager.drinkWater(drinkingWater())
+            tamagotch.drinkWater(drinkingWater())
             refreshData()
         } else {
             return
         }
+    }
+    
+    @IBAction func resetButtonTapped(_ sender: UIButton) {
+        let alert = UIAlertController(title: "경고", message: "정말 초기화 하시겠습니까?", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "확인", style: .default) { _ in
+            self.tamagotch.resetTamagotch()
+            self.refreshData()
+        })
+        alert.addAction(UIAlertAction(title: "취소", style: .cancel))
+        present(alert, animated: true)
     }
 }
 
