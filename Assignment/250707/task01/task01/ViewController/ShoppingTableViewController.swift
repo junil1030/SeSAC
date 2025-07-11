@@ -27,12 +27,22 @@ class ShoppingTableViewController: UITableViewController {
     
     // MARK: - Table view data source
     
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerFooterView = UITableViewHeaderFooterView()
+        
+        var configuration = headerFooterView.defaultContentConfiguration()
+        
+        configuration.textProperties.color = .red
+        
         if section == 0 {
-            return "구매 전 목록"
+            configuration.text = "구매 전 목록"
         } else {
-            return "구매 후 목록"
+            configuration.text = "구매 후 목록"
         }
+        
+        headerFooterView.contentConfiguration = configuration
+        
+        return headerFooterView
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
