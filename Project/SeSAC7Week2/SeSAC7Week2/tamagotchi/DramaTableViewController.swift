@@ -10,20 +10,28 @@ import UIKit
 class DramaTableViewController: UITableViewController {
     
     let image = ["star.fill", "star", "heart", "heart.fill", "pencil", "xmark", "person"]
-
-    var nickName: String? = "고래밥"
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Optional >> ?, ??, ?, 옵셔널 바인딩(if let / guard)
-        
-        if let name = nickName {
-            print(name)
-        }
     }
 
     // MARK: - Table view data source
+    
+    // Header, Footer 설정 시에는
+    // titleForHeaderInSection의 사용보다는 viewForHeaderInSection으로 설정하는 것이 더 좋다.
+    // 건드릴 수 있는 옵션이 많기 때문 titleForHeaderInSection은 오직 텍스트만 return
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerFooterView = UITableViewHeaderFooterView()
+        
+        var configuration = headerFooterView.defaultContentConfiguration()
+        configuration.text = "Test Text"
+        configuration.textProperties.color = .red
+        
+        headerFooterView.contentConfiguration = configuration
+        
+        return headerFooterView
+    }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return image.count
