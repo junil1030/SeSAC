@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="USo-1k-Mmn">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="task02" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-257" y="-842"/>
+        </scene>
+        <!--SeSAC TRAVEL-->
+        <scene sceneID="uXq-wn-jbv">
+            <objects>
+                <tableViewController title="SeSAC TRAVEL" id="USo-1k-Mmn" customClass="MagazineTableViewController" customModule="task02" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="zkN-hX-H62">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <view key="tableHeaderView" contentMode="scaleToFill" id="zOA-a2-6h1">
+                            <rect key="frame" x="0.0" y="0.0" width="393" height="72"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SeSAC TRAVEL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ILh-Nv-hr5">
+                                    <rect key="frame" x="117.66666666666667" y="23" width="157.66666666666663" height="26.333333333333329"/>
+                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hkg-t9-Bx5">
+                                    <rect key="frame" x="0.0" y="54.333333333333336" width="393" height="1"/>
+                                    <color key="backgroundColor" systemColor="systemGrayColor"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="1" id="TAa-QW-P02"/>
+                                    </constraints>
+                                </view>
+                            </subviews>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <constraints>
+                                <constraint firstAttribute="trailing" secondItem="Hkg-t9-Bx5" secondAttribute="trailing" id="JDB-wx-Uej"/>
+                                <constraint firstItem="ILh-Nv-hr5" firstAttribute="centerY" secondItem="zOA-a2-6h1" secondAttribute="centerY" id="Mki-O6-O3u"/>
+                                <constraint firstItem="Hkg-t9-Bx5" firstAttribute="top" secondItem="ILh-Nv-hr5" secondAttribute="bottom" constant="5" id="P3u-dv-Y0o"/>
+                                <constraint firstItem="Hkg-t9-Bx5" firstAttribute="leading" secondItem="zOA-a2-6h1" secondAttribute="leading" id="nmo-d3-W1q"/>
+                                <constraint firstItem="ILh-Nv-hr5" firstAttribute="centerX" secondItem="zOA-a2-6h1" secondAttribute="centerX" id="rwO-hr-J1j"/>
+                            </constraints>
+                        </view>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="MagazineCell" rowHeight="430" id="mOV-WI-0ba" customClass="MagazineTableViewCell" customModule="task02" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="122" width="393" height="430"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="mOV-WI-0ba" id="mqY-1H-Ixy">
+                                    <rect key="frame" x="0.0" y="0.0" width="393" height="430"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="square.and.arrow.up" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="TiV-P9-i7c">
+                                            <rect key="frame" x="50" y="14.333333333333343" width="293" height="294.66666666666663"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" secondItem="TiV-P9-i7c" secondAttribute="height" id="bZX-aW-fk5"/>
+                                            </constraints>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="알고 준비하는 2024 새 여행" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FxJ-7M-aeV">
+                                            <rect key="frame" x="50" y="371.66666666666669" width="293" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" systemColor="systemGrayColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2024 NEWS 해외여행, 이렇게 달라졌다!" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IM2-7u-F6Y">
+                                            <rect key="frame" x="50" y="314" width="293" height="52.666666666666686"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="23년 11월 18일" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JMw-dd-GoK">
+                                            <rect key="frame" x="50" y="397.66666666666669" width="293" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" systemColor="systemGrayColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="IM2-7u-F6Y" firstAttribute="top" secondItem="TiV-P9-i7c" secondAttribute="bottom" constant="5" id="1lM-MB-d8R"/>
+                                        <constraint firstItem="FxJ-7M-aeV" firstAttribute="top" secondItem="IM2-7u-F6Y" secondAttribute="bottom" constant="5" id="311-rS-QOD"/>
+                                        <constraint firstItem="FxJ-7M-aeV" firstAttribute="leading" secondItem="mqY-1H-Ixy" secondAttribute="leadingMargin" constant="30" id="VVx-rU-mlU"/>
+                                        <constraint firstItem="TiV-P9-i7c" firstAttribute="leading" secondItem="mqY-1H-Ixy" secondAttribute="leadingMargin" constant="30" id="Vub-Zx-sIO"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="FxJ-7M-aeV" secondAttribute="trailing" constant="30" id="WGo-zK-LBl"/>
+                                        <constraint firstItem="JMw-dd-GoK" firstAttribute="leading" secondItem="mqY-1H-Ixy" secondAttribute="leadingMargin" constant="30" id="Y5A-lP-EKS"/>
+                                        <constraint firstItem="TiV-P9-i7c" firstAttribute="top" secondItem="mqY-1H-Ixy" secondAttribute="topMargin" constant="5" id="eVp-aY-zkn"/>
+                                        <constraint firstItem="IM2-7u-F6Y" firstAttribute="leading" secondItem="mqY-1H-Ixy" secondAttribute="leadingMargin" constant="30" id="pJx-hh-FxI"/>
+                                        <constraint firstItem="JMw-dd-GoK" firstAttribute="top" secondItem="FxJ-7M-aeV" secondAttribute="bottom" constant="5" id="qac-4Q-OoT"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="IM2-7u-F6Y" secondAttribute="trailing" constant="30" id="sS3-df-WAn"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="JMw-dd-GoK" secondAttribute="trailing" constant="30" id="u1N-ef-FpJ"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="TiV-P9-i7c" secondAttribute="trailing" constant="30" id="wG5-5q-rxy"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="dateLabel" destination="JMw-dd-GoK" id="Jnj-RH-MBQ"/>
+                                    <outlet property="photoImageView" destination="TiV-P9-i7c" id="w60-ny-6P3"/>
+                                    <outlet property="subTitleLabel" destination="FxJ-7M-aeV" id="ABd-eX-M1y"/>
+                                    <outlet property="titleLabel" destination="IM2-7u-F6Y" id="rpA-5G-dUp"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="USo-1k-Mmn" id="xfW-ds-fbY"/>
+                            <outlet property="delegate" destination="USo-1k-Mmn" id="6XV-VO-q7x"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1qi-1g-vkc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="493.89312977099235" y="-42.253521126760567"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="square.and.arrow.up" catalog="system" width="110" height="128"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGrayColor">
+            <color red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>

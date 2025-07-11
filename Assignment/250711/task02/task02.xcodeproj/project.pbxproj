@@ -7,60 +7,58 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		F9020EC22E20BDB700892A40 /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = F9020EC12E20BDB700892A40 /* FSCalendar */; };
-		F9020EC52E20BDEC00892A40 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = F9020EC42E20BDEC00892A40 /* Kingfisher */; };
+		F90210402E216D1C00892A40 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = F902103F2E216D1C00892A40 /* Kingfisher */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		F9B1583E2E160A2B000842D6 /* SeSAC7Week2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SeSAC7Week2.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F9020FFF2E2169F900892A40 /* task02.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = task02.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		F9020EF32E20DA3500892A40 /* Exceptions for "SeSAC7Week2" folder in "SeSAC7Week2" target */ = {
+		F90210112E2169FB00892A40 /* Exceptions for "task02" folder in "task02" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
-			target = F9B1583D2E160A2B000842D6 /* SeSAC7Week2 */;
+			target = F9020FFE2E2169F900892A40 /* task02 */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		F9B158402E160A2B000842D6 /* SeSAC7Week2 */ = {
+		F90210012E2169F900892A40 /* task02 */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				F9020EF32E20DA3500892A40 /* Exceptions for "SeSAC7Week2" folder in "SeSAC7Week2" target */,
+				F90210112E2169FB00892A40 /* Exceptions for "task02" folder in "task02" target */,
 			);
-			path = SeSAC7Week2;
+			path = task02;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		F9B1583B2E160A2B000842D6 /* Frameworks */ = {
+		F9020FFC2E2169F900892A40 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F9020EC52E20BDEC00892A40 /* Kingfisher in Frameworks */,
-				F9020EC22E20BDB700892A40 /* FSCalendar in Frameworks */,
+				F90210402E216D1C00892A40 /* Kingfisher in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		F9B158352E160A2B000842D6 = {
+		F9020FF62E2169F900892A40 = {
 			isa = PBXGroup;
 			children = (
-				F9B158402E160A2B000842D6 /* SeSAC7Week2 */,
-				F9B1583F2E160A2B000842D6 /* Products */,
+				F90210012E2169F900892A40 /* task02 */,
+				F90210002E2169F900892A40 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		F9B1583F2E160A2B000842D6 /* Products */ = {
+		F90210002E2169F900892A40 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F9B1583E2E160A2B000842D6 /* SeSAC7Week2.app */,
+				F9020FFF2E2169F900892A40 /* task02.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -68,70 +66,68 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		F9B1583D2E160A2B000842D6 /* SeSAC7Week2 */ = {
+		F9020FFE2E2169F900892A40 /* task02 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F9B158512E160A2D000842D6 /* Build configuration list for PBXNativeTarget "SeSAC7Week2" */;
+			buildConfigurationList = F90210122E2169FB00892A40 /* Build configuration list for PBXNativeTarget "task02" */;
 			buildPhases = (
-				F9B1583A2E160A2B000842D6 /* Sources */,
-				F9B1583B2E160A2B000842D6 /* Frameworks */,
-				F9B1583C2E160A2B000842D6 /* Resources */,
+				F9020FFB2E2169F900892A40 /* Sources */,
+				F9020FFC2E2169F900892A40 /* Frameworks */,
+				F9020FFD2E2169F900892A40 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				F9B158402E160A2B000842D6 /* SeSAC7Week2 */,
+				F90210012E2169F900892A40 /* task02 */,
 			);
-			name = SeSAC7Week2;
+			name = task02;
 			packageProductDependencies = (
-				F9020EC12E20BDB700892A40 /* FSCalendar */,
-				F9020EC42E20BDEC00892A40 /* Kingfisher */,
+				F902103F2E216D1C00892A40 /* Kingfisher */,
 			);
-			productName = SeSAC7Week2;
-			productReference = F9B1583E2E160A2B000842D6 /* SeSAC7Week2.app */;
+			productName = task02;
+			productReference = F9020FFF2E2169F900892A40 /* task02.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		F9B158362E160A2B000842D6 /* Project object */ = {
+		F9020FF72E2169F900892A40 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1630;
 				LastUpgradeCheck = 1630;
 				TargetAttributes = {
-					F9B1583D2E160A2B000842D6 = {
+					F9020FFE2E2169F900892A40 = {
 						CreatedOnToolsVersion = 16.3;
 					};
 				};
 			};
-			buildConfigurationList = F9B158392E160A2B000842D6 /* Build configuration list for PBXProject "SeSAC7Week2" */;
+			buildConfigurationList = F9020FFA2E2169F900892A40 /* Build configuration list for PBXProject "task02" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
 			);
-			mainGroup = F9B158352E160A2B000842D6;
+			mainGroup = F9020FF62E2169F900892A40;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				F9020EC02E20BDB700892A40 /* XCRemoteSwiftPackageReference "FSCalendar" */,
-				F9020EC32E20BDEC00892A40 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				F902103E2E216D1C00892A40 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			preferredProjectObjectVersion = 77;
-			productRefGroup = F9B1583F2E160A2B000842D6 /* Products */;
+			productRefGroup = F90210002E2169F900892A40 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				F9B1583D2E160A2B000842D6 /* SeSAC7Week2 */,
+				F9020FFE2E2169F900892A40 /* task02 */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		F9B1583C2E160A2B000842D6 /* Resources */ = {
+		F9020FFD2E2169F900892A40 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -141,7 +137,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		F9B1583A2E160A2B000842D6 /* Sources */ = {
+		F9020FFB2E2169F900892A40 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -151,7 +147,7 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		F9B158522E160A2D000842D6 /* Debug */ = {
+		F90210132E2169FB00892A40 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -160,30 +156,26 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = MWBS4R8DBQ;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = SeSAC7Week2/Info.plist;
+				INFOPLIST_FILE = task02/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.junil.SeSAC7Week2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.junil.task02;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
-		F9B158532E160A2D000842D6 /* Release */ = {
+		F90210142E2169FB00892A40 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -192,30 +184,26 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = MWBS4R8DBQ;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = SeSAC7Week2/Info.plist;
+				INFOPLIST_FILE = task02/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.junil.SeSAC7Week2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.junil.task02;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
-		F9B158542E160A2D000842D6 /* Debug */ = {
+		F90210152E2169FB00892A40 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -279,7 +267,7 @@
 			};
 			name = Debug;
 		};
-		F9B158552E160A2D000842D6 /* Release */ = {
+		F90210162E2169FB00892A40 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -339,20 +327,20 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		F9B158392E160A2B000842D6 /* Build configuration list for PBXProject "SeSAC7Week2" */ = {
+		F9020FFA2E2169F900892A40 /* Build configuration list for PBXProject "task02" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				F9B158542E160A2D000842D6 /* Debug */,
-				F9B158552E160A2D000842D6 /* Release */,
+				F90210152E2169FB00892A40 /* Debug */,
+				F90210162E2169FB00892A40 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F9B158512E160A2D000842D6 /* Build configuration list for PBXNativeTarget "SeSAC7Week2" */ = {
+		F90210122E2169FB00892A40 /* Build configuration list for PBXNativeTarget "task02" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				F9B158522E160A2D000842D6 /* Debug */,
-				F9B158532E160A2D000842D6 /* Release */,
+				F90210132E2169FB00892A40 /* Debug */,
+				F90210142E2169FB00892A40 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -360,15 +348,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		F9020EC02E20BDB700892A40 /* XCRemoteSwiftPackageReference "FSCalendar" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/WenchaoD/FSCalendar.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.8.4;
-			};
-		};
-		F9020EC32E20BDEC00892A40 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+		F902103E2E216D1C00892A40 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
 			requirement = {
@@ -379,17 +359,12 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		F9020EC12E20BDB700892A40 /* FSCalendar */ = {
+		F902103F2E216D1C00892A40 /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = F9020EC02E20BDB700892A40 /* XCRemoteSwiftPackageReference "FSCalendar" */;
-			productName = FSCalendar;
-		};
-		F9020EC42E20BDEC00892A40 /* Kingfisher */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = F9020EC32E20BDEC00892A40 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			package = F902103E2E216D1C00892A40 /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
-	rootObject = F9B158362E160A2B000842D6 /* Project object */;
+	rootObject = F9020FF72E2169F900892A40 /* Project object */;
 }

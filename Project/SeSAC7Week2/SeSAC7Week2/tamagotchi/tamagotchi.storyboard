@@ -288,9 +288,26 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <view key="tableHeaderView" contentMode="scaleToFill" id="7FK-8Y-bRW">
+                            <rect key="frame" x="0.0" y="0.0" width="393" height="213"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ecL-NE-S9B" customClass="FSCalendar">
+                                    <rect key="frame" x="0.0" y="0.0" width="393" height="213"/>
+                                    <color key="backgroundColor" systemColor="systemGray2Color"/>
+                                </view>
+                            </subviews>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <constraints>
+                                <constraint firstItem="ecL-NE-S9B" firstAttribute="leading" secondItem="7FK-8Y-bRW" secondAttribute="leading" id="3Je-kV-Psz"/>
+                                <constraint firstAttribute="bottom" secondItem="ecL-NE-S9B" secondAttribute="bottom" id="ATx-x1-EUQ"/>
+                                <constraint firstAttribute="trailing" secondItem="ecL-NE-S9B" secondAttribute="trailing" id="CGt-ET-Cq9"/>
+                                <constraint firstItem="ecL-NE-S9B" firstAttribute="top" secondItem="7FK-8Y-bRW" secondAttribute="top" id="nCv-H7-ACq"/>
+                            </constraints>
+                        </view>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="dramaCell" rowHeight="106" id="gWT-n0-4va" customClass="DramaTableViewCell" customModule="SeSAC7Week2" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="50" width="393" height="106"/>
+                                <rect key="frame" x="0.0" y="263" width="393" height="106"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="gWT-n0-4va" id="T32-Mo-hFz">
                                     <rect key="frame" x="0.0" y="0.0" width="393" height="106"/>
@@ -356,11 +373,14 @@
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
+        <systemColor name="systemGray2Color">
+            <color red="0.68235294117647061" green="0.68235294117647061" blue="0.69803921568627447" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
         <systemColor name="systemGreenColor">
-            <color red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemPinkColor">
-            <color red="1" green="0.1764705882" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="0.17647058823529413" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
