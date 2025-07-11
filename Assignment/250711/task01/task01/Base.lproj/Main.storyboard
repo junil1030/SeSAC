@@ -2,27 +2,80 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="p3d-Y2-3co">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23727"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Travel Table View Controller-->
+        <!--Magazine Table View Controller-->
         <scene sceneID="ia7-kS-n4B">
             <objects>
-                <tableViewController id="p3d-Y2-3co" customClass="TravelTableViewController" customModule="task01" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="p3d-Y2-3co" customClass="MagazineTableViewController" customModule="task01" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="BNI-A4-vGa">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="aWV-2o-R6H">
-                                <rect key="frame" x="0.0" y="50" width="393" height="44.666667938232422"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="MagazineCell" rowHeight="476" id="aWV-2o-R6H" customClass="MagazineTableViewCell" customModule="task01" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="50" width="393" height="476"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="aWV-2o-R6H" id="XoX-Ya-WVM">
-                                    <rect key="frame" x="0.0" y="0.0" width="393" height="44.666667938232422"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="aWV-2o-R6H" id="XoX-Ya-WVM" customClass="MagazineTableViewCell" customModule="task01" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="0.0" width="393" height="476"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2024 NEWS 해외여행, 이렇게 달라졌다!" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zd4-Ya-n5a">
+                                            <rect key="frame" x="40" y="343" width="313" height="51"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="알고 준비하는 2024 새 여행" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tMl-QG-IsG">
+                                            <rect key="frame" x="40" y="404" width="313" height="21"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="21" id="yWW-r5-fPx"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" systemColor="systemGrayColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="23년 11월 18일" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xe0-8G-Hzd">
+                                            <rect key="frame" x="40" y="435" width="313" height="21"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="21" id="mFJ-5X-2UB"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" systemColor="systemGrayColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="chw-Xq-2hs">
+                                            <rect key="frame" x="40" y="20" width="313" height="313"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" secondItem="chw-Xq-2hs" secondAttribute="height" multiplier="1:1" id="wQg-Z5-cVn"/>
+                                            </constraints>
+                                        </imageView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="chw-Xq-2hs" firstAttribute="width" secondItem="XoX-Ya-WVM" secondAttribute="width" multiplier="0.796438" id="0TP-ll-cdJ"/>
+                                        <constraint firstAttribute="trailing" secondItem="Zd4-Ya-n5a" secondAttribute="trailing" constant="40" id="8vn-VU-tMw"/>
+                                        <constraint firstItem="chw-Xq-2hs" firstAttribute="top" secondItem="XoX-Ya-WVM" secondAttribute="top" constant="20" id="AAL-xE-c6R"/>
+                                        <constraint firstItem="Xe0-8G-Hzd" firstAttribute="top" secondItem="tMl-QG-IsG" secondAttribute="bottom" constant="10" id="Csl-1C-tCH"/>
+                                        <constraint firstItem="chw-Xq-2hs" firstAttribute="centerX" secondItem="XoX-Ya-WVM" secondAttribute="centerX" id="Kr1-1e-ZHA"/>
+                                        <constraint firstItem="tMl-QG-IsG" firstAttribute="top" secondItem="Zd4-Ya-n5a" secondAttribute="bottom" constant="10" id="V6H-VZ-t8k"/>
+                                        <constraint firstItem="tMl-QG-IsG" firstAttribute="leading" secondItem="XoX-Ya-WVM" secondAttribute="leading" constant="40" id="YEZ-4r-T9L"/>
+                                        <constraint firstItem="Xe0-8G-Hzd" firstAttribute="leading" secondItem="XoX-Ya-WVM" secondAttribute="leading" constant="40" id="Z8B-hi-xg0"/>
+                                        <constraint firstAttribute="bottom" secondItem="Xe0-8G-Hzd" secondAttribute="bottom" constant="20" id="aAg-CV-VgE"/>
+                                        <constraint firstAttribute="trailing" secondItem="Xe0-8G-Hzd" secondAttribute="trailing" constant="40" id="crJ-8z-7Vv"/>
+                                        <constraint firstItem="Zd4-Ya-n5a" firstAttribute="leading" secondItem="XoX-Ya-WVM" secondAttribute="leading" constant="40" id="jOp-JX-l8D"/>
+                                        <constraint firstAttribute="trailing" secondItem="tMl-QG-IsG" secondAttribute="trailing" constant="40" id="qjW-4h-NtG"/>
+                                        <constraint firstItem="Zd4-Ya-n5a" firstAttribute="top" secondItem="chw-Xq-2hs" secondAttribute="bottom" constant="10" id="yaX-71-eRA"/>
+                                    </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="dateLabel" destination="Xe0-8G-Hzd" id="ODw-aT-wOr"/>
+                                    <outlet property="photoImageView" destination="chw-Xq-2hs" id="cl6-XL-U74"/>
+                                    <outlet property="subTitleLabel" destination="tMl-QG-IsG" id="uI3-3u-pXI"/>
+                                    <outlet property="titleLabel" destination="Zd4-Ya-n5a" id="Esz-2a-Y92"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -33,12 +86,15 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sEl-yk-0gd" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-38" y="436"/>
+            <point key="canvasLocation" x="-38.931297709923662" y="435.91549295774649"/>
         </scene>
     </scenes>
     <resources>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGrayColor">
+            <color red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
