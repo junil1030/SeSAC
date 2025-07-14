@@ -131,7 +131,10 @@ iOSInjectionProject/
 /*.gcno
 **/xcshareddata/WorkspaceSettings.xcsettings
 
+## file
 \[SeSAC\] 2회차 에셋/
 강의자료/
+*.zip
+*.pdf
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,xcode,swift
