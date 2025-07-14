@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Toast
 
 class ViewController: UIViewController {
 
@@ -17,6 +18,10 @@ class ViewController: UIViewController {
         print(3)
     }
 
-
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        view.makeToast("안녕하세요 반갑습니다", duration: 2, position: .center)
+    }
 }
 
