@@ -6,6 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		F98270E62E248B300010E340 /* Toast in Frameworks */ = {isa = PBXBuildFile; productRef = F98270E52E248B300010E340 /* Toast */; };
+		F98270E92E248B3C0010E340 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = F98270E82E248B3C0010E340 /* Kingfisher */; };
+		F98270EC2E248B640010E340 /* IQKeyboardManagerSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F98270EB2E248B640010E340 /* IQKeyboardManagerSwift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		F9020E442E20A88F00892A40 /* SeSAC7Week3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SeSAC7Week3.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -36,6 +42,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F98270E92E248B3C0010E340 /* Kingfisher in Frameworks */,
+				F98270E62E248B300010E340 /* Toast in Frameworks */,
+				F98270EC2E248B640010E340 /* IQKeyboardManagerSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +87,9 @@
 			);
 			name = SeSAC7Week3;
 			packageProductDependencies = (
+				F98270E52E248B300010E340 /* Toast */,
+				F98270E82E248B3C0010E340 /* Kingfisher */,
+				F98270EB2E248B640010E340 /* IQKeyboardManagerSwift */,
 			);
 			productName = SeSAC7Week3;
 			productReference = F9020E442E20A88F00892A40 /* SeSAC7Week3.app */;
@@ -107,6 +119,11 @@
 			);
 			mainGroup = F9020E3B2E20A88F00892A40;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				F98270E42E248B300010E340 /* XCRemoteSwiftPackageReference "Toast-Swift" */,
+				F98270E72E248B3C0010E340 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				F98270EA2E248B640010E340 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = F9020E452E20A88F00892A40 /* Products */;
 			projectDirPath = "";
@@ -337,6 +354,51 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		F98270E42E248B300010E340 /* XCRemoteSwiftPackageReference "Toast-Swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/scalessec/Toast-Swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.1.1;
+			};
+		};
+		F98270E72E248B3C0010E340 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.4.0;
+			};
+		};
+		F98270EA2E248B640010E340 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/hackiftekhar/IQKeyboardManager.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.0.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		F98270E52E248B300010E340 /* Toast */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F98270E42E248B300010E340 /* XCRemoteSwiftPackageReference "Toast-Swift" */;
+			productName = Toast;
+		};
+		F98270E82E248B3C0010E340 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F98270E72E248B3C0010E340 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+		F98270EB2E248B640010E340 /* IQKeyboardManagerSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F98270EA2E248B640010E340 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */;
+			productName = IQKeyboardManagerSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = F9020E3C2E20A88F00892A40 /* Project object */;
 }
