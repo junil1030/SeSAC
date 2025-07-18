@@ -14,7 +14,7 @@
 		F94B09A22E2A27020050F9CE /* Exceptions for "task01" folder in "task01" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Info.plist,
+				App/Info.plist,
 			);
 			target = F94B098F2E2A27010050F9CE /* task01 */;
 		};
