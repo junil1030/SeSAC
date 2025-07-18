@@ -9,6 +9,8 @@ import UIKit
 import Kingfisher
 
 class TravelCityTableViewCell: UITableViewCell {
+    
+    static let identifier = "TravelCityTableViewCell"
 
     @IBOutlet var titleLabel: UILabel!
     @IBOutlet var subTitleLabel: UILabel!
@@ -24,6 +26,9 @@ class TravelCityTableViewCell: UITableViewCell {
         super.awakeFromNib()
         
         updateLikeButtonAppearance()
+        travelImage.contentMode = .scaleAspectFill
+        travelImage.layer.cornerRadius = 8
+        travelImage.clipsToBounds = true
     }
 
     override func prepareForReuse() {

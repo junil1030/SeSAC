@@ -8,6 +8,8 @@
 import UIKit
 
 class TravelADTableViewCell: UITableViewCell {
+    
+    static let identifier = "TravelADTableViewCell"
 
     @IBOutlet var backgroundColorView: UIView!
     @IBOutlet var adContentLabel: UILabel!
