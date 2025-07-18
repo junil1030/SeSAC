@@ -10,7 +10,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="TravelCityTableViewCell" customModule="task01" customModuleProvider="target">
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TravelCityTableViewCell" id="KGk-i7-Jjw" customClass="TravelCityTableViewCell" customModule="task01" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="393" height="150"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
@@ -62,25 +62,25 @@
                         </constraints>
                     </stackView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="・" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qHS-83-Dd7">
-                        <rect key="frame" x="158.66666666666666" y="60" width="5.3333333333333428" height="18"/>
+                        <rect key="frame" x="158.66666666666666" y="60" width="5.3333333333333428" height="15"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="18" id="9jf-bt-XOy"/>
+                            <constraint firstAttribute="height" constant="15" id="9jf-bt-XOy"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" systemColor="systemGrayColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(3)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IUd-Ts-ewZ">
-                        <rect key="frame" x="133" y="60" width="22.666666666666657" height="18"/>
+                        <rect key="frame" x="133" y="60" width="22.666666666666657" height="15"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="18" id="XfU-rt-1vZ"/>
+                            <constraint firstAttribute="height" constant="15" id="XfU-rt-1vZ"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" systemColor="systemGrayColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="저장 239" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vcD-ss-xwt">
-                        <rect key="frame" x="167" y="60.000000000000007" width="111" height="20.333333333333336"/>
+                        <rect key="frame" x="167" y="60.000000000000007" width="113" height="20.333333333333336"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" systemColor="systemGrayColor"/>
                         <nil key="highlightedColor"/>
@@ -127,7 +127,7 @@
                     <constraint firstItem="8Bv-o4-kPn" firstAttribute="top" secondItem="QE9-IR-O97" secondAttribute="bottom" constant="3" id="FJb-Is-Rda"/>
                     <constraint firstItem="qma-Rg-O8M" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="NVK-3e-I8Q"/>
                     <constraint firstAttribute="bottomMargin" secondItem="33F-7k-2I6" secondAttribute="bottom" id="XPW-WG-pWA"/>
-                    <constraint firstItem="33F-7k-2I6" firstAttribute="leading" secondItem="vcD-ss-xwt" secondAttribute="trailing" constant="5" id="a9K-bh-ftS"/>
+                    <constraint firstItem="33F-7k-2I6" firstAttribute="leading" secondItem="vcD-ss-xwt" secondAttribute="trailing" constant="3" id="a9K-bh-ftS"/>
                     <constraint firstItem="8Bv-o4-kPn" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="cPL-qt-BNV"/>
                     <constraint firstItem="33F-7k-2I6" firstAttribute="width" secondItem="H2p-sc-9uM" secondAttribute="height" multiplier="3:5" id="gvn-7R-Erk"/>
                     <constraint firstItem="33F-7k-2I6" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="jae-3X-tNj"/>
