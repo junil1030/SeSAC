@@ -22,6 +22,8 @@ class CityInfoTableViewController: UITableViewController {
         tableView.rowHeight = 150
         filteredCityInfo = cityInfo
 
+        registerXib()
+        setupSegment()
     }
     
     private func registerXib() {
@@ -48,13 +50,38 @@ class CityInfoTableViewController: UITableViewController {
         default:
             filteredCityInfo = cityInfo
         }
+    }
+    
+    private func filterKeyword() {
+        let keyword = searchTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() ?? ""
+        
+        if !keyword.isEmpty {
+            filteredCityInfo = filteredCityInfo.filter {
+                $0.city_name.contains(keyword) ||
+                $0.city_english_name.lowercased().contains(keyword) ||
+                $0.city_explain.contains(keyword)
+            }
+        } else {
+            filterCity(for: segment.selectedSegmentIndex)
+        }
+        
         tableView.reloadData()
     }
     
     @objc func segmentChanged(_ sender: UISegmentedControl) {
         filterCity(for: sender.selectedSegmentIndex)
+        filterKeyword()
     }
-
+    @IBAction func textFieldDidChange(_ sender: UITextField) {
+        print(#function)
+        filterKeyword()
+    }
+    
+    @IBAction func textFieldDidEndOnExit(_ sender: UITextField) {
+        print(#function)
+        filterKeyword()
+    }
+    
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -71,5 +98,15 @@ class CityInfoTableViewController: UITableViewController {
         cell.configureData(with: filteredCityInfo[indexPath.row])
         
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let currentInfo = filteredCityInfo[indexPath.row]
+        
+        let sb = UIStoryboard(name: "Main", bundle: nil)
+        let vc = sb.instantiateViewController(withIdentifier: CityDetailViewController.identifier) as! CityDetailViewController
+        
+        vc.city = currentInfo
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
