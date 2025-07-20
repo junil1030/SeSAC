@@ -9,7 +9,8 @@ import Foundation
 
 enum FormatCase: String {
     case yyMMdd = "yy.MM.dd"
-    case HHmma = "HH:mm a"
+    case hmma = "a h:mm"
+    case yyyyMMdd = "yyyy년 MM월 dd일"
 }
 
 extension String {
@@ -28,7 +29,7 @@ extension String {
 
         let result = outputFormatter.string(from: date)
 
-        if format == .HHmma {
+        if format == .hmma {
             let components = result.components(separatedBy: " ")
             if components.count == 2 {
                 return "\(components[1]) \(components[0])"
