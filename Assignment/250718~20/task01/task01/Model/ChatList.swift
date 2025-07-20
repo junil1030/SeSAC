@@ -155,7 +155,7 @@ struct ChatList {
                     Chat(user: den,
                          date: "2025-07-12 15:32",
                          message: "차단한 건 아니시죠, 김새싹님?"),
-                    Chat(user: den,
+                    Chat(user: me,
                          date: "2025-07-12 16:10",
                          message: "오늘 주말이에요... 살려주세요.."),
                     Chat(user: den,
