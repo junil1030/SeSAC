@@ -86,7 +86,7 @@
         <!--Chat View Controller-->
         <scene sceneID="f00-og-DKd">
             <objects>
-                <viewController id="ppr-nX-4Fx" customClass="ChatViewController" customModule="task01" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ChatViewController" id="ppr-nX-4Fx" customClass="ChatViewController" customModule="task01" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Qre-Ga-DYY">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -129,6 +129,10 @@
                             <constraint firstItem="NvH-El-4nk" firstAttribute="leading" secondItem="eNh-AX-Sq7" secondAttribute="leading" id="zG0-hK-B1j"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="inputTextField" destination="2dP-Le-vSV" id="CCc-w5-Fvq"/>
+                        <outlet property="tableView" destination="4tt-0K-ImM" id="08E-ba-ndb"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JYy-D7-xrt" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
