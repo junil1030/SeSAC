@@ -131,6 +131,9 @@ iOSInjectionProject/
 /*.gcno
 **/xcshareddata/WorkspaceSettings.xcsettings
 
+# Xcode workspace shared data
+*.xcworkspace/xcshareddata/
+
 ## file
 \[SeSAC\] 2회차 에셋/
 강의자료/
