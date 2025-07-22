@@ -18,6 +18,7 @@ class ChatViewController: UIViewController {
 
     @IBOutlet var tableView: UITableView!
     @IBOutlet var inputTextField: UITextField!
+    @IBOutlet var bottomConstraint: NSLayoutConstraint!
     
     var chatRoomData: ChatRoom?
     private var filteredChatRoomData: [ChatCase] = []
@@ -50,12 +51,45 @@ class ChatViewController: UIViewController {
 
         inputTextField.rightView = sendButton
         inputTextField.rightViewMode = .always
+        
+        setupKeyboardObservers()
+    }
+    
+    deinit {
+        removeKeyboardObservers()
+    }
+    
+    override func viewIsAppearing(_ animated: Bool) {
+        super.viewIsAppearing(animated)
+        
+        scrollToBottom()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        scrollToBottom()
+//        scrollToBottom()
+    }
+    
+    private func setupKeyboardObservers() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillShow),
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil
+        )
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillHide),
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil
+        )
+    }
+    
+    private func removeKeyboardObservers() {
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     private func setupChatCases() {
@@ -93,7 +127,7 @@ class ChatViewController: UIViewController {
         
         print(lastRow, indexPath)
         
-        tableView.scrollToRow(at: indexPath, at: .bottom, animated: false)
+        tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
     }
     
     private func addText(_ text: String) {
@@ -130,6 +164,34 @@ class ChatViewController: UIViewController {
         tableView.reloadData()
 //        tableView.layoutIfNeeded()
         scrollToBottom()
+    }
+    
+    @objc private func keyboardWillShow(_ notification: Notification) {
+        guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect,
+              let duration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double else { return }
+        
+        let keyboardHeight = keyboardFrame.height
+        
+        bottomConstraint.constant = keyboardHeight
+        
+        UIView.animate(withDuration: duration) {
+            self.view.layoutIfNeeded()
+        }
+        
+        // 키보드 올라온 후 스크롤
+        DispatchQueue.main.asyncAfter(deadline: .now() + duration) {
+            self.scrollToBottom()
+        }
+    }
+    
+    @objc private func keyboardWillHide(_ notification: Notification) {
+        guard let duration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double else { return }
+        
+        bottomConstraint.constant = 0
+        
+        UIView.animate(withDuration: duration) {
+            self.view.layoutIfNeeded()
+        }
     }
     
     @objc private func sendButtonTapped() {

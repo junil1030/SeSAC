@@ -130,6 +130,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="bottomConstraint" destination="3vN-Cw-gCx" id="h08-Xd-iOf"/>
                         <outlet property="inputTextField" destination="2dP-Le-vSV" id="CCc-w5-Fvq"/>
                         <outlet property="tableView" destination="4tt-0K-ImM" id="08E-ba-ndb"/>
                     </connections>
