@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		F92E88732E2F637D0057207B /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = F92E88722E2F637D0057207B /* SnapKit */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		F92E88232E2F62950057207B /* TravelTalkRefactoring.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TravelTalkRefactoring.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -36,6 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F92E88732E2F637D0057207B /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +83,7 @@
 			);
 			name = TravelTalkRefactoring;
 			packageProductDependencies = (
+				F92E88722E2F637D0057207B /* SnapKit */,
 			);
 			productName = TravelTalkRefactoring;
 			productReference = F92E88232E2F62950057207B /* TravelTalkRefactoring.app */;
@@ -107,6 +113,9 @@
 			);
 			mainGroup = F92E881A2E2F62950057207B;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				F92E88712E2F637D0057207B /* XCRemoteSwiftPackageReference "SnapKit" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = F92E88242E2F62950057207B /* Products */;
 			projectDirPath = "";
@@ -337,6 +346,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		F92E88712E2F637D0057207B /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		F92E88722E2F637D0057207B /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F92E88712E2F637D0057207B /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = F92E881B2E2F62950057207B /* Project object */;
 }
