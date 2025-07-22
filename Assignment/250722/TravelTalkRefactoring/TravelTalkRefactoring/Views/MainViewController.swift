@@ -10,7 +10,7 @@ import SnapKit
 
 class MainViewController: UIViewController, UISetupProtocol {
     
-    private let chatData = ChatList.list // 테스트용 목업 데이터, 추후 뷰 모델로 개선 예정
+    private let viewModel = MainViewModel()
     
     private let sectionInset: CGFloat = 8
     private let minimumLineSpacing: CGFloat = 8
@@ -41,6 +41,9 @@ class MainViewController: UIViewController, UISetupProtocol {
         setupUI()
         setupConstraints()
         setupActions()
+        setupBind()
+        
+        viewModel.fetchData()
     }
     
     override func viewDidLayoutSubviews() {
@@ -61,7 +64,19 @@ class MainViewController: UIViewController, UISetupProtocol {
     }
     
     private func searchChatRoom(_ keyword: String) {
-        // ViewModel로 넘겨서 대화방 찾아오기
+        viewModel.searchChatRooms(with: keyword)
+    }
+    
+    private func setupBind() {
+        viewModel.onDataUpdated = { [weak self] in
+            DispatchQueue.main.async {
+                self?.collectionView.reloadData()
+            }
+        }
+        
+        viewModel.onError = { [weak self] errorMessage in
+            print("에러: \(errorMessage)")
+        }
     }
 
     func setupUI() {
@@ -95,7 +110,7 @@ class MainViewController: UIViewController, UISetupProtocol {
 
 extension MainViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        guard let keyword = searchBar.text, !keyword.isEmpty else {
+        guard let keyword = searchBar.text else {
             searchBar.resignFirstResponder()
             return
         }
@@ -105,11 +120,7 @@ extension MainViewController: UISearchBarDelegate {
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if searchText.isEmpty {
-            // 전체 데이터 불러오기
-        } else {
-            // 텍스트 바에 있는 키워드로 검색
-        }
+        searchChatRoom(searchText)
     }
 }
 
@@ -121,13 +132,13 @@ extension MainViewController: UICollectionViewDelegate {
 
 extension MainViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return chatData.count
+        return viewModel.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ChatCell.identifier, for: indexPath) as! ChatCell
         
-        cell.configureData(with: chatData[indexPath.item])
+        cell.configureData(with: viewModel.chatRoom(at: indexPath.row))
         return cell
     }
 }
