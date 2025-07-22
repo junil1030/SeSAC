@@ -126,7 +126,10 @@ extension MainViewController: UISearchBarDelegate {
 
 extension MainViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        // 대화 방으로 push
+        let chatRoom = viewModel.chatRoom(at: indexPath.item)
+        
+        let chatVC = ChatViewController(chatRoom: chatRoom)
+        navigationController?.pushViewController(chatVC, animated: true)
     }
 }
 
