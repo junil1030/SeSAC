@@ -18,7 +18,7 @@
 		F92E88352E2F62960057207B /* Exceptions for "TravelTalkRefactoring" folder in "TravelTalkRefactoring" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				App/Info.plist,
+				Application/Info.plist,
 			);
 			target = F92E88222E2F62950057207B /* TravelTalkRefactoring */;
 		};
