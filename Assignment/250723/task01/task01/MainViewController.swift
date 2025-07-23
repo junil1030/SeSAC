@@ -44,6 +44,8 @@ class MainViewController: UIViewController {
     @objc private func movieButtonTapped() {
         print(#function)
         
+        let vc = MovieViewController()
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
 
