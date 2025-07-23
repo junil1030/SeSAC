@@ -47,29 +47,29 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print(ud.name)
-        print(ud.age)
+//        print(ud.name)
+//        print(ud.age)
+//        
+//        ud.age = 345
+//        ud.name = "Junil"
+//        
+//        print(ud.name)
+//        print(ud.age)
+//        
+//        print(BMI.name)
+//        print(bmi.height, bmi.weight)
+//        
+//        print(bmi.result)
+//        
+//        bmi.result = "Junil"
+//        
+//        print(bmi.result)
         
-        ud.age = 345
-        ud.name = "Junil"
-        
-        print(ud.name)
-        print(ud.age)
-        
-        print(BMI.name)
-        print(bmi.height, bmi.weight)
-        
-        print(bmi.result)
-        
-        bmi.result = "Junil"
-        
-        print(bmi.result)
         
         
-        
-        if let nickname, let age {
-            print(nickname, age)
-        }
+//        if let nickname, let age {
+//            print(nickname, age)
+//        }
         
         // 오버로딩된 함수가 존재하기 때문에 이런식으로 써야함...
         // 근데 복잡하니까 그냥 이름을 나누는게 좋은 것 같기는 하다 ㅇㅇ
@@ -102,16 +102,16 @@ class ViewController: UIViewController {
     
     @objc func goButtonClicked() {
         
-        print(BMI.name)
-        print(bmi.height, bmi.weight)
-        
-        let result = bmi.weight / (bmi.height * bmi.height)
-        
-        if result < 18.5 {
-            print("저체중")
-        } else {
-            print("정상이상")
-        }
+//        print(BMI.name)
+//        print(bmi.height, bmi.weight)
+//        
+//        let result = bmi.weight / (bmi.height * bmi.height)
+//        
+//        if result < 18.5 {
+//            print("저체중")
+//        } else {
+//            print("정상이상")
+//        }
         
         
         
@@ -131,9 +131,10 @@ class ViewController: UIViewController {
 //        } else {
 //            print("무게 텍스트 필드가 2글자 미만입니다.")
 //        }
-//        let vc = ResultViewController()
-//        
-//        present(vc, animated: true)
+        
+        let vc = AuthViewController()
+        
+        present(vc, animated: true)
     }
     
     func goButtonClicked(a: Int) {
@@ -158,29 +159,5 @@ class ViewController: UIViewController {
     
     func finn(age: Int) -> String {
         return "I'm Finn, \(age) years old"
-    }
-}
-
-class User {
-    
-}
-
-struct Mentor {
-    let name: String
-    let age: Int
-    
-    init(age: Int) {
-        self.name = "고래밥"
-        self.age = age
-    }
-    
-    init(name: String) {
-        self.name = name
-        self.age = 26
-    }
-    
-    init() {
-        self.name = "고래밥"
-        self.age = 26
     }
 }

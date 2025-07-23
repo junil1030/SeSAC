@@ -24,10 +24,3 @@ protocol ViewDesignProtocol: AnyObject {
     func configureView()
     
 }
-
-extension ViewDesignProtocol {
-    
-    func configureHierarchy() {
-        print(#function)
-    }
-}
