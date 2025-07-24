@@ -15,32 +15,24 @@ class AuthViewController: UIViewController {
     // self가 아직 다 만들어지지 않았는데
     let emailTextField: UITextField = {
         print("emailTextFiled 생성")
-        let textField = PurpleTextField()
-        textField.placeholder = "이메일을 작성해주세요"
-        textField.keyboardType = .emailAddress
+        let textField = PurpleTextField(placeholder: "이메일을 작성해주세요", keyboard: .emailAddress)
         return textField
     }()
     
     let passwordTextField = {
         print(#function)
-        let textField = PurpleTextField()
-        textField.placeholder = "비밀번호를 작성해주세요"
-        textField.keyboardType = .default
+        let textField = PurpleTextField(placeholder: "비밀번호를 작성해주세요", keyboard: .default)
         textField.isSecureTextEntry = true
         return textField
     }()
     
-    let ageTextField = {
-        let textField = PurpleTextField()
-        textField.placeholder = "나이를 선택해주세요"
-        textField.keyboardType = .numberPad
-        
-        let picker = UIDatePicker()
-        picker.preferredDatePickerStyle = .wheels
-        
+    lazy var ageTextField = {
+        let textField = PurpleTextField(placeholder: "나이를 선택해주세요", keyboard: .numberPad)
         textField.inputView = picker
         return textField
     }()
+    
+    let picker = UIDatePicker()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,7 +44,17 @@ class AuthViewController: UIViewController {
         
         passwordTextField.delegate = self
         
+        picker.preferredDatePickerStyle = .wheels
+        picker.addTarget(self, action: #selector(datePickerValueChanged), for: .valueChanged)
+        ageTextField.inputView = picker
+        
         print("viewdidload 끝")
+    }
+    
+    @objc func datePickerValueChanged() {
+        print(#function)
+        ageTextField.text = "\(picker.date)"
+        
     }
 }
 

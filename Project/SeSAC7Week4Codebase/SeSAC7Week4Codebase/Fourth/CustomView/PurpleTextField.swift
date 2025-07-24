@@ -12,13 +12,6 @@ class PurpleTextField: UITextField {
     // 코드로 뷰를 구성했을 때 실행되는 초기화 구문
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.borderStyle = .none
-        self.font = .boldSystemFont(ofSize: 15)
-        self.layer.borderWidth = 1
-        self.layer.borderColor = UIColor.systemPurple.cgColor
-        self.layer.cornerRadius = 8
-        self.backgroundColor = .white
-        self.tintColor = .systemPurple
     }
     
     // 스토리보드로 뷰를 구성했을 때 실행되는 초기화 구문
@@ -27,5 +20,17 @@ class PurpleTextField: UITextField {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
+    init(placeholder: String, keyboard: UIKeyboardType) {
+        super.init(frame: .zero)
+        
+        self.placeholder = placeholder
+        self.keyboardType = keyboard
+        self.borderStyle = .none
+        self.font = .boldSystemFont(ofSize: 15)
+        self.layer.borderWidth = 1
+        self.layer.borderColor = UIColor.systemPurple.cgColor
+        self.layer.cornerRadius = 8
+        self.backgroundColor = .white
+        self.tintColor = .systemPurple
+    }
 }
