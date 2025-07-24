@@ -7,11 +7,11 @@
 
 import UIKit
 import SnapKit
+import Alamofire
 
 class MovieViewController: UIViewController {
     
-    let movieData = MovieInfo.movies
-    var filteredMovie: [Movie] = []
+    var movieData: [DailyBoxOfficeList] = []
     
     let searchBar: UISearchBar = {
         let searchBar = UISearchBar()
@@ -62,13 +62,8 @@ class MovieViewController: UIViewController {
         configureHierarchy()
         configureLayout()
         configureView()
-        getRandomMovie()
         setupKeyboardDismiss()
-    }
-    
-    private func getRandomMovie() {
-        filteredMovie.removeAll()
-        filteredMovie = Array(movieData.shuffled().prefix(10))
+        fetchMovieData(for: getCurrentDate())
     }
     
     private func setupKeyboardDismiss() {
@@ -78,12 +73,52 @@ class MovieViewController: UIViewController {
     }
     
     @objc private func searchButtonTapped() {
-        getRandomMovie()
+        if let validDateString = validateDateString(searchBar.text) {
+            fetchMovieData(for: validDateString)
+            tableView.reloadData()
+        }
+        
         tableView.reloadData()
     }
     
     @objc private func dismissKeyboard() {
         view.endEditing(true)
+    }
+    
+    private func getCurrentDate() -> String {
+        let today = Date()
+        let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: today)!
+
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyyMMdd"
+        
+        return formatter.string(from: yesterday)
+    }
+    
+    private func validateDateString(_ input: String?) -> String? {
+        guard let dateString = input else { return nil }
+        guard dateString.count == 8 else { return nil }
+        guard dateString.allSatisfy({ $0.isNumber }) else { return nil }
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyyMMdd"
+        guard formatter.date(from: dateString) != nil else { return nil }
+        
+        return dateString
+    }
+    
+    private func fetchMovieData(for date: String) {
+        let url = "https://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=dce81509c236477e2f0dc92663417742&targetDt=\(date)"
+        AF.request(url).responseDecodable(of: BoxOffice.self) { response in
+            switch response.result {
+            case .success(let movie):
+                self.movieData = movie.boxOfficeResult.dailyBoxOfficeList
+                self.tableView.reloadData()
+            case .failure(let error):
+                print("error", error)
+            }
+        }
+
     }
 }
 
@@ -136,8 +171,11 @@ extension MovieViewController: ViewDesignProtocol {
 extension MovieViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         view.endEditing(true)
-        getRandomMovie()
-        tableView.reloadData()
+
+        if let validDateString = validateDateString(searchBar.text) {
+            fetchMovieData(for: validDateString)
+            tableView.reloadData()
+        }
     }
 }
 
@@ -147,13 +185,13 @@ extension MovieViewController: UITableViewDelegate {
 
 extension MovieViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return filteredMovie.count
+        return movieData.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: MovieTableViewCell.identifier, for: indexPath) as! MovieTableViewCell
         
-        cell.configureData(with: filteredMovie[indexPath.row], number: indexPath.row)
+        cell.configureData(with: movieData[indexPath.row])
         
         return cell
     }
