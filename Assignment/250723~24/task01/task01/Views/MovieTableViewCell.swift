@@ -82,10 +82,10 @@ extension MovieTableViewCell: ViewDesignProtocol {
         backgroundColor = .clear
     }
     
-    func configureData(with row: Movie, number: Int) {
-        numberLabel.text = "\(number)"
-        titleLabel.text = row.title
-        releaseLabel.text = row.releaseDate.dateFormatted()
+    func configureData(with row: DailyBoxOfficeList) {
+        numberLabel.text = "\(row.rank)"
+        titleLabel.text = row.movieNm
+        releaseLabel.text = row.openDt
     }
     
 }
