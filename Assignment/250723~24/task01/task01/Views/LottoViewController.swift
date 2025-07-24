@@ -83,13 +83,32 @@ class LottoViewController: UIViewController {
     
     private var winningNumbers: [Int] = []
     private var bonusNumber: Int = 0
+    private var availableRounds: [Int] = []
+    private var currentRound: Int = 0
     
     private var ballSize: CGFloat = 0
     private var ballSpacing: CGFloat = 0
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        configureHierarchy()
+        configureLayout()
+        configureView()
+        calculateBallLayout()
+        
+        setupInitialData()
+    }
+    
+    override func viewIsAppearing(_ animated: Bool) {
+        super.viewIsAppearing(animated)
+        
+        selectLatestRoundInPicker()
+    }
+    
     private func calculateBallLayout() {
         let screenWidth = UIScreen.main.bounds.width
-        let sideMargin: CGFloat = 40 
+        let sideMargin: CGFloat = 40
         let availableWidth = screenWidth - sideMargin
         let ballCount: CGFloat = 8
         let minSpacing: CGFloat = 4
@@ -101,26 +120,43 @@ class LottoViewController: UIViewController {
         ballStackView.spacing = ballSpacing
     }
     
-    let numbers = Array(1...1181)
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    private func setupInitialData() {
+        let latestRound = calculateLatestRound()
+        availableRounds = Array(1...latestRound)
+        currentRound = latestRound
         
-        configureHierarchy()
-        configureLayout()
-        configureView()
-        calculateBallLayout()
-        updateRoundResult(round: numbers.last ?? 1181)
+        updateRoundResult(round: currentRound)
     }
     
-    override func viewIsAppearing(_ animated: Bool) {
-        super.viewIsAppearing(animated)
-        
+    private func selectLatestRoundInPicker() {
         if let picker = inputTextView.inputView as? UIPickerView {
-            let lastIndex = numbers.count - 1
+            let lastIndex = availableRounds.count - 1
             picker.selectRow(lastIndex, inComponent: 0, animated: true)
-            inputTextView.text = "\(numbers[lastIndex])"
+            inputTextView.text = "\(availableRounds[lastIndex])"
         }
+    }
+    
+    private func calculateLatestRound() -> Int {
+        let firstDrawDate = Calendar.current.date(from: DateComponents(year: 2002, month: 12, day: 7))!
+        let today = Date()
+        
+        let calendar = Calendar.current
+        let todayComponents = calendar.dateComponents([.weekday, .hour], from: today)
+        let isSaturday = todayComponents.weekday == 7
+        
+        var targetDate = today
+        
+        if isSaturday {
+            targetDate = calendar.date(byAdding: .day, value: -7, to: today) ?? today
+        } else if !isSaturday {
+            let daysFromSaturday = (todayComponents.weekday ?? 1) % 7
+            targetDate = calendar.date(byAdding: .day, value: -daysFromSaturday, to: today) ?? today
+        }
+        
+        let daysBetween = calendar.dateComponents([.day], from: firstDrawDate, to: targetDate).day ?? 0
+        let weeksBetween = daysBetween / 7
+        
+        return max(1, weeksBetween + 1)
     }
     
     @objc func dismissPicker() {
@@ -146,30 +182,22 @@ class LottoViewController: UIViewController {
     }
     
     private func generateLottoNumbers() {
-        print(winningNumbers)
         ballStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         
         for number in winningNumbers {
             let ballView = LottoBallView()
-            
             let ballType = BallType.ballType(for: number)
             ballView.configure(number: number, ballType: ballType)
-
             ballStackView.addArrangedSubview(ballView)
         }
         
         let plusView = LottoBallView()
         plusView.configurePlus()
-
+        ballStackView.addArrangedSubview(plusView)
+        
         let bonusBall = LottoBallView()
         bonusBall.configure(number: bonusNumber, ballType: .bonus)
-
-        ballStackView.addArrangedSubview(plusView)
         ballStackView.addArrangedSubview(bonusBall)
-        
-        winningNumbers.removeAll()
-        
-        print("볼 생성 끝")
     }
     
     private func fetchLottoNumbers(round: Int) {
@@ -177,15 +205,11 @@ class LottoViewController: UIViewController {
         AF.request(url).responseDecodable(of: Lotto.self) { response in
             switch response.result {
             case .success(let lotto):
-                self.dateLabel.text = lotto.drwNoDate
-                self.winningNumbers.append(lotto.drwtNo1)
-                self.winningNumbers.append(lotto.drwtNo2)
-                self.winningNumbers.append(lotto.drwtNo3)
-                self.winningNumbers.append(lotto.drwtNo4)
-                self.winningNumbers.append(lotto.drwtNo5)
-                self.winningNumbers.append(lotto.drwtNo6)
+                self.winningNumbers = [
+                    lotto.drwtNo1, lotto.drwtNo2, lotto.drwtNo3,
+                    lotto.drwtNo4, lotto.drwtNo5, lotto.drwtNo6
+                ]
                 self.bonusNumber = lotto.bnusNo
-                print(lotto)
                 self.generateLottoNumbers()
             case .failure(let error):
                 print("error", error)
@@ -244,11 +268,11 @@ extension LottoViewController: ViewDesignProtocol {
 
 extension LottoViewController: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return "\(numbers[row])"
+        return "\(availableRounds[row])"
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        let selectedRound = numbers[row]
+        let selectedRound = availableRounds[row]
         inputTextView.text = "\(selectedRound)"
         updateRoundResult(round: selectedRound)
     }
@@ -260,6 +284,6 @@ extension LottoViewController: UIPickerViewDataSource {
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return numbers.count
+        return availableRounds.count
     }
 }
