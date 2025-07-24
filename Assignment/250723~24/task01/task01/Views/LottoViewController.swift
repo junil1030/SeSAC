@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import Alamofire
 
 class LottoViewController: UIViewController {
     
@@ -80,6 +81,9 @@ class LottoViewController: UIViewController {
         return stackView
     }()
     
+    private var winningNumbers: [Int] = []
+    private var bonusNumber: Int = 0
+    
     private var ballSize: CGFloat = 0
     private var ballSpacing: CGFloat = 0
     
@@ -107,7 +111,6 @@ class LottoViewController: UIViewController {
         configureView()
         calculateBallLayout()
         updateRoundResult(round: numbers.last ?? 1181)
-        generateLottoNumbers()
     }
     
     override func viewIsAppearing(_ animated: Bool) {
@@ -138,13 +141,13 @@ class LottoViewController: UIViewController {
                                     range: NSRange(location: roundText.count + 1, length: 4))
         
         roundResultLabel.attributedText = attributedString
+        
+        fetchLottoNumbers(round: round)
     }
     
     private func generateLottoNumbers() {
+        print(winningNumbers)
         ballStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
-        
-        let winningNumbers = Array(1...45).shuffled().prefix(6).sorted()
-        let bonusNumber = Array(1...45).filter { !winningNumbers.contains($0) }.randomElement() ?? 7
         
         for number in winningNumbers {
             let ballView = LottoBallView()
@@ -163,6 +166,31 @@ class LottoViewController: UIViewController {
 
         ballStackView.addArrangedSubview(plusView)
         ballStackView.addArrangedSubview(bonusBall)
+        
+        winningNumbers.removeAll()
+        
+        print("볼 생성 끝")
+    }
+    
+    private func fetchLottoNumbers(round: Int) {
+        let url = "https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=\(round)"
+        AF.request(url).responseDecodable(of: Lotto.self) { response in
+            switch response.result {
+            case .success(let lotto):
+                self.dateLabel.text = lotto.drwNoDate
+                self.winningNumbers.append(lotto.drwtNo1)
+                self.winningNumbers.append(lotto.drwtNo2)
+                self.winningNumbers.append(lotto.drwtNo3)
+                self.winningNumbers.append(lotto.drwtNo4)
+                self.winningNumbers.append(lotto.drwtNo5)
+                self.winningNumbers.append(lotto.drwtNo6)
+                self.bonusNumber = lotto.bnusNo
+                print(lotto)
+                self.generateLottoNumbers()
+            case .failure(let error):
+                print("error", error)
+            }
+        }
     }
 }
 
@@ -223,7 +251,6 @@ extension LottoViewController: UIPickerViewDelegate {
         let selectedRound = numbers[row]
         inputTextView.text = "\(selectedRound)"
         updateRoundResult(round: selectedRound)
-        generateLottoNumbers()
     }
 }
 
