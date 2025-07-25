@@ -132,7 +132,7 @@ class ViewController: UIViewController {
 //            print("무게 텍스트 필드가 2글자 미만입니다.")
 //        }
         
-        let vc = MarketViewController()
+        let vc = BookViewController()
         
         present(vc, animated: true)
     }

@@ -14,7 +14,7 @@ class MarketTableViewCell: UITableViewCell {
     
     let nameLabel: UILabel = {
         let label = UILabel()
-        
+        label.textColor = .white
         return label
     }()
 
@@ -37,7 +37,9 @@ extension MarketTableViewCell: ViewDesignProtocol {
     }
     
     func configureLayout() {
-        
+        nameLabel.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
     }
     
     func configureView() {

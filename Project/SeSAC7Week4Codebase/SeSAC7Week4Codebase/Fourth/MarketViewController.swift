@@ -29,15 +29,23 @@ class MarketViewController: UIViewController {
         tableView.register(MarketTableViewCell.self, forCellReuseIdentifier: MarketTableViewCell.identifier)
         return tableView
     }()
+    
+//    var list: [String] = ["비트코인", "이더리움", "리플", "도지코인"]
+    var list: [Coin] = [
+        Coin(market: "UpBit", korean_name: "비트코인", english_name: "bitcoin"),
+        Coin(market: "UpBit", korean_name: "이더리움", english_name: "ethurium"),
+        Coin(market: "UpBit", korean_name: "리플", english_name: "riple"),
+        Coin(market: "UpBit", korean_name: "도지코인", english_name: "dodge")
+    ]
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        callRequest()
+        
         configureHierarchy()
         configureLayout()
         configureView()
-        
-        callBoxOffice()
     }
 
     private func callRequest() {
@@ -46,10 +54,9 @@ class MarketViewController: UIViewController {
             .validate(statusCode: 200..<300)
             .responseDecodable(of: [Coin].self) { response in
                 switch response.result {
-                case .success(let coin):
-                    print(coin[2].korean_name)
-                    print(coin[2].english_name)
-                    print(coin[2].market)
+                case .success(let value):
+                    self.list = value
+                    self.tableView.reloadData()
                 case .failure(let error):
                     print("fail", error)
                 }
@@ -79,16 +86,16 @@ extension MarketViewController: UITableViewDelegate {
 
 extension MarketViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 100
+        return list.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: MarketTableViewCell.identifier, for: indexPath) as! MarketTableViewCell
-        
+        let row = list[indexPath.row]
+        cell.nameLabel.text = row.coinOverview
+        cell.backgroundColor = .blue
         return cell
     }
-    
-    
 }
 
 extension MarketViewController: ViewDesignProtocol {

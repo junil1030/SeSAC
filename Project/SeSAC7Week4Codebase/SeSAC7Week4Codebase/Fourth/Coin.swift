@@ -11,4 +11,8 @@ struct Coin: Decodable {
     let market: String
     let korean_name: String
     let english_name: String
+    
+    var coinOverview: String {
+        get { "\(market) | \(korean_name) | \(english_name)" }
+    }
 }
