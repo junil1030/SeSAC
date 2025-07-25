@@ -24,11 +24,11 @@ class BaseViewController: UIViewController, ViewDesignProtocol {
     }
 
     func configureHierarchy() {
-        print(#function)
+        
     }
     
     func configureLayout() {
-        print(#function)
+        
     }
     
     func configureView() {
@@ -38,5 +38,7 @@ class BaseViewController: UIViewController, ViewDesignProtocol {
         navigationController?.navigationBar.titleTextAttributes = [
             NSAttributedString.Key.foregroundColor: UIColor.white
         ]
+        
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
 }
