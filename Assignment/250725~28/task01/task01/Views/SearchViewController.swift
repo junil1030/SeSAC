@@ -49,6 +49,9 @@ class SearchViewController: BaseViewController {
 
 extension SearchViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        print(#function)
+        guard let keyword = searchBar.text, !keyword.isEmpty else { return }
+        
+        let vc = ResultViewController(searchKeyword: keyword)
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
