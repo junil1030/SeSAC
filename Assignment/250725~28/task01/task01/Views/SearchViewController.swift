@@ -6,24 +6,49 @@
 //
 
 import UIKit
+import SnapKit
 
-class SearchViewController: UIViewController {
-
+class SearchViewController: BaseViewController {
+    
+    private let searchbar: UISearchBar = {
+        let searchBar = UISearchBar()
+        searchBar.backgroundImage = UIImage()
+        searchBar.showsCancelButton = false
+        searchBar.searchTextField.textColor = .white
+        searchBar.searchTextField.attributedPlaceholder = NSAttributedString(string: "브랜드, 상품, 프로핑, 태그 등", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray])
+        return searchBar
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    override func configureHierarchy() {
+        super.configureHierarchy()
+        
+        view.addSubview(searchbar)
     }
-    */
+    
+    override func configureLayout() {
+        super.configureLayout()
+        
+        searchbar.snp.makeConstraints { make in
+            make.top.horizontalEdges.equalTo(view.safeAreaLayoutGuide)
+            make.height.equalTo(44)
+        }
+    }
+    
+    override func configureView() {
+        super.configureView()
+        
+        navigationItem.title = AppStrings.appTItle
+        searchbar.delegate = self
+    }
+}
 
+extension SearchViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        print(#function)
+    }
 }
