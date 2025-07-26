@@ -38,7 +38,7 @@ extension FilterView: ViewDesignProtocol {
     func configureLayout() {
         titleLabel.snp.makeConstraints { make in
             make.center.equalToSuperview()
-            make.leading.trailing.equalToSuperview().inset(8)
+            make.leading.trailing.equalToSuperview().inset(5)
         }
     }
     
