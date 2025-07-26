@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>X-Naver-Client-Id</key>
-	<string>$(X-Naver-Client-Id)</string>
+	<string>$(NAVER_CLIENT_ID)</string>
 	<key>X-Naver-Client-Secret</key>
-	<string>$(X-Naver-Client-Secret)</string>
+	<string>$(NAVER_CLIENT_SECRET)</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
