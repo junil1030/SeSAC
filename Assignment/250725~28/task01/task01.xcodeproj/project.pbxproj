@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		F991B37F2E334D780074C56E /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = F991B37E2E334D780074C56E /* SnapKit */; };
 		F991B3822E334D860074C56E /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = F991B3812E334D860074C56E /* Alamofire */; };
+		F991B53B2E33E3750074C56E /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = F991B53A2E33E3750074C56E /* Kingfisher */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +42,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F991B53B2E33E3750074C56E /* Kingfisher in Frameworks */,
 				F991B37F2E334D780074C56E /* SnapKit in Frameworks */,
 				F991B3822E334D860074C56E /* Alamofire in Frameworks */,
 			);
@@ -87,6 +89,7 @@
 			packageProductDependencies = (
 				F991B37E2E334D780074C56E /* SnapKit */,
 				F991B3812E334D860074C56E /* Alamofire */,
+				F991B53A2E33E3750074C56E /* Kingfisher */,
 			);
 			productName = task01;
 			productReference = F991B3332E334B120074C56E /* task01.app */;
@@ -119,6 +122,7 @@
 			packageReferences = (
 				F991B37D2E334D780074C56E /* XCRemoteSwiftPackageReference "SnapKit" */,
 				F991B3802E334D860074C56E /* XCRemoteSwiftPackageReference "Alamofire" */,
+				F991B5392E33E3750074C56E /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = F991B3342E334B120074C56E /* Products */;
@@ -217,6 +221,8 @@
 		};
 		F991B3492E334B130074C56E /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = F991B3352E334B120074C56E /* task01 */;
+			baseConfigurationReferenceRelativePath = Config/APIConfig.xcconfig;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -281,6 +287,8 @@
 		};
 		F991B34A2E334B130074C56E /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = F991B3352E334B120074C56E /* task01 */;
+			baseConfigurationReferenceRelativePath = Config/APIConfig.xcconfig;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -376,6 +384,14 @@
 				minimumVersion = 5.10.2;
 			};
 		};
+		F991B5392E33E3750074C56E /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.5.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -388,6 +404,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F991B3802E334D860074C56E /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
+		};
+		F991B53A2E33E3750074C56E /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F991B5392E33E3750074C56E /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
