@@ -7,14 +7,23 @@
 
 import UIKit
 import SnapKit
+import Alamofire
 
 class ResultViewController: BaseViewController {
     
+    
+    private let sectionInset: CGFloat = 16
+    private let itemSpacing: CGFloat = 12
+    private let lineSpacing: CGFloat = 16
+    
     let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .clear
         collectionView.keyboardDismissMode = .onDrag
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.register(ProductCell.self, forCellWithReuseIdentifier: ProductCell.identifier)
         return collectionView
     }()
     
@@ -29,13 +38,21 @@ class ResultViewController: BaseViewController {
     let filterStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
-        stackView.distribution = .fillEqually
+        stackView.distribution = .equalSpacing
         stackView.alignment = .fill
+        stackView.spacing = 5
         return stackView
     }()
     
+    let simLabel = FilterView(title: "정확도")
+    let dateLabel = FilterView(title: "날짜순")
+    let ascLabel = FilterView(title: "가격높은순")
+    let dscLabel = FilterView(title: "가격낮은순")
+    
     let searchKeyword: String
     let searchResultCount = 0
+    
+    let dummyData = DummyData.dummyData
     
     init(searchKeyword: String) {
         self.searchKeyword = searchKeyword
@@ -48,12 +65,22 @@ class ResultViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+            }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         
+        updateCollectionViewLayout()
     }
     
     override func configureHierarchy() {
         super.configureHierarchy()
         view.addSubview(searchResultCountLabel)
+        view.addSubview(filterStackView)
+        
+        let views = [simLabel, dateLabel, ascLabel, dscLabel]
+        views.forEach { filterStackView.addArrangedSubview($0) }
+        
         view.addSubview(collectionView)
     }
     
@@ -64,8 +91,15 @@ class ResultViewController: BaseViewController {
             make.height.equalTo(32)
         }
         
-        collectionView.snp.makeConstraints { make in
+        filterStackView.snp.makeConstraints { make in
             make.top.equalTo(searchResultCountLabel.snp.bottom)
+            make.leading.equalTo(view.safeAreaLayoutGuide)
+            make.height.equalTo(32)
+            make.trailing.lessThanOrEqualTo(view.safeAreaLayoutGuide)
+        }
+        
+        collectionView.snp.makeConstraints { make in
+            make.top.equalTo(filterStackView.snp.bottom)
             make.horizontalEdges.bottom.equalTo(view.safeAreaLayoutGuide)
         }
     }
@@ -73,8 +107,44 @@ class ResultViewController: BaseViewController {
     override func configureView() {
         super.configureView()
         
-        navigationItem.title = searchKeyword
+        collectionView.delegate = self
+        collectionView.dataSource = self
         
+        navigationItem.title = searchKeyword
         searchResultCountLabel.text = "Test"
     }
+    
+    private func updateCollectionViewLayout() {
+        guard let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout,
+              collectionView.bounds.width > 0 else { return }
+        
+        let totalHorizontalSpacing = (sectionInset * 2) + itemSpacing
+        let cellWidth = (collectionView.bounds.width - totalHorizontalSpacing) / 2
+        let cellHeight: CGFloat = 280
+        
+        layout.itemSize = CGSize(width: cellWidth, height: cellHeight)
+        layout.sectionInset = UIEdgeInsets(top: 16, left: sectionInset, bottom: 16, right: sectionInset)
+        layout.minimumInteritemSpacing = itemSpacing
+        layout.minimumLineSpacing = lineSpacing
+        layout.invalidateLayout()
+    }
+}
+
+extension ResultViewController: UICollectionViewDelegate {
+    
+}
+
+extension ResultViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return dummyData.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProductCell.identifier, for: indexPath) as! ProductCell
+        
+        cell.configureData(with: dummyData[indexPath.item])
+        return cell
+    }
+    
+    
 }
