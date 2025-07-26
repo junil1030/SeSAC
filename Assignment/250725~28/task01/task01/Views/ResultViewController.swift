@@ -16,6 +16,15 @@ class ResultViewController: BaseViewController {
     private let itemSpacing: CGFloat = 12
     private let lineSpacing: CGFloat = 16
     
+    let searchKeyword: String
+    let searchResultCount = 0
+    
+    let dummyData = DummyData.dummyData
+    
+    var shoppingItems: [ShoppingItem] = []
+    var totalCount: Int = 0
+    var isLoading: Bool = false
+    
     let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -49,11 +58,6 @@ class ResultViewController: BaseViewController {
     let ascLabel = FilterView(title: "가격높은순")
     let dscLabel = FilterView(title: "가격낮은순")
     
-    let searchKeyword: String
-    let searchResultCount = 0
-    
-    let dummyData = DummyData.dummyData
-    
     init(searchKeyword: String) {
         self.searchKeyword = searchKeyword
         super.init(nibName: nil, bundle: nil)
@@ -65,7 +69,9 @@ class ResultViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-            }
+        
+        loadData()
+    }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -130,19 +136,53 @@ class ResultViewController: BaseViewController {
     }
 }
 
+extension ResultViewController {
+    func loadData() {
+        isLoading = true
+        searchResultCountLabel.text = "검색 중.."
+        APIService.shared.searchProduct(keyword: searchKeyword) { [weak self] response in
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+                
+                self.isLoading = false
+                
+                if let response = response {
+                    self.shoppingItems = response.items
+                    self.totalCount = response.total
+                    
+                    self.searchResultCountLabel.text = "\(response.total)개의 상품"
+                    self.collectionView.reloadData()
+                } else {
+                    self.searchResultCountLabel.text = "검색 실패"
+                    self.showErrorMessage()
+                }
+            }
+        }
+    }
+    
+    private func showErrorMessage() {
+        let alert = UIAlertController(title: "오류", message: "상품을 불러올 수 없습니다.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "확인", style: .default))
+        present(alert, animated: true)
+    }
+}
+
 extension ResultViewController: UICollectionViewDelegate {
     
 }
 
 extension ResultViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return dummyData.count
+//        return dummyData.count
+        return shoppingItems.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProductCell.identifier, for: indexPath) as! ProductCell
         
-        cell.configureData(with: dummyData[indexPath.item])
+        let item = shoppingItems[indexPath.item]
+        cell.configureData(with: item)
+        
         return cell
     }
     
