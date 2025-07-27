@@ -11,15 +11,15 @@ import Alamofire
 
 class ResultViewController: BaseViewController {
     
-    
     private let sectionInset: CGFloat = 16
     private let itemSpacing: CGFloat = 12
     private let lineSpacing: CGFloat = 16
     
-    let searchKeyword: String
-    let searchResultCount = 0
+    private let searchKeyword: String
     
-    let dummyData = DummyData.dummyData
+    private var filterViews: [SortType: FilterView] = [:]
+    private var currentSortType: SortType = .sim
+    private var currentSelectedView: FilterView?
     
     var shoppingItems: [ShoppingItem] = []
     var totalCount: Int = 0
@@ -53,10 +53,10 @@ class ResultViewController: BaseViewController {
         return stackView
     }()
     
-    let simLabel = FilterView(title: "정확도")
-    let dateLabel = FilterView(title: "날짜순")
-    let ascLabel = FilterView(title: "가격높은순")
-    let dscLabel = FilterView(title: "가격낮은순")
+    private var simLabel: FilterView!
+    private var dateLabel: FilterView!
+    private var ascLabel: FilterView!
+    private var dscLabel: FilterView!
     
     init(searchKeyword: String) {
         self.searchKeyword = searchKeyword
@@ -84,8 +84,7 @@ class ResultViewController: BaseViewController {
         view.addSubview(searchResultCountLabel)
         view.addSubview(filterStackView)
         
-        let views = [simLabel, dateLabel, ascLabel, dscLabel]
-        views.forEach { filterStackView.addArrangedSubview($0) }
+        createFilterViews()
         
         view.addSubview(collectionView)
     }
@@ -105,7 +104,7 @@ class ResultViewController: BaseViewController {
         }
         
         collectionView.snp.makeConstraints { make in
-            make.top.equalTo(filterStackView.snp.bottom)
+            make.top.equalTo(filterStackView.snp.bottom).offset(10)
             make.horizontalEdges.bottom.equalTo(view.safeAreaLayoutGuide)
         }
     }
@@ -118,6 +117,45 @@ class ResultViewController: BaseViewController {
         
         navigationItem.title = searchKeyword
         searchResultCountLabel.text = "Test"
+        
+        setupFilterViews()
+    }
+    
+    private func createFilterViews() {
+        let sortTypes: [SortType] = [.sim, .date, .asc, .dsc]
+        
+        for sortType in sortTypes {
+            let filterView = FilterView(sortType: sortType)
+            filterViews[sortType] = filterView
+            filterStackView.addArrangedSubview(filterView)
+        }
+    }
+    
+    private func setupFilterViews() {
+        for (_, filterView) in filterViews {
+            filterView.onTap = { [weak self] tappedSortType in
+                self?.didSelectFilter(tappedSortType)
+            }
+        }
+        
+        selectFilter(.sim)
+    }
+    
+    private func selectFilter(_ sortType: SortType) {
+        currentSelectedView?.setSelected(false)
+        
+        let newSelectedView = filterViews[sortType]
+        newSelectedView?.setSelected(true)
+        
+        currentSelectedView = newSelectedView
+        currentSortType = sortType
+    }
+    
+    private func didSelectFilter(_ sortType: SortType) {
+        guard sortType != currentSortType else { return }
+        
+        selectFilter(sortType)
+        loadData(sort: sortType)
     }
     
     private func updateCollectionViewLayout() {
@@ -137,10 +175,11 @@ class ResultViewController: BaseViewController {
 }
 
 extension ResultViewController {
-    func loadData() {
+    func loadData(sort: SortType = .sim) {
         isLoading = true
         searchResultCountLabel.text = "검색 중.."
-        APIService.shared.searchProduct(keyword: searchKeyword) { [weak self] response in
+        
+        APIService.shared.searchProduct(keyword: searchKeyword, sort: sort) { [weak self] response in
             DispatchQueue.main.async {
                 guard let self = self else { return }
                 
@@ -150,8 +189,12 @@ extension ResultViewController {
                     self.shoppingItems = response.items
                     self.totalCount = response.total
                     
-                    self.searchResultCountLabel.text = "\(response.total)개의 상품"
+                    self.searchResultCountLabel.text = "\(response.total.formattedString) 개의 검색 결과"
                     self.collectionView.reloadData()
+                    
+                    if !self.shoppingItems.isEmpty {
+                        self.collectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+                    }
                 } else {
                     self.searchResultCountLabel.text = "검색 실패"
                     self.showErrorMessage()
