@@ -66,8 +66,8 @@ class ProductCell: UICollectionViewCell {
         let url = URL(string: item.image)
         imageView.kf.setImage(with: url)
         mallNameLabel.text = item.mallName
-        titleLabel.text = item.title
-        priceLabel.text = item.lprice
+        titleLabel.text = item.title.cleanText
+        priceLabel.text = item.lprice.wonString
     }
 }
 
