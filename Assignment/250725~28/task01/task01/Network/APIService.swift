@@ -13,7 +13,7 @@ class APIService {
     
     private init() {}
     
-    func searchProduct(keyword: String, completion: @escaping (ShoppingResponse?) -> Void) {
+    func searchProduct(keyword: String, sort: SortType = .sim, completion: @escaping (ShoppingResponse?) -> Void) {
         let url = "https://openapi.naver.com/v1/search/shop"
         
         let headers: HTTPHeaders = [
@@ -24,7 +24,8 @@ class APIService {
         let parameters: [String: Any] = [
             "query": keyword,
             "display": 100,
-            "start": 1
+            "start": 1,
+            "sort": sort.rawValue
         ]
         
         AF.request(url, parameters: parameters, headers: headers)
