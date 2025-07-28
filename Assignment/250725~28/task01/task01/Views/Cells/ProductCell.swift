@@ -43,6 +43,23 @@ class ProductCell: UICollectionViewCell {
         return label
     }()
     
+    private let likeButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = .white
+        button.layer.cornerRadius = 16
+        button.layer.shadowColor = UIColor.black.cgColor
+        button.layer.shadowOffset = CGSize(width: 0, height: 1)
+        button.layer.shadowOpacity = 0.1
+        button.layer.shadowRadius = 2
+        return button
+    }()
+    
+    private var isLiked: Bool = false {
+        didSet {
+            updateLikeButton()
+        }
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -69,6 +86,23 @@ class ProductCell: UICollectionViewCell {
         titleLabel.text = item.title.cleanText
         priceLabel.text = item.lprice.wonString
     }
+    
+    @objc private func likeButtonTapped() {
+        isLiked.toggle()
+    }
+    
+    private func updateLikeButton() {
+        let heartImage: UIImage?
+        
+        if isLiked {
+            heartImage = UIImage(systemName: "heart.fill")
+        } else {
+            heartImage = UIImage(systemName: "heart")
+        }
+        
+        likeButton.setImage(heartImage, for: .normal)
+        likeButton.tintColor = .black
+    }
 }
 
 extension ProductCell: ViewDesignProtocol {
@@ -77,6 +111,7 @@ extension ProductCell: ViewDesignProtocol {
         contentView.addSubview(mallNameLabel)
         contentView.addSubview(titleLabel)
         contentView.addSubview(priceLabel)
+        contentView.addSubview(likeButton)
     }
     
     func configureLayout() {
@@ -102,10 +137,19 @@ extension ProductCell: ViewDesignProtocol {
             make.horizontalEdges.equalToSuperview().inset(8)
             make.height.lessThanOrEqualTo(36)
         }
+        
+        likeButton.snp.makeConstraints { make in
+            make.trailing.equalTo(imageView.snp.trailing).offset(-8)
+            make.bottom.equalTo(imageView.snp.bottom).offset(-8)
+            make.width.height.equalTo(32)
+        }
     }
     
     func configureView() {
         contentView.backgroundColor = .clear
+        
+        likeButton.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
+        updateLikeButton()
     }
     
     
