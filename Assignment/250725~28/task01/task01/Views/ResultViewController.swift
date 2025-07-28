@@ -23,7 +23,11 @@ class ResultViewController: BaseViewController {
     
     var shoppingItems: [ShoppingItem] = []
     var totalCount: Int = 0
-    var isLoading: Bool = false
+    var isAPILoading: Bool = false
+    
+    private var currentPage = 1
+    private let itemsPerPage = 30
+    private var hasMoreData = true
     
     let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -172,51 +176,95 @@ class ResultViewController: BaseViewController {
         layout.minimumLineSpacing = lineSpacing
         layout.invalidateLayout()
     }
+    
+    private func resetPagination() {
+        totalCount = 0
+        currentPage = 1
+        hasMoreData = true
+        shoppingItems.removeAll()
+    }
+    
+    private func shouldLoadMoreData(for indexPath: IndexPath) -> Bool {
+        return indexPath.item >= shoppingItems.count - 3 && hasMoreData && !isAPILoading
+    }
 }
 
 extension ResultViewController {
-    func loadData(sort: SortType = .sim) {
-        isLoading = true
-        searchResultCountLabel.text = "검색 중.."
+    func loadData(sort: SortType = .sim, isPagination: Bool = false) {
+        guard !isAPILoading else { return }
         
-        APIService.shared.searchProduct(keyword: searchKeyword, sort: sort) { [weak self] response in
+        isAPILoading = true
+        
+        if !isPagination {
+            searchResultCountLabel.text = "검색 중.."
+        }
+        
+        let startIndex = ((currentPage - 1) * itemsPerPage) + 1
+        
+        APIService.shared.searchProduct(keyword: searchKeyword, sort: sort, start: startIndex ,display: itemsPerPage) { [weak self] response in
             DispatchQueue.main.async {
                 guard let self = self else { return }
                 
-                self.isLoading = false
+                self.isAPILoading = false
                 
                 if let response = response {
-                    self.shoppingItems = response.items
-                    self.totalCount = response.total
+                    let receivedItems = response.items
                     
-                    self.searchResultCountLabel.text = "\(response.total.formattedString) 개의 검색 결과"
-                    self.collectionView.reloadData()
+                    // 받은 아이템 수가 요청한 수보다 적을 때
+                    let isLastPage = self.itemsPerPage > receivedItems.count
                     
-                    if !self.shoppingItems.isEmpty {
-                        self.collectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+                    // 현재까지 총 로드한 아이템의 수가 전체 데이터의 수와 같거나 더 클 때 (오버해서 받아오는 경우까지 참고)
+                    let totalItems = self.shoppingItems.count + receivedItems.count
+                    let reachedTotal = totalItems >= response.total
+                    
+                    // 우연히 30으로 나누어 떨어져서 그 다음 받아온 데이터가 빈 배열일 떄
+                    let isEmpty = receivedItems.isEmpty
+                    
+                    // 셋 중 하나라도 해당하면 마지막 페이지
+                    self.hasMoreData = !isLastPage || !reachedTotal || !isEmpty
+                    
+                    if isPagination {
+                        // 추가 로딩인 경우 기존 데이터에 새 데이터 추가
+                        self.shoppingItems.append(contentsOf: receivedItems)
+                        self.collectionView.reloadData()
+                    } else {
+                        // 새로운 검색인 경우 데이터 교체
+                        self.shoppingItems = receivedItems
+                        self.totalCount = response.total
+                        self.collectionView.reloadData()
+                        self.searchResultCountLabel.text = "\(self.totalCount.formattedString) 개의 검색 결과"
+                        
+                        if !self.shoppingItems.isEmpty && self.collectionView.numberOfItems(inSection: 0) > 0 {
+                            DispatchQueue.main.async {
+                                self.collectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+                            }
+                        }
                     }
+                    
+                    if !receivedItems.isEmpty {
+                        self.currentPage += 1
+                    }
+                    
                 } else {
                     self.searchResultCountLabel.text = "검색 실패"
-                    self.showErrorMessage()
+                    self.showAlert(message: "상품을 불러올 수 없습니다.")
+                    self.hasMoreData = false
                 }
             }
         }
     }
-    
-    private func showErrorMessage() {
-        let alert = UIAlertController(title: "오류", message: "상품을 불러올 수 없습니다.", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "확인", style: .default))
-        present(alert, animated: true)
-    }
 }
 
 extension ResultViewController: UICollectionViewDelegate {
-    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if shouldLoadMoreData(for: indexPath) {
+            loadData(sort: currentSortType, isPagination: true)
+        }
+    }
 }
 
 extension ResultViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return dummyData.count
         return shoppingItems.count
     }
     
