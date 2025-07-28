@@ -12,8 +12,31 @@ class BaseViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        setupHierachy()
+        setupLayout()
+        setupView()
+    }
+    
+    func setupHierachy() {
+        print(self, #function)
         
     }
     
+    func setupLayout() {
+        print(self, #function)
+        
+    }
     
+    func setupView() {
+        print(self, #function)
+        
+    }
+    
+    func showAlert() {
+        
+    }
+    
+    func keyboardDismiss() {
+        view.endEditing(true)
+    }
 }
