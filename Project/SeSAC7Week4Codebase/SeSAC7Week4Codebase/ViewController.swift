@@ -132,7 +132,7 @@ class ViewController: UIViewController {
 //            print("무게 텍스트 필드가 2글자 미만입니다.")
 //        }
         
-        let vc = BookViewController()
+        let vc = AuthViewController()
         
         present(vc, animated: true)
     }
