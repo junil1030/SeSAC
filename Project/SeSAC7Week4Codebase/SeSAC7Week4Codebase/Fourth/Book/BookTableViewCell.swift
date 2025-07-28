@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class BookTableViewCell: UITableViewCell {
+class BookTableViewCell: BaseTableViewCell {
     
     static let identifier = "BookTableViewCell"
     
@@ -17,27 +17,14 @@ class BookTableViewCell: UITableViewCell {
     let subTitleLabel = UILabel()
     let overviewLabel = UILabel()
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
-        configureHierarchy()
-        configureLayout()
-        configureView()
-        
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    func configureHierarchy() {
+    override func configureHierarchy() {
         contentView.addSubview(thumbnailImageView)
         contentView.addSubview(titleLabel)
         contentView.addSubview(subTitleLabel)
         contentView.addSubview(overviewLabel)
     }
     
-    func configureLayout() {
+    override func configureLayout() {
         thumbnailImageView.snp.makeConstraints { make in
             make.leading.verticalEdges.equalTo(contentView.safeAreaLayoutGuide).inset(16)
             make.width.equalTo(80)
@@ -64,7 +51,7 @@ class BookTableViewCell: UITableViewCell {
         
     }
     
-    func configureView() {
+    override func configureView() {
         thumbnailImageView.contentMode = .scaleAspectFill
         overviewLabel.numberOfLines = 0
         overviewLabel.font = .systemFont(ofSize: 13)
