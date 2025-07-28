@@ -49,7 +49,7 @@ class SearchViewController: BaseViewController {
 
 extension SearchViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        guard let keyword = searchBar.text, !keyword.isEmpty else { return }
+        guard let keyword = searchBar.text, keyword.trimmingCharacters(in: .whitespacesAndNewlines).count > 1 else { return }
         
         let vc = ResultViewController(searchKeyword: keyword)
         navigationController?.pushViewController(vc, animated: true)
