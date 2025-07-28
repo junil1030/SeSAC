@@ -191,6 +191,11 @@ class ResultViewController: BaseViewController {
 
 extension ResultViewController {
     func loadData(sort: SortType = .sim, isPagination: Bool = false) {
+        guard checkNetworkConnection() else {
+            searchResultCountLabel.text = "네트워크 연결 없음"
+            return
+        }
+        
         guard !isAPILoading else { return }
         
         isAPILoading = true
@@ -247,7 +252,7 @@ extension ResultViewController {
                     
                 } else {
                     self.searchResultCountLabel.text = "검색 실패"
-                    self.showAlert(message: "상품을 불러올 수 없습니다.")
+                    self.showAlert(type: .error, message: "상품을 불러올 수 없습니다.")
                     self.hasMoreData = false
                 }
             }
