@@ -27,7 +27,11 @@ class BookViewController: UIViewController {
         return searchBar
     }()
     
-    var list: BookInfo = BookInfo(items: [])
+//    var list: BookInfo = BookInfo(items: [])
+    var kakaoList: KakaoBookInfo?
+    var list: [BookDetail] = []
+    var page = 1
+    var is_end = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,8 +53,37 @@ class BookViewController: UIViewController {
                 switch response.result {
                 case .success(let value):
                     
-                    self.list = value
+//                    self.list = value
                     self.tableView.reloadData()
+                    
+                case .failure(let error):
+                    print("fail", error)
+                }
+            }
+    }
+    
+    func callRequestKakao(query: String) {
+        let url = "https://dapi.kakao.com/v3/search/book?query=\(query)&size=20&page=\(page)"
+        let header: HTTPHeaders = [
+            "Authorization": "KakaoAK c85e3389095b1b8798c66d2bbd85eb2f"
+        ]
+        AF.request(url, method: .get, headers: header)
+            .validate(statusCode: 200..<300)
+//            .responseString { response in
+//                dump(response)
+//            }
+            .responseDecodable(of: KakaoBookInfo.self) { response in
+                switch response.result {
+                case .success(let value):
+                    
+                    self.is_end = value.meta.is_end
+                    
+                    self.list.append(contentsOf: value.documents)
+                    self.tableView.reloadData()
+                    
+                    if self.page == 1 {
+                        self.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+                    }
                     
                 case .failure(let error):
                     print("fail", error)
@@ -70,35 +103,55 @@ extension BookViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         print(#function)
         guard let query = searchBar.text, !query.isEmpty else { return }
-        callRequest(query: query)
+        
+        list.removeAll()
+        page = 1
+        is_end = false
+        callRequestKakao(query: query)
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         print(#function)
         searchBar.text = ""
-        list = BookInfo(items: [])
+        list.removeAll()
         tableView.reloadData()
     }
 }
 
 extension BookViewController: UITableViewDelegate {
-    
+    // Pagenation
+    // 스크롤이 다 끝날 때 쯤에 다음 페이지를 요청
+    // 다음 페이지를 위해서 page 변수를 사용
+    // 이전 데이터도 계속 보려고 append 수정
+    // 다른 검색어로 바꾸면 리셋이 아니라 계속 append 있음 > 배열 비워주고, 페이지를 1번부터 다시 시작
+    // 새롭게 검색하는 경우에는 스크롤을 위로 올려주는 게 필요
+    // 마지막 페이지에 대한 처리를 잘 해야함...
+    // Q. 서치바에서 텍스트 바꾸고 검색 버튼(엔터키)을 안누른 상태로 페이지를 넘기면 어떻게 처리해야 할까?
+    // A. 이런 것들은 그냥 모두 회사마다 다르다고 생각하면 편함
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        print(#function, indexPath)
+        
+        if indexPath.row == list.count - 3 && is_end == false {
+            page += 1
+            callRequestKakao(query: searchBar.text!)
+        }
+    }
     
 }
 
 extension BookViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return list.items.count
+        return list.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: BookTableViewCell.identifier, for: indexPath) as! BookTableViewCell
+
+        let kakaoRow = list[indexPath.row]
         
-        let row = list.items[indexPath.row]
-        
-        cell.titleLabel.text = row.title
-        cell.subTitleLabel.text = "작가: \(row.author), 출간일: \(row.pubdate)"
-        cell.overviewLabel.text = row.description
+        cell.titleLabel.text = kakaoRow.title
+        cell.subTitleLabel.text = "가격: \(kakaoRow.price)"
+        cell.overviewLabel.text = kakaoRow.contents
         cell.thumbnailImageView.image = UIImage(systemName: "Circle.fill")
         
         return cell
