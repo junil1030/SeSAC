@@ -63,32 +63,19 @@ class BookViewController: UIViewController {
     }
     
     func callRequestKakao(query: String) {
-        let url = "https://dapi.kakao.com/v3/search/book?query=\(query)&size=20&page=\(page)"
-        let header: HTTPHeaders = [
-            "Authorization": "KakaoAK c85e3389095b1b8798c66d2bbd85eb2f"
-        ]
-        AF.request(url, method: .get, headers: header)
-            .validate(statusCode: 200..<300)
-//            .responseString { response in
-//                dump(response)
-//            }
-            .responseDecodable(of: KakaoBookInfo.self) { response in
-                switch response.result {
-                case .success(let value):
-                    
-                    self.is_end = value.meta.is_end
-                    
-                    self.list.append(contentsOf: value.documents)
-                    self.tableView.reloadData()
-                    
-                    if self.page == 1 {
-                        self.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
-                    }
-                    
-                case .failure(let error):
-                    print("fail", error)
-                }
+        NetworkManager.shared.callRequestKakao(query: query) { value in
+            self.is_end = value.meta.is_end
+            
+            self.list.append(contentsOf: value.documents)
+            self.tableView.reloadData()
+            
+            if self.page == 1 {
+                self.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
             }
+
+        } fail: {
+            print("실패 ~")
+        }
     }
 }
 

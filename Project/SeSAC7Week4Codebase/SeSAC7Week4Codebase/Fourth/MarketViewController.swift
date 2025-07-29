@@ -47,36 +47,30 @@ class MarketViewController: UIViewController {
         configureLayout()
         configureView()
     }
-
+    
     private func callRequest() {
-        let url = "https://api.upbit.com/v1/market/all"
-        AF.request(url, method: .get)
-            .validate(statusCode: 200..<300)
-            .responseDecodable(of: [Coin].self) { response in
-                switch response.result {
-                case .success(let value):
-                    self.list = value
-                    self.tableView.reloadData()
-                case .failure(let error):
-                    print("fail", error)
-                }
-            }
+        
+        NetworkManager.shared.callRequest() { value in
+            self.list = value
+            self.tableView.reloadData()
+        }
+        
     }
     
-    private func callBoxOffice() {
-        let url = "https://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=dce81509c236477e2f0dc92663417742&targetDt=20120101"
-        AF.request(url, method: .get)
-            .validate(statusCode: 200..<300)
-            .responseDecodable(of: BoxOffice.self) { response in
-                print(response)
-                switch response.result {
-                case .success(let value):
-                    print(value.boxOfficeResult.dailyBoxOfficeList[0].movieNm)
-                case .failure(let error):
-                    print("fail", error)
-                }
-            }
-    }
+    //    private func callBoxOffice() {
+//        let url = "https://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=dce81509c236477e2f0dc92663417742&targetDt=20120101"
+//        AF.request(url, method: .get)
+//            .validate(statusCode: 200..<300)
+//            .responseDecodable(of: BoxOffice.self) { response in
+//                print(response)
+//                switch response.result {
+//                case .success(let value):
+//                    print(value.boxOfficeResult.dailyBoxOfficeList[0].movieNm)
+//                case .failure(let error):
+//                    print("fail", error)
+//                }
+//            }
+//    }
 }
 
 extension MarketViewController: UITableViewDelegate {
