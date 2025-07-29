@@ -29,6 +29,9 @@ class ResultViewController: BaseViewController {
     private let itemsPerPage = 30
     private var hasMoreData = true
     
+    var recommendedItems: [ShoppingItem] = []
+    var isRecommendationLoading: Bool = false
+    
     let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -38,6 +41,29 @@ class ResultViewController: BaseViewController {
         collectionView.showsVerticalScrollIndicator = false
         collectionView.register(ProductCell.self, forCellWithReuseIdentifier: ProductCell.identifier)
         return collectionView
+    }()
+    
+    let recommendationCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        layout.itemSize = CGSize(width: 120, height: 140)
+        layout.minimumLineSpacing = 8
+        layout.minimumInteritemSpacing = 0
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.backgroundColor = .clear
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.register(RecommendationCell.self, forCellWithReuseIdentifier: RecommendationCell.identifier)
+        return collectionView
+    }()
+    
+    let recommendationTitleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "추천 상품"
+        label.textColor = .white
+        label.font = .boldSystemFont(ofSize: 18)
+        return label
     }()
     
     let searchResultCountLabel: UILabel = {
@@ -75,6 +101,7 @@ class ResultViewController: BaseViewController {
         super.viewDidLoad()
         
         loadData()
+        loadRecommendations()
     }
     
     override func viewDidLayoutSubviews() {
@@ -91,6 +118,9 @@ class ResultViewController: BaseViewController {
         createFilterViews()
         
         view.addSubview(collectionView)
+        
+        view.addSubview(recommendationTitleLabel)
+        view.addSubview(recommendationCollectionView)
     }
     
     override func configureLayout() {
@@ -109,15 +139,31 @@ class ResultViewController: BaseViewController {
         
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(filterStackView.snp.bottom).offset(10)
-            make.horizontalEdges.bottom.equalTo(view.safeAreaLayoutGuide)
+            make.horizontalEdges.equalTo(view.safeAreaLayoutGuide)
+            make.height.equalTo(view.safeAreaLayoutGuide).multipliedBy(0.60)
         }
-    }
+        
+        recommendationTitleLabel.snp.makeConstraints { make in
+            make.top.equalTo(collectionView.snp.bottom).offset(16)
+            make.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(16)
+            make.height.equalTo(24)
+        }
+        
+        recommendationCollectionView.snp.makeConstraints { make in
+            make.top.equalTo(recommendationTitleLabel.snp.bottom).offset(8)
+            make.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+            make.height.equalTo(140)
+            make.bottom.lessThanOrEqualTo(view.safeAreaLayoutGuide)
+        }    }
     
     override func configureView() {
         super.configureView()
         
         collectionView.delegate = self
         collectionView.dataSource = self
+        
+        recommendationCollectionView.delegate = self
+        recommendationCollectionView.dataSource = self
         
         navigationItem.title = searchKeyword
         searchResultCountLabel.text = "Test"
@@ -212,15 +258,17 @@ extension ResultViewController {
                 
                 self.isAPILoading = false
                 
-                if let response = response {
-                    let receivedItems = response.items
+                //                if let response = response {
+                switch response {
+                case .success(let success):
+                    let receivedItems = success.items
                     
                     // 받은 아이템 수가 요청한 수보다 적을 때
                     let isLastPage = self.itemsPerPage > receivedItems.count
                     
                     // 현재까지 총 로드한 아이템의 수가 전체 데이터의 수와 같거나 더 클 때 (오버해서 받아오는 경우까지 참고)
                     let totalItems = self.shoppingItems.count + receivedItems.count
-                    let reachedTotal = totalItems >= response.total
+                    let reachedTotal = totalItems >= success.total
                     
                     // 우연히 30으로 나누어 떨어져서 그 다음 받아온 데이터가 빈 배열일 떄
                     let isEmpty = receivedItems.isEmpty
@@ -235,7 +283,7 @@ extension ResultViewController {
                     } else {
                         // 새로운 검색인 경우 데이터 교체
                         self.shoppingItems = receivedItems
-                        self.totalCount = response.total
+                        self.totalCount = success.total
                         self.collectionView.reloadData()
                         self.searchResultCountLabel.text = "\(self.totalCount.formattedString) 개의 검색 결과"
                         
@@ -249,11 +297,44 @@ extension ResultViewController {
                     if !receivedItems.isEmpty {
                         self.currentPage += 1
                     }
-                    
-                } else {
+                case .error(let errorCode, let error):
                     self.searchResultCountLabel.text = "검색 실패"
-                    self.showAlert(type: .error, message: "상품을 불러올 수 없습니다.")
+                    self.showAlert(type: .networkError, message: "에러: \(error)\nErrorCode: \(errorCode)")
                     self.hasMoreData = false
+                }
+                //                } else {
+                //                    self.searchResultCountLabel.text = "검색 실패"
+                //                    self.showAlert(type: .error, message: "상품을 불러올 수 없습니다.")
+                //                    self.hasMoreData = false
+                //                }
+            }
+        }
+    }
+    
+    func loadRecommendations() {
+        guard checkNetworkConnection() else { return }
+        guard !isRecommendationLoading else { return }
+        
+        isRecommendationLoading = true
+        
+        let randomSortType = [SortType.sim, .date, .asc, .dsc].randomElement() ?? .sim
+        
+        let randomPage = Int.random(in: 1...10)
+        let startIndex = ((randomPage - 1) * 10) + 1
+        
+        APIService.shared.searchProduct(keyword: searchKeyword, sort: randomSortType, start: startIndex, display: 10) { [weak self] result in
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+                
+                self.isRecommendationLoading = false
+                
+                switch result {
+                case .success(let response):
+                    self.recommendedItems = response.items
+                    self.recommendationCollectionView.reloadData()
+                case .error(let errorCode, let error):
+                    self.recommendationTitleLabel.text = "검색 실패"
+                    self.showAlert(type: .networkError, message: "에러: \(error)\nErrorCode: \(errorCode)")
                 }
             }
         }
@@ -262,7 +343,7 @@ extension ResultViewController {
 
 extension ResultViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if shouldLoadMoreData(for: indexPath) {
+        if collectionView == self.collectionView && shouldLoadMoreData(for: indexPath) {
             loadData(sort: currentSortType, isPagination: true)
         }
     }
@@ -270,17 +351,24 @@ extension ResultViewController: UICollectionViewDelegate {
 
 extension ResultViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return shoppingItems.count
+        if collectionView == recommendationCollectionView {
+            return recommendedItems.count
+        } else {
+            return shoppingItems.count
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProductCell.identifier, for: indexPath) as! ProductCell
-        
-        let item = shoppingItems[indexPath.item]
-        cell.configureData(with: item)
-        
-        return cell
+        if collectionView == recommendationCollectionView {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RecommendationCell.identifier, for: indexPath) as! RecommendationCell
+            let item = recommendedItems[indexPath.item]
+            cell.configureData(with: item)
+            return cell
+        } else {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProductCell.identifier, for: indexPath) as! ProductCell
+            let item = shoppingItems[indexPath.item]
+            cell.configureData(with: item)
+            return cell
+        }
     }
-    
-    
 }
