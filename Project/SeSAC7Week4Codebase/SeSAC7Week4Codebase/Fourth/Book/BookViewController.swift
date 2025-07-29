@@ -44,8 +44,8 @@ class BookViewController: UIViewController {
     func callRequest(query: String) {
         let url = "https://openapi.naver.com/v1/search/book.json?query=\(query)&display=30"
         let header: HTTPHeaders = [
-            "X-Naver-Client-Id": "jcG5QoEHW8hlNn587jzF",
-            "X-Naver-Client-Secret": "o_dgToMDMj"
+            "X-Naver-Client-Id": APIConfig.naverID,
+            "X-Naver-Client-Secret": APIConfig.naverPW
         ]
         AF.request(url, method: .get, headers: header)
             .validate(statusCode: 200..<300)

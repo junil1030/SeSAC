@@ -57,8 +57,8 @@ class MarketViewController: UIViewController {
         
     }
     
-    //    private func callBoxOffice() {
-//        let url = "https://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=dce81509c236477e2f0dc92663417742&targetDt=20120101"
+//    private func callBoxOffice() {
+//        let url = "https://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=\(APIConfig.kobis)&targetDt=20120101"
 //        AF.request(url, method: .get)
 //            .validate(statusCode: 200..<300)
 //            .responseDecodable(of: BoxOffice.self) { response in
