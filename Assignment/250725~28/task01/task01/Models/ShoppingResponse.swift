@@ -8,7 +8,7 @@
 import Foundation
 
 // MARK: - 메인 응답 모델
-struct ShoppingResponse: Codable {
+struct ShoppingResponse: Decodable {
     let lastBuildDate: String
     let total: Int
     let start: Int
@@ -17,7 +17,7 @@ struct ShoppingResponse: Codable {
 }
 
 // MARK: - 상품 아이템 모델
-struct ShoppingItem: Codable {
+struct ShoppingItem: Decodable {
     let title: String
     let link: String
     let image: String
