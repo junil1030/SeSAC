@@ -56,7 +56,15 @@ class RecommendationCell: UICollectionViewCell {
     
     func configureData(with item: ShoppingItem) {
         let url = URL(string: item.image)
-        imageView.kf.setImage(with: url)
+        imageView.kf.setImage(with: url) { result in
+            switch result {
+            case .success(_):
+                break
+            case .failure(_):
+                self.imageView.contentMode = .scaleAspectFit
+                self.imageView.image = UIImage(systemName: "eye.trianglebadge.exclamationmark")?.withTintColor(.gray)
+            }
+        }
         titleLabel.text = item.title.cleanText
         priceLabel.text = item.lprice.wonString
     }
