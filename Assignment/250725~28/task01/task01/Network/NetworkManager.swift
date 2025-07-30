@@ -8,6 +8,18 @@
 import Foundation
 import Alamofire
 
+protocol NetworkMonitoring {
+    func startNetworkMonitoring()
+    func stopNetworkMonitoring()
+}
+
+protocol NetworkStatusProvider {
+    var currentStatus: NetworkStatus { get }
+    var isConnected: Bool { get }
+}
+
+protocol NetworkManagerProtocol: NetworkMonitoring, NetworkStatusProvider {}
+
 enum NetworkStatus {
     case wifi
     case cellular
@@ -37,12 +49,8 @@ enum NetworkStatus {
     }
 }
 
-class NetworkManager {
-    static let shared = NetworkManager()
-    
+class NetworkManager: NetworkManagerProtocol {
     private let reachabilityManager = NetworkReachabilityManager()
-    
-    private init() {}
     
     var currentStatus: NetworkStatus {
         guard let reachability = reachabilityManager else { return .unknown }
