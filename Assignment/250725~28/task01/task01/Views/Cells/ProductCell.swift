@@ -81,7 +81,7 @@ class ProductCell: UICollectionViewCell {
     
     func configureData(with item: ShoppingItem) {
         let url = URL(string: item.image)
-        imageView.kf.setImage(with: url)
+        imageView.kf.setImage(with: url) //
         mallNameLabel.text = item.mallName
         titleLabel.text = item.title.cleanText
         priceLabel.text = item.lprice.wonString
