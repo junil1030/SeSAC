@@ -88,9 +88,9 @@ class ResultViewController: BaseViewController {
     private var ascLabel: FilterView!
     private var dscLabel: FilterView!
     
-    init(searchKeyword: String) {
+    init(searchKeyword: String, networkManager: NetworkManagerProtocol) {
         self.searchKeyword = searchKeyword
-        super.init(nibName: nil, bundle: nil)
+        super.init(nibName: nil, bundle: nil, networkManager: networkManager)
     }
     
     required init?(coder: NSCoder) {
@@ -258,7 +258,6 @@ extension ResultViewController {
                 
                 self.isAPILoading = false
                 
-                //                if let response = response {
                 switch response {
                 case .success(let success):
                     let receivedItems = success.items
@@ -302,11 +301,6 @@ extension ResultViewController {
                     self.showAlert(type: .networkError, message: "에러: \(error)\nErrorCode: \(errorCode)")
                     self.hasMoreData = false
                 }
-                //                } else {
-                //                    self.searchResultCountLabel.text = "검색 실패"
-                //                    self.showAlert(type: .error, message: "상품을 불러올 수 없습니다.")
-                //                    self.hasMoreData = false
-                //                }
             }
         }
     }

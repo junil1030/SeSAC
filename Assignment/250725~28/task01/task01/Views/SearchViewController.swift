@@ -10,6 +10,8 @@ import SnapKit
 
 class SearchViewController: BaseViewController {
     
+    private let networkManager: NetworkManagerProtocol
+    
     private let searchbar: UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.backgroundImage = UIImage()
@@ -18,6 +20,15 @@ class SearchViewController: BaseViewController {
         searchBar.searchTextField.attributedPlaceholder = NSAttributedString(string: "브랜드, 상품, 프로핑, 태그 등", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray])
         return searchBar
     }()
+    
+    init(networkManager: NetworkManagerProtocol) {
+        self.networkManager = networkManager
+        super.init(nibName: nil, bundle: nil, networkManager: networkManager)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,7 +66,7 @@ extension SearchViewController: UISearchBarDelegate {
             return
         }
         
-        let vc = ResultViewController(searchKeyword: keyword)
+        let vc = ResultViewController(searchKeyword: keyword, networkManager: networkManager)
         navigationController?.pushViewController(vc, animated: true)
     }
 }
