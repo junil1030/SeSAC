@@ -23,7 +23,54 @@ class ViewController: UIViewController {
         //serialSync()
         //serialAsync()
         
-        globalQualityOfService()
+//        globalQualityOfService()
+        dispatchGroupA()
+    }
+    
+    func dispatchGroupA() {
+        
+        // .async(group: group)
+        // 동기 메서드에 적합함.
+        
+        let group = DispatchGroup()
+        
+        print("AAAAA")
+        DispatchQueue.global().async(group: group) {
+            for i in 1...50 {
+                print(i)
+            }
+        }
+        
+        print("BBBBB")
+        DispatchQueue.global().async(group: group) {
+            for i in 51...100 {
+                print(i)
+            }
+        }
+        
+        print("CCCCC")
+        DispatchQueue.global().async(group: group) {
+            for i in 101...150 {
+                print(i)
+            }
+        }
+        
+        print("DDDDD")
+        DispatchQueue.global().async(group: group) {
+            for i in 151...200 {
+                print(i)
+            }
+        }
+        
+        print("EEEEE")
+        
+        group.notify(queue: .main) {
+            print("끝")
+        }
+    }
+    
+    func dispatchGroupB() {
+        
     }
     
     /*
