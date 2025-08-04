@@ -39,9 +39,13 @@ class EditViewController: UIViewController {
         setupTextField(textField2, placeholder: "Closure 데이터")
         setupTextField(textField3, placeholder: "Notification 데이터")
          
-        setupButton(button1, title: "Delegate", color: .systemBlue)
-        setupButton(button2, title: "Closure", color: .systemGreen)
-        setupButton(button3, title: "Notification", color: .systemOrange)
+        
+        button1.configuration = UIButton.Configuration.myStyle(title: "Delegate")
+        button2.configuration = UIButton.Configuration.myStyle(title: "Closure")
+        button3.configuration = UIButton.Configuration.myStyle(title: "Notification")
+//        setupButton(button1, title: "Delegate", color: .systemBlue)
+//        setupButton(button2, title: "Closure", color: .systemGreen)
+//        setupButton(button3, title: "Notification", color: .systemOrange)
          
         view.addSubview(textField1)
         view.addSubview(textField2)
