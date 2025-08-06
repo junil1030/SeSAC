@@ -49,7 +49,7 @@ class TransitionViewController: UIViewController {
         let iPhone: Mobile = Apple(name: "아이폰17ProMax")
         
         if let value = iPhone as? Apple {
-            value.wwdc
+            //value.wwdc
         }
         
         

@@ -25,6 +25,14 @@ class EditViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        for item in UIFont.familyNames {
+            print(item)
+            
+            for name in UIFont.fontNames(forFamilyName: item) {
+                print(">>>>>", name)
+            }
+        }
+        
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "다음", style: .plain, target: self, action: #selector(rightButtonTapped))
         
         setupUI()
@@ -58,7 +66,8 @@ class EditViewController: UIViewController {
     private func setupTextField(_ textField: UITextField, placeholder: String) {
         textField.placeholder = placeholder
         textField.borderStyle = .roundedRect
-        textField.font = UIFont.systemFont(ofSize: 16)
+//        textField.font = UIFont.systemFont(ofSize: 16)
+        textField.font = UIFont(name: "S-CoreDream-9Black", size: 20)
     }
     
     private func setupButton(_ button: UIButton, title: String, color: UIColor) {

@@ -10,8 +10,6 @@ import SnapKit
 
 class NextCollectionViewCell: UICollectionViewCell {
     
-    static let identifier = "NextCollectionViewCell"
-    
     let imageView = UIImageView()
     
     override init(frame: CGRect) {
