@@ -10,13 +10,13 @@ import UIKit
 class BMIViewController: UIViewController {
     let heightTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "키를 입력해주세요"
+        textField.placeholder = "키(m)를 입력해주세요"
         textField.borderStyle = .roundedRect
         return textField
     }()
-    let ageTextField: UITextField = {
+    let weightTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "몸무게를 입력해주세요"
+        textField.placeholder = "몸무게(kg)를 입력해주세요"
         textField.borderStyle = .roundedRect
         return textField
     }()
@@ -44,7 +44,7 @@ class BMIViewController: UIViewController {
     
     func configureHierarchy() {
         view.addSubview(heightTextField)
-        view.addSubview(ageTextField)
+        view.addSubview(weightTextField)
         view.addSubview(resultButton)
         view.addSubview(resultLabel)
     }
@@ -56,14 +56,14 @@ class BMIViewController: UIViewController {
             make.height.equalTo(44)
         }
         
-        ageTextField.snp.makeConstraints { make in
+        weightTextField.snp.makeConstraints { make in
             make.top.equalTo(heightTextField.snp.bottom).offset(20)
             make.horizontalEdges.equalToSuperview().inset(20)
             make.height.equalTo(44)
         }
         
         resultButton.snp.makeConstraints { make in
-            make.top.equalTo(ageTextField.snp.bottom).offset(20)
+            make.top.equalTo(weightTextField.snp.bottom).offset(20)
             make.horizontalEdges.equalToSuperview().inset(20)
             make.height.equalTo(44)
         }
@@ -81,5 +81,24 @@ class BMIViewController: UIViewController {
     
     @objc func resultButtonTapped() {
         view.endEditing(true)
+        
+        do {
+            let height = try validateUserData(heightTextField.text, min: 0.5, max: 2.5)
+            let weight = try validateUserData(weightTextField.text, min: 10.0, max: 200.0)
+            
+            let bmi = round(calculateBMI(height: height, weight: weight))
+            resultLabel.text = "\(bmi)"
+        } catch let inputError as InputError {
+            showToast(message: inputError.message)
+        } catch {
+            showToast(message: "알 수 없는 오류에요.")
+        }
+    }
+}
+
+extension BMIViewController {
+    
+    func calculateBMI(height: Double, weight: Double) -> Double {
+        return weight / pow(height, 2)
     }
 }
