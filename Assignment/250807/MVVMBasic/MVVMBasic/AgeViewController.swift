@@ -30,29 +30,6 @@ import UIKit
 //    }
 //}
 
-enum InputError: Error {
-    case empty
-    case containsWhitespace
-    case notNumeric
-    case outOfRange
-    case unknown
-    
-    var message: String {
-        switch self {
-        case .empty:
-            return "입력된 숫자가 없어요."
-        case .containsWhitespace:
-            return "공백없이 입력해주세요."
-        case .notNumeric:
-            return "숫자만 입력해주세요."
-        case .outOfRange:
-            return "1부터 100 사이의 숫자만 입력해주세요."
-        case .unknown:
-            return "1부터 100 사이의 숫자를 공백없이 입력해주세요."
-        }
-    }
-}
-
 class AgeViewController: UIViewController {
     let textField: UITextField = {
         let textField = UITextField()
@@ -116,21 +93,13 @@ class AgeViewController: UIViewController {
         view.endEditing(true)
         
         do {
-            let result = try validateUserData(textField.text)
+            let result = try validateUserData(textField.text, min: 1, max: 100)
             label.text = "\(result)"
+        } catch let inputError as InputError {
+            showToast(message: inputError.message)
         } catch {
-            showToast(message: error.message)
+            showToast(message: InputError.unknown.message)
         }
     }
     
-    private func validateUserData(_ text: String?) throws(InputError) -> Int {
-        guard let text = text, !text.isEmpty else { throw .empty }
-        guard !text.contains(" ") else { throw .containsWhitespace }
-//        let newText = text.trimmingCharacters(in: .whitespacesAndNewlines)
-//        if newText != text { throw .containsWhitespace }
-        guard let number = Int(text) else { throw .notNumeric }
-        guard number > 0, number < 101 else { throw .outOfRange }
-        
-        return number
-    }
 }
