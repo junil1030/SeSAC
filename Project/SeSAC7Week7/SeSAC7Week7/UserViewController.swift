@@ -5,11 +5,13 @@
 //  Created by Jack on 8/8/25.
 //
 
-//import UIKit
+import UIKit
 import SnapKit
 
 class UserViewController: UIViewController {
 
+    let viewModel = UserViewModel()
+    
     private let tableView: UITableView = {
         let table = UITableView()
         table.rowHeight = 60
@@ -54,31 +56,14 @@ class UserViewController: UIViewController {
         stackView.distribution = .fillEqually
         return stackView
     }()
-    
-    // 저장 프로퍼티
-    // var nickname = "고래밥"
-    
-    // 연산 프로퍼티
-    // var nickname: String { }
-    
-    // =으로 구분하면 편함
-    
-    // 인스턴스 저장 프로퍼티에 있는 내용이 바뀔 때 마다 무어낙의 신호를 받고 싶다.
-    var list: [Person] = [] {
-        didSet {
-            print("didSet")
-            print(oldValue)
-            tableView.reloadData()
-        }
-        
-        willSet {
-            print("willSet")
-            print(newValue)
-        }
-    }
      
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        viewModel.onDataChanged = { [weak self] in
+            self?.tableView.reloadData()
+        }
+        
         setupUI()
         setupConstraints()
         setupTableView()
@@ -88,22 +73,15 @@ class UserViewController: UIViewController {
     
     
     @objc private func loadButtonTapped() {
-        list = [
-            Person(name: "James", age: Int.random(in: 20...70)),
-            Person(name: "Mary", age: Int.random(in: 20...70)),
-            Person(name: "John", age: Int.random(in: 20...70)),
-            Person(name: "Patricia", age: Int.random(in: 20...70)),
-            Person(name: "Robert", age: Int.random(in: 20...70))
-        ]
+//        viewModel.load()
     }
     
     @objc private func resetButtonTapped() {
-        list.removeAll()
+//        viewModel.reset()
     }
     
     @objc private func addButtonTapped() {
-        let jack = Person(name: "Jack", age: Int.random(in: 1...100))
-        list.append(jack)
+//        viewModel.add()
     }
 }
 
@@ -145,12 +123,12 @@ extension UserViewController {
  
 extension UserViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return list.count
+        return viewModel.list.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PersonCell", for: indexPath)
-        let person = list[indexPath.row]
+        let person = viewModel.cellForRowAtData(at: indexPath)
         cell.textLabel?.text = "\(person.name), \(person.age)세"
         return cell
     }
