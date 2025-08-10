@@ -7,30 +7,10 @@
 
 import UIKit
 
-//enum InputError: Error {
-//    case emptyError
-//    case whiteSpaceError
-//    case noIntError
-//    case rangeError
-//    case unknownError
-//    
-//    var message: String {
-//        switch self {
-//        case .emptyError:
-//            return "입력된 숫자가 없어요."
-//        case .whiteSpaceError:
-//            return "공백없이 입력해주세요."
-//        case .noIntError:
-//            return "숫자만 입력해주세요."
-//        case .rangeError:
-//            return  "1부터 100 사이의 숫자만 입력해주세요."
-//        case .unknownError:
-//            return "1부터 100 사이의 숫자를 공백없이 입력해주세요."
-//        }
-//    }
-//}
-
 class AgeViewController: UIViewController {
+    
+    private let viewModel = AgeViewModel()
+    
     let textField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "나이를 입력해주세요"
@@ -55,6 +35,7 @@ class AgeViewController: UIViewController {
         super.viewDidLoad()
         configureHierarchy()
         configureLayout()
+        setupBind()
         
         resultButton.addTarget(self, action: #selector(resultButtonTapped), for: .touchUpInside)
     }
@@ -85,6 +66,16 @@ class AgeViewController: UIViewController {
         }
     }
     
+    private func setupBind() {
+        viewModel.onValidationSuccess = { [weak self] age in
+            self?.label.text = "\(age)"
+        }
+        
+        viewModel.onValidationFailure = { [weak self] errorMessage in
+            self?.label.text = errorMessage
+        }
+    }
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         view.endEditing(true)
     }
@@ -92,14 +83,7 @@ class AgeViewController: UIViewController {
     @objc func resultButtonTapped() {
         view.endEditing(true)
         
-        do {
-            let result = try validateUserData(textField.text, min: 1, max: 100)
-            label.text = "\(result)"
-        } catch let inputError as InputError {
-            showToast(message: inputError.message)
-        } catch {
-            showToast(message: InputError.unknown.message)
-        }
+        viewModel.validateAge(text: textField.text)
     }
     
 }

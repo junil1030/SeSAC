@@ -6,3 +6,21 @@
 //
 
 import Foundation
+
+class AgeViewModel: ValidateProtocol {
+    
+    var onValidationSuccess: ((Int) -> Void)?
+    var onValidationFailure: ((String) -> Void)?
+    
+    func validateAge(text: String?) {
+        let result = validateUserData(text, min: 1, max: 100)
+        
+        switch result {
+        case .success(let age):
+            onValidationSuccess?(age)
+        case .failure(let error):
+            onValidationFailure?(error.message)
+        }
+    }
+    
+}
