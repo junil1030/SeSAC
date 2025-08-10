@@ -10,6 +10,8 @@ import SnapKit
 
 class CurrencyViewController: UIViewController {
     
+    private let viewModel = CurrencyViewModel()
+    
     private let exchangeRateLabel: UILabel = {
         let label = UILabel()
         label.text = "현재 환율: 1 USD = 1,350 KRW"
@@ -51,6 +53,13 @@ class CurrencyViewController: UIViewController {
         setupUI()
         setupConstraints()
         setupActions()
+        setupBind()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        viewModel.refreshExchangeRate()
     }
      
     private func setupUI() {
@@ -87,17 +96,46 @@ class CurrencyViewController: UIViewController {
     
     private func setupActions() {
         convertButton.addTarget(self, action: #selector(convertButtonTapped), for: .touchUpInside)
+        amountTextField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
     }
      
-    @objc private func convertButtonTapped() {
-        guard let amountText = amountTextField.text,
-              let amount = Double(amountText) else {
-            resultLabel.text = "올바른 금액을 입력해주세요"
-            return
+    private func setupBind() {
+        viewModel.onExchangeRateUpdated = { [weak self] rateText in
+            self?.exchangeRateLabel.text = rateText
         }
         
-        let exchangeRate = 1350.0 // 실제 환율 데이터로 대체 필요
-        let convertedAmount = amount / exchangeRate
-        resultLabel.text = String(format: "%.2f USD (약 $%.2f)", convertedAmount, convertedAmount)
+        viewModel.onConversionResult = { [weak self] resultText in
+            self?.resultLabel.text = resultText
+            self?.resultLabel.textColor = .label
+        }
+        
+        viewModel.onError = { [weak self] errorMessage in
+            self?.resultLabel.text = errorMessage
+            self?.resultLabel.textColor = .systemRed
+        }
+    }
+    
+    @objc private func convertButtonTapped() {
+        view.endEditing(true)
+        viewModel.convertCurrency(amountTextField.text)
+    }
+    
+    @objc private func textFieldDidChange() {
+        guard let text = amountTextField.text else { return }
+        
+        let numbersOnly = text.replacingOccurrences(of: ",", with: "")
+        let filtered = numbersOnly.filter { $0.isNumber }
+        
+        if let number = Int(filtered), number > 0 {
+            let formatter = NumberFormatter()
+            formatter.numberStyle = .decimal
+            amountTextField.text = formatter.string(from: NSNumber(value: number))
+        } else if filtered.isEmpty {
+            amountTextField.text = ""
+        }
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
     }
 }
