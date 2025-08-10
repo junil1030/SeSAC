@@ -8,6 +8,9 @@
 import UIKit
 
 class BMIViewController: UIViewController {
+    
+    let viewModel = BMIViewModel()
+    
     let heightTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "키(m)를 입력해주세요"
@@ -38,6 +41,7 @@ class BMIViewController: UIViewController {
         super.viewDidLoad()
         configureHierarchy()
         configureLayout()
+        setupBind()
         
         resultButton.addTarget(self, action: #selector(resultButtonTapped), for: .touchUpInside)
     }
@@ -75,6 +79,16 @@ class BMIViewController: UIViewController {
         }
     }
     
+    private func setupBind() {
+        viewModel.onCalculationSuccess = { [weak self] bmi in
+            self?.resultLabel.text = "\(round(bmi))"
+        }
+        
+        viewModel.onCalculationFailure = { [weak self] error in
+            self?.showToast(message: error)
+        }
+    }
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         view.endEditing(true)
     }
@@ -82,23 +96,9 @@ class BMIViewController: UIViewController {
     @objc func resultButtonTapped() {
         view.endEditing(true)
         
-        do {
-            let height = try validateUserData(heightTextField.text, min: 0.5, max: 2.5)
-            let weight = try validateUserData(weightTextField.text, min: 10.0, max: 200.0)
-            
-            let bmi = round(calculateBMI(height: height, weight: weight))
-            resultLabel.text = "\(bmi)"
-        } catch let inputError as InputError {
-            showToast(message: inputError.message)
-        } catch {
-            showToast(message: "알 수 없는 오류에요.")
-        }
-    }
-}
-
-extension BMIViewController {
-    
-    func calculateBMI(height: Double, weight: Double) -> Double {
-        return weight / pow(height, 2)
+        let height = heightTextField.text
+        let weight = weightTextField.text
+        
+        viewModel.validateBMI(height: height, weight: weight)
     }
 }
