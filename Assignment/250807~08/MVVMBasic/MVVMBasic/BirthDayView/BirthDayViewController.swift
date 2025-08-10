@@ -9,6 +9,9 @@ import UIKit
 import SnapKit
 
 class BirthDayViewController: UIViewController {
+    
+    let viewModel = BirthDayViewModel()
+    
     let yearTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "년도를 입력해주세요"
@@ -60,6 +63,7 @@ class BirthDayViewController: UIViewController {
         super.viewDidLoad()
         configureHierarchy()
         configureLayout()
+        setupBind()
         
         resultButton.addTarget(self, action: #selector(resultButtonTapped), for: .touchUpInside)
     }
@@ -124,6 +128,16 @@ class BirthDayViewController: UIViewController {
         }
     }
     
+    private func setupBind() {
+        viewModel.onCalculationSuccess = { [weak self] result in
+            self?.resultLabel.text = result
+        }
+        
+        viewModel.onCalculationFailure = { [weak self] errorMessage in
+            self?.showToast(message: errorMessage)
+        }
+    }
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         view.endEditing(true)
     }
@@ -131,64 +145,10 @@ class BirthDayViewController: UIViewController {
     @objc func resultButtonTapped() {
         view.endEditing(true)
         
-        do {
-            
-            let year = try validateUserData(yearTextField.text, min: 0, max: 9999)
-            let month = try validateUserData(monthTextField.text, min: 1, max: 12)
-            let day = try validateUserData(dayTextField.text, min: 1, max: 31)
-            
-            let result = calculateDday(year: year, month: month, day: day)
-            
-            guard let dDay = result else {
-                throw DateError.invalidDate
-            }
-            
-            if dDay > 0 {
-                resultLabel.text = "D-\(dDay)"
-            } else if dDay == 0 {
-                resultLabel.text = "D-Day"
-            } else {
-                resultLabel.text = "D+\(abs(dDay))"
-            }
-            
-        } catch let error as InputError {
-            showToast(message: error.message)
-        } catch let error as DateError {
-            showToast(message: error.message)
-        } catch {
-            showToast(message: "알 수 없는 오류에요.")
-        }
-    }
-}
-
-extension BirthDayViewController {
-    
-    private enum DateError: Error {
-        case invalidDate
+        let year = yearTextField.text
+        let month = monthTextField.text
+        let day = dayTextField.text
         
-        var message: String {
-            return "존재하지 않는 날짜입니다."
-        }
-    }
-    
-    func calculateDday(year: Int, month: Int, day: Int) -> Int? {
-        let today = Date()
-        let calendar = Calendar.current
-        
-        var dateComponents = DateComponents()
-        dateComponents.year = year
-        dateComponents.month = month
-        dateComponents.day = day
-        
-        guard let targetDate = calendar.date(from: dateComponents) else {
-            return nil
-        }
-        
-        let todayWithOutTime = calendar.startOfDay(for: today)
-        let targetDayWithOutTime = calendar.startOfDay(for: targetDate)
-        
-        let component = calendar.dateComponents([.day], from: todayWithOutTime, to: targetDayWithOutTime)
-        
-        return component.day
+        viewModel.validateBirthDay(year: year, month: month, day: day)
     }
 }
