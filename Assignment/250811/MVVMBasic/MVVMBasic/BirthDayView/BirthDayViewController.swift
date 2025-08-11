@@ -129,12 +129,33 @@ class BirthDayViewController: UIViewController {
     }
     
     private func setupBind() {
-        viewModel.onCalculationSuccess = { [weak self] result in
-            self?.resultLabel.text = result
-        }
+//        viewModel.onCalculationSuccess = { [weak self] result in
+//            self?.resultLabel.text = result
+//        }
+//        
+//        viewModel.onCalculationFailure = { [weak self] errorMessage in
+//            self?.showToast(message: errorMessage)
+//        }
         
-        viewModel.onCalculationFailure = { [weak self] errorMessage in
-            self?.showToast(message: errorMessage)
+        viewModel.calculationResult.bind { [weak self] result in
+            guard let result = result else { return }
+            
+            switch result {
+            case .success(let text):
+                self?.resultLabel.text = text
+                self?.resultLabel.textColor = .black
+            case .failure(let error):
+                // 에러 타입이 많을 때에는 어떻게 처리해야 하지
+                // 여러 개의 옵저버 클로저를 옵저버블 클래스에 넣어야 하나?
+                if let inputError = error as? InputError {
+                    self?.resultLabel.text = inputError.message
+                } else if let dateError = error as? DateError {
+                    self?.resultLabel.text = dateError.message
+                } else {
+                    self?.resultLabel.text = error.localizedDescription
+                }
+                self?.resultLabel.textColor = .red
+            }
         }
     }
     

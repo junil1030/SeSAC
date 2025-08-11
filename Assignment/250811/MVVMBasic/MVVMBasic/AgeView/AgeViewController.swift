@@ -67,12 +67,15 @@ class AgeViewController: UIViewController {
     }
     
     private func setupBind() {
-        viewModel.onValidationSuccess = { [weak self] age in
-            self?.label.text = "\(age)"
-        }
+//        viewModel.onValidationSuccess = { [weak self] age in
+//            self?.label.text = "\(age)"
+//        }
+//        
+//        viewModel.onValidationFailure = { [weak self] errorMessage in
+//            self?.label.text = errorMessage
         
-        viewModel.onValidationFailure = { [weak self] errorMessage in
-            self?.label.text = errorMessage
+        viewModel.validationResult.bind { [weak self] resultString in
+            self?.label.text = resultString
         }
     }
     

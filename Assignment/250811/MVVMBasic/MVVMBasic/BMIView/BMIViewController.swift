@@ -80,12 +80,31 @@ class BMIViewController: UIViewController {
     }
     
     private func setupBind() {
-        viewModel.onCalculationSuccess = { [weak self] bmi in
-            self?.resultLabel.text = "\(round(bmi))"
-        }
+//        viewModel.onCalculationSuccess = { [weak self] bmi in
+//            self?.resultLabel.text = "\(round(bmi))"
+//        }
+//        
+//        viewModel.onCalculationFailure = { [weak self] error in
+//            self?.showToast(message: error)
+//        }
         
-        viewModel.onCalculationFailure = { [weak self] error in
-            self?.showToast(message: error)
+        viewModel.calculationResult.bind { [weak self] value in
+            guard let value = value else { return }
+            
+            switch value {
+            case .success(let text):
+                self?.resultLabel.text = text
+                self?.resultLabel.textColor = .black
+            case .failure(let error):
+                if let inputError = error as? InputError {
+                    self?.resultLabel.text = inputError.message
+                } else if let dateError = error as? DateError {
+                    self?.resultLabel.text = dateError.message
+                } else {
+                    self?.resultLabel.text = error.localizedDescription
+                }
+                self?.resultLabel.textColor = .red
+            }
         }
     }
     

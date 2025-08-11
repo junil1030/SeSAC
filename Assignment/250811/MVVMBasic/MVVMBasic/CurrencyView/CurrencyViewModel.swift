@@ -11,9 +11,13 @@ class CurrencyViewModel {
     
     private var currentExchangeRate: Double = 1350.0
     
-    var onExchangeRateUpdated: ((String) -> Void)?
-    var onConversionResult: ((String) -> Void)?
-    var onError: ((String) -> Void)?
+//    var onExchangeRateUpdated: ((String) -> Void)?
+//    var onConversionResult: ((String) -> Void)?
+//    var onError: ((String) -> Void)?
+    
+    var exchangeRateText = Observable<String>("현재 환율: 1 USD = 1,350.00 KRW")
+    var conversionResultText = Observable<String>("환전 결과가 여기에 표시됩니다.")
+    var errorMessage = Observable<String?>(nil)
     
     init() {
         fetchExchangeRate()
@@ -22,19 +26,22 @@ class CurrencyViewModel {
     func convertCurrency(_ amountText: String?) {
         guard let amountText = amountText,
               !amountText.isEmpty else {
-            onError?("금액을 입력해주세요")
+//            onError?("금액을 입력해주세요")
+            errorMessage.value = "금액을 입력해주세요"
             return
         }
         
         let cleanText = amountText.replacingOccurrences(of: ",", with: "")
         
         guard let amount = Double(cleanText) else {
-            onError?("올바른 금액을 입력해주세요")
+//            onError?("올바른 금액을 입력해주세요")
+            errorMessage.value = "올바른 금액을 입력해주세요"
             return
         }
         
         guard amount > 0 else {
-            onError?("0보다 큰 금액을 입력해주세요")
+//            onError?("0보다 큰 금액을 입력해주세요")
+            errorMessage.value = "0보다 큰 금액을 입력해주세요"
             return
         }
         
@@ -42,7 +49,7 @@ class CurrencyViewModel {
         let convertedAmount = amount / currentExchangeRate
         let resultText = formatConversionResult(krw: amount, usd: convertedAmount)
         
-        onConversionResult?(resultText)
+        conversionResultText.value = resultText
     }
     
     func refreshExchangeRate() {
@@ -100,7 +107,7 @@ class CurrencyViewModel {
     private func updateExchangeRateDisplay() {
         let formattedRate = formatExchangeRate(currentExchangeRate)
         let rateText = "현재 환율: 1 USD = \(formattedRate) KRW"
-        onExchangeRateUpdated?(rateText)
+        exchangeRateText.value = rateText
     }
     
     private func formatExchangeRate(_ rate: Double) -> String {

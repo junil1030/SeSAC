@@ -9,15 +9,18 @@ import Foundation
 
 class BMIViewModel: ValidateProtocol {
     
-    var onCalculationSuccess: ((Double) -> Void)?
-    var onCalculationFailure: ((String) -> Void)?
+//    var onCalculationSuccess: ((Double) -> Void)?
+//    var onCalculationFailure: ((String) -> Void)?
+    
+    var calculationResult = Observable<Result<String, Error>?>(nil)
     
     func validateBMI(height: String?, weight: String?) {
         
         let heightResult = validateUserData(height, min: 0.5, max: 2.5)
         guard case .success(let heightValue) = heightResult else {
             if case .failure(let failure) = heightResult {
-                onCalculationFailure?(failure.message)
+//                onCalculationFailure?(failure.message)
+                calculationResult.value = .failure(failure)
             }
             return
         }
@@ -25,13 +28,15 @@ class BMIViewModel: ValidateProtocol {
         let weightResult = validateUserData(weight, min: 10.0, max: 200.0)
         guard case .success(let weightValue) = weightResult else {
             if case .failure(let failure) = weightResult {
-                onCalculationFailure?(failure.message)
+//                onCalculationFailure?(failure.message)
+                calculationResult.value = .failure(failure)
             }
             return
         }
         
         let result = calculateBMI(height: heightValue, weight: weightValue)
-        onCalculationSuccess?(result)
+//        onCalculationSuccess?(result)
+        calculationResult.value = .success("\(result)")
     }
     
     private func calculateBMI(height: Double, weight: Double) -> Double {

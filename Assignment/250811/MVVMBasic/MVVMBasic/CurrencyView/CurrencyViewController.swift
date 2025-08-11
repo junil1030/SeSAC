@@ -100,18 +100,32 @@ class CurrencyViewController: UIViewController {
     }
      
     private func setupBind() {
-        viewModel.onExchangeRateUpdated = { [weak self] rateText in
+//        viewModel.onExchangeRateUpdated = { [weak self] rateText in
+//            self?.exchangeRateLabel.text = rateText
+//        }
+//        
+//        viewModel.onConversionResult = { [weak self] resultText in
+//            self?.resultLabel.text = resultText
+//            self?.resultLabel.textColor = .label
+//        }
+//        
+//        viewModel.onError = { [weak self] errorMessage in
+//            self?.resultLabel.text = errorMessage
+//            self?.resultLabel.textColor = .systemRed
+//        }
+        
+        viewModel.exchangeRateText.bind { [weak self] rateText in
             self?.exchangeRateLabel.text = rateText
         }
         
-        viewModel.onConversionResult = { [weak self] resultText in
+        viewModel.conversionResultText.bind { [weak self] resultText in
             self?.resultLabel.text = resultText
-            self?.resultLabel.textColor = .label
+            self?.resultLabel.textColor = .black
         }
         
-        viewModel.onError = { [weak self] errorMessage in
+        viewModel.errorMessage.bind { [weak self] errorMessage in
             self?.resultLabel.text = errorMessage
-            self?.resultLabel.textColor = .systemRed
+            self?.resultLabel.textColor = .red
         }
     }
     

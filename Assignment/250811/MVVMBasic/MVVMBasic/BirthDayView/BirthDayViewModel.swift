@@ -7,25 +7,28 @@
 
 import Foundation
 
-class BirthDayViewModel: ValidateProtocol {
+enum DateError: Error {
+    case invalidDate
     
-    private enum DateError: Error {
-        case invalidDate
-        
-        var message: String {
-            return "존재하지 않는 날짜입니다."
-        }
+    var message: String {
+        return "존재하지 않는 날짜입니다."
     }
+}
+
+class BirthDayViewModel: ValidateProtocol {
+
+//    var onCalculationSuccess: ((String) -> Void)?
+//    var onCalculationFailure: ((String) -> Void)?
     
-    var onCalculationSuccess: ((String) -> Void)?
-    var onCalculationFailure: ((String) -> Void)?
+    var calculationResult = Observable<Result<String, Error>?>(nil)
     
     func validateBirthDay(year: String?, month: String?, day: String?) {
         
         let yearResult = validateUserData(year, min: 0, max: 9999)
         guard case .success(let yearValue) = yearResult else {
             if case .failure(let failure) = yearResult {
-                onCalculationFailure?(failure.message)
+//                onCalculationFailure?(failure.message)
+                calculationResult.value = .failure(failure)
             }
             return
         }
@@ -33,7 +36,8 @@ class BirthDayViewModel: ValidateProtocol {
         let monthResult = validateUserData(month, min: 1, max: 12)
         guard case .success(let monthValue) = monthResult else {
             if case .failure(let failure) = monthResult {
-                onCalculationFailure?(failure.message)
+//                onCalculationFailure?(failure.message)
+                calculationResult.value = .failure(failure)
             }
             return
         }
@@ -41,18 +45,21 @@ class BirthDayViewModel: ValidateProtocol {
         let dayResult = validateUserData(day, min: 1, max: 31)
         guard case .success(let dayValue) = dayResult else {
             if case .failure(let failure) = dayResult {
-                onCalculationFailure?(failure.message)
+//                onCalculationFailure?(failure.message)
+                calculationResult.value = .failure(failure)
             }
             return
         }
         
         guard let dDay = calculateDday(year: yearValue, month: monthValue, day: dayValue) else {
-            onCalculationFailure?(DateError.invalidDate.message)
+//            onCalculationFailure?(DateError.invalidDate.message)
+            calculationResult.value = .failure(DateError.invalidDate)
             return
         }
         
         let resultText = formatResult(dDay)
-        onCalculationSuccess?(resultText)
+//        onCalculationSuccess?(resultText)
+        calculationResult.value = .success(resultText)
     }
     
     private func formatResult(_ dDay: Int) -> String {
