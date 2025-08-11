@@ -9,29 +9,30 @@ import Foundation
 
 class UserViewModel {
     
-    // 저장 프로퍼티
-    // var nickname = "고래밥"
+    let loadButtonTapped: Field<Void> = Field(())
+    let resetButtonTapped: Field<Void> = Field(())
+    let addButtonTapped: Field<Void> = Field(())
     
-    // 연산 프로퍼티
-    // var nickname: String { }
+    let list: Field<[Person]> = Field([])
     
-    // =으로 구분하면 편함
-    
-    // 인스턴스 저장 프로퍼티에 있는 내용이 바뀔 때 마다 무어낙의 신호를 받고 싶다.
-    private(set) var list: [Person] = [] {
-        didSet {
-            onDataChanged?()
+    init() {
+        print("UserViewModel Init")
+        
+        loadButtonTapped.playAction { _ in
+            self.load()
+        }
+        
+        resetButtonTapped.playAction { _ in
+            self.reset()
+        }
+        
+        addButtonTapped.playAction { _ in
+            self.add()
         }
     }
     
-    var onLoadClicked: (() -> Void)?
-    var onResetClicked: (() -> Void)?
-    var onAddClicked: (() -> Void)?
-    
-    var onDataChanged: (() -> Void)?
-    
     private func load() {
-        list = [
+        list.value = [
             Person(name: "James", age: Int.random(in: 20...70)),
             Person(name: "Mary", age: Int.random(in: 20...70)),
             Person(name: "John", age: Int.random(in: 20...70)),
@@ -41,15 +42,16 @@ class UserViewModel {
     }
     
     private func reset() {
-        list.removeAll()
+        list.value.removeAll()
     }
     
     private func add() {
         let jack = Person(name: "Jack", age: Int.random(in: 1...100))
-        list.append(jack)
+        list.value.append(jack)
     }
     
-    func cellForRowAtData(at indexPath: IndexPath) -> Person {
-        return list[indexPath.row]
+    func cellForRowAtData(at indexPath: IndexPath) -> String {
+        let person = list.value[indexPath.row]
+        return "\(person.name), \(person.age)세"
     }
 }

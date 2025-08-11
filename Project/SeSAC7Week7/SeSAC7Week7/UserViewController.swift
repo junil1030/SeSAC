@@ -60,8 +60,8 @@ class UserViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        viewModel.onDataChanged = { [weak self] in
-            self?.tableView.reloadData()
+        viewModel.list.playAction { _ in
+            self.tableView.reloadData()
         }
         
         setupUI()
@@ -73,15 +73,15 @@ class UserViewController: UIViewController {
     
     
     @objc private func loadButtonTapped() {
-//        viewModel.load()
+        viewModel.loadButtonTapped.value = ()
     }
     
     @objc private func resetButtonTapped() {
-//        viewModel.reset()
+        viewModel.resetButtonTapped.value = ()
     }
     
     @objc private func addButtonTapped() {
-//        viewModel.add()
+        viewModel.addButtonTapped.value = ()
     }
 }
 
@@ -123,13 +123,12 @@ extension UserViewController {
  
 extension UserViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.list.count
+        return viewModel.list.value.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PersonCell", for: indexPath)
-        let person = viewModel.cellForRowAtData(at: indexPath)
-        cell.textLabel?.text = "\(person.name), \(person.age)세"
+        cell.textLabel?.text = viewModel.cellForRowAtData(at: indexPath)
         return cell
     }
 }

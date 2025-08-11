@@ -27,9 +27,9 @@ class NumberViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        viewModel.onChangeText = {
-            self.formattedAmountLabel.text = self.viewModel.outputText
+
+        viewModel.outputText.playAction { text in
+            self.formattedAmountLabel.text = text
         }
         
         configureUI()
@@ -41,7 +41,7 @@ class NumberViewController: UIViewController {
         print(#function)
         
         // 텍스트 필드에 입력된 글자를 뷰모델에 넘김
-        viewModel.inputField = amountTextField.text
+        viewModel.inputFiled.value = amountTextField.text!
     }
 }
 

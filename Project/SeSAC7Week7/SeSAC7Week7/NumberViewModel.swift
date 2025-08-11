@@ -10,40 +10,41 @@ import Foundation
 class NumberViewModel {
     
     // VC에서 VM으로 들어오는 정보
-    var inputField: String? {
-        didSet {
-            validate()
-        }
-    }
+    var inputFiled = Field("")
     
     // VM에서 VC로 보내줄 정보
-    var outputText = "" {
-        didSet {
-            onChangeText?()
+    var outputText = Field("")
+    
+    init() {
+        print("NumberViewModel Init")
+        
+        inputFiled.playAction {_ in 
+            self.validate()
         }
     }
+    
     var outputColor = false
     
-    var onChangeText: (() -> Void)?
-    
     private func validate() {
-        //1) 옵셔널
-        guard let text = inputField else {
-            outputText = ""
-            outputColor = false
-            return
-        }
+//        //1) 옵셔널
+//        guard let text = inputField else {
+//            outputText = ""
+//            outputColor = false
+//            return
+//        }
+        
+        let text = inputFiled.value
         
         //2) Empty
         if text.isEmpty {
-            outputText = "값을 입력해주세요"
+            outputText.value = "값을 입력해주세요"
             outputColor = false
             return
         }
         
         //3) 숫자 여부
         guard let num = Int(text) else {
-            outputText = "숫자만 입력해주세요"
+            outputText.value = "숫자만 입력해주세요"
             outputColor = false
             return
         }
@@ -54,10 +55,10 @@ class NumberViewModel {
             let format = NumberFormatter()
             format.numberStyle = .decimal
             let result = format.string(from: num as NSNumber)!
-            outputText = "₩" + result
+            outputText.value = "₩" + result
             outputColor = true
         } else {
-            outputText = "백만원 이하를 입력해주세요"
+            outputText.value = "백만원 이하를 입력해주세요"
             outputColor = false
         }
     }

@@ -9,6 +9,8 @@ import UIKit
 import SnapKit
 
 class LoginViewController: UIViewController {
+    
+    let viewModel = LoginViewModel()
  
     private let idTextField: UITextField = {
         let textField = UITextField()
@@ -45,24 +47,20 @@ class LoginViewController: UIViewController {
         configureUI()
         configureConstraints()
         configureActions()
+        
+        viewModel.outputValidationLabel.playAction { _ in
+            self.validationLabel.text = self.viewModel.outputValidationLabel.value
+        }
+        
+        viewModel.outputTextColor.playAction { color in
+            self.validationLabel.textColor = color ? .blue : .red
+        }
     }
     
     @objc private func textFieldDidChange() {
         print(#function)
-        guard let id = idTextField.text, let pw = passwordTextField.text else {
-            validationLabel.text = "nil입니다"
-            loginButton.isEnabled = false
-            return
-        }
-        
-        if id.count >= 4 && pw.count >= 4 {
-            validationLabel.text = "잘 했어요"
-            loginButton.isEnabled = true
-        } else {
-            validationLabel.text = "아이디, 비밀번호 4자리 이상입니다."
-            loginButton.isEnabled = false
-        }
-    } 
+        viewModel.inputIdTextFieldText.value = idTextField.text!
+    }
 
     @objc private func loginButtonTapped() {
         print(#function)
