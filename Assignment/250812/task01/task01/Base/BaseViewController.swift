@@ -65,22 +65,10 @@ class BaseViewController: UIViewController, ViewDesignProtocol {
         present(alert, animated: true)
     }
     
-    func checkNetworkConnection() -> Bool {
-        let status = NetworkManager.shared.currentStatus
-        
-        if !status.isConnected {
-            showNetworkAlert(status: status)
-            return false
-        }
-        return true
-    }
-    
-    private func showNetworkAlert(status: NetworkStatus) {
+    func showNetworkAlert(status: NetworkStatus) {
         let message: String
         
         switch status {
-        case .disconnected:
-            message = "인터넷 연결을 확인하고 다시 시도해주세요."
         case .unknown:
             message = "네트워크 상태를 확인할 수 없습니다. 잠시 후 다시 시도해주세요."
         default:
