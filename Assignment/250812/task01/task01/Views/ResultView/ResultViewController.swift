@@ -171,6 +171,8 @@ class ResultViewController: BaseViewController {
     private func didSelectFilter(_ sortType: SortType) {
         guard sortType != viewModel.currentSortType.value else { return }
         
+        collectionView.setContentOffset(.zero, animated: true)
+        
         viewModel.loadData(sort: sortType)
     }
     
