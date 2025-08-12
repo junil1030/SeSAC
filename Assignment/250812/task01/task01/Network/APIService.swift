@@ -45,38 +45,4 @@ class APIService {
                 }
             }
     }
-    
-//    func searchProductData(keyword: String, sort: SortType = .sim, start: Int = 1, display: Int = 30, completion: @escaping (Result<ShoppingResponse, Error>) -> Void) {
-//        let url = "https://openapi.naver.com/v1/search/shop"
-//        
-//        let headers: HTTPHeaders = [
-//            "X-Naver-Client-Id": Bundle.main.object(forInfoDictionaryKey: "X-Naver-Client-Id") as! String,
-//            "X-Naver-Client-Secret": Bundle.main.object(forInfoDictionaryKey: "X-Naver-Client-Secret") as! String
-//        ]
-//        
-//        let parameters: [String: Any] = [
-//            "query": keyword,
-//            "display": display,
-//            "start": start,
-//            "sort": sort.rawValue
-//        ]
-//        
-//        AF.request(url, parameters: parameters, headers: headers)
-//            .responseData { response in
-//                let statusCode = response.response?.statusCode
-//                
-//                switch statusCode {
-//                case 200:
-//                    if let data = response.data {
-//                        do {
-//                            let data = try JSONDecoder().decode(ShoppingResponse.self, from: data)
-//                            completion(.success(data))
-//                        } catch {
-//                            completion(.failure(error))
-//                        }
-//                    }
-//                case .
-//                }
-//            }
-//    }
 }
