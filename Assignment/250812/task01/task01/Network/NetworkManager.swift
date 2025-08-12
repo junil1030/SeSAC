@@ -50,6 +50,10 @@ enum NetworkStatus {
 }
 
 class NetworkManager: NetworkManagerProtocol {
+    
+    static let shared = NetworkManager()
+    private init() {}
+    
     private let reachabilityManager = NetworkReachabilityManager()
     
     var currentStatus: NetworkStatus {

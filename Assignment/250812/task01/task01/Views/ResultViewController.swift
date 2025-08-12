@@ -88,9 +88,9 @@ class ResultViewController: BaseViewController {
     private var ascLabel: FilterView!
     private var dscLabel: FilterView!
     
-    init(searchKeyword: String, networkManager: NetworkManagerProtocol) {
+    init(searchKeyword: String) {
         self.searchKeyword = searchKeyword
-        super.init(nibName: nil, bundle: nil, networkManager: networkManager)
+        super.init(nibName: nil, bundle: nil)
     }
     
     required init?(coder: NSCoder) {

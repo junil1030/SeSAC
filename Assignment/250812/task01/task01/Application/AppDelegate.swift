@@ -10,15 +10,11 @@ import UIKit
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-    private var networkManager: NetworkManagerProtocol {
-        return DIContainerManager.shared.resolve(NetworkManagerProtocol.self)
-    }
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
         
-        networkManager.startNetworkMonitoring()
+        NetworkManager.shared.startNetworkMonitoring()
         return true
     }
 
@@ -38,7 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func applicationWillTerminate(_ application: UIApplication) {
-        networkManager.stopNetworkMonitoring()
+        NetworkManager.shared.stopNetworkMonitoring()
     }
 }
 

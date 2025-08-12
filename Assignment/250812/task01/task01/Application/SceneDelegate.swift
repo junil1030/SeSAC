@@ -15,8 +15,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
-        let networkManager = DIContainerManager.shared.resolve(NetworkManagerProtocol.self)
-        let searchViewController = SearchViewController(networkManager: networkManager)
+        let searchViewController = SearchViewController()
         let navigationController = UINavigationController(rootViewController: searchViewController)
         
         window = UIWindow(windowScene: windowScene)
