@@ -22,7 +22,7 @@ class BirthDayViewModel: ValidateProtocol {
     
     var calculationResult = Observable<Result<String, Error>?>(nil)
     
-    func validateBirthDay(year: String?, month: String?, day: String?) {
+    private func validateBirthDay(year: String?, month: String?, day: String?) {
         
         let yearResult = validateUserData(year, min: 0, max: 9999)
         guard case .success(let yearValue) = yearResult else {

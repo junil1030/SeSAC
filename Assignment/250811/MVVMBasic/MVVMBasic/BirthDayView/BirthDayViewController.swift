@@ -147,6 +147,12 @@ class BirthDayViewController: UIViewController {
             case .failure(let error):
                 // 에러 타입이 많을 때에는 어떻게 처리해야 하지
                 // 여러 개의 옵저버 클로저를 옵저버블 클래스에 넣어야 하나?
+                
+                // 에러에 대한 메세지 자체도 사실? VM에서 해서 보내는 게 나을 것 같음
+                // 뷰컨은 정말 말그대로 그려주기만 하면 되니까
+                // 항상 정답은 없음. 근데 에러가 적다면 통합으로 관리하는 것도 좋을 거 같고, 각각 분리해서 지금 처럼 쓰는 것도
+                // 완전히 틀리다고는 할 수 없음
+                // 상황에 따라 판단해서 적용하면 좋을 것 같음
                 if let inputError = error as? InputError {
                     self?.resultLabel.text = inputError.message
                 } else if let dateError = error as? DateError {
@@ -170,6 +176,15 @@ class BirthDayViewController: UIViewController {
         let month = monthTextField.text
         let day = dayTextField.text
         
-        viewModel.validateBirthDay(year: year, month: month, day: day)
+        // 사실 문제는 이 부분....
+        // 일단 텍스트 필드에 무언가가 입력되서 그 데이터를 던지는 거 자체가 하나의 이벤트라고 볼 수 있음
+        // 근데 지금 형태를 보면? 각각 일어난 3개의 이벤트를 한번에 묶어서 던지고 있음
+        // 이것도 어떻게 보면? 비즈니스적인 요소라고 볼 수도 있는 거임
+        // 근데 문제는 이뿐만이 아님
+        // validateBirthDay 함수 자체가 비즈니스적인 역할을 하는 함수임
+        // 근데 뷰컨이 이걸 알고있네? 이 함수는 무조건 private 이었어야 함
+        // 그래서 가장 올바른 방법은... 아니 제일 좋은 방향은...
+        // 각각의 독립적인 옵저버블을 만들어서 값이 변경되면 무언가를 수행하는게 맞는 것 같다
+//        viewModel.validateBirthDay(year: year, month: month, day: day)
     }
 }
