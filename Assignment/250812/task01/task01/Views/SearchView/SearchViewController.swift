@@ -10,6 +10,8 @@ import SnapKit
 
 class SearchViewController: BaseViewController {
     
+    let viewModel = SearchViewModel()
+    
     private let searchbar: UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.backgroundImage = UIImage()
@@ -22,6 +24,7 @@ class SearchViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupBind()
     }
     
     override func configureHierarchy() {
@@ -45,17 +48,21 @@ class SearchViewController: BaseViewController {
         navigationItem.title = AppStrings.appTItle
         searchbar.delegate = self
     }
+    
+    private func setupBind() {
+        viewModel.outputSearchKeyword.lazyBind { [weak self] keyword in
+            let vc = ResultViewController(searchKeyword: keyword)
+            self?.navigationController?.pushViewController(vc, animated: true)
+        }
+        
+        viewModel.outputNetworkError.lazyBind { [weak self] error in
+            self?.showNetworkAlert(status: error)
+        }
+    }
 }
 
 extension SearchViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        guard let keyword = searchBar.text, keyword.trimmingCharacters(in: .whitespacesAndNewlines).count > 1 else { return }
-        
-        guard checkNetworkConnection() else {
-            return
-        }
-        
-        let vc = ResultViewController(searchKeyword: keyword)
-        navigationController?.pushViewController(vc, animated: true)
+        viewModel.inputSearchKeyword.value = searchBar.text
     }
 }
