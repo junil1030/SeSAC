@@ -154,7 +154,8 @@ class ResultViewController: BaseViewController {
             make.leading.trailing.equalTo(view.safeAreaLayoutGuide)
             make.height.equalTo(140)
             make.bottom.lessThanOrEqualTo(view.safeAreaLayoutGuide)
-        }    }
+        }
+    }
     
     override func configureView() {
         super.configureView()
