@@ -11,4 +11,8 @@ struct Upbit: Decodable {
     let market: String
     let korean_name: String
     let english_name: String
+    
+    var overview: String {
+        return "\(korean_name) | \(english_name)"
+    }
 }

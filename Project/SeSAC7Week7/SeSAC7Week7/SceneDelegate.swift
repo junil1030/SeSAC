@@ -17,7 +17,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         window = UIWindow(windowScene: windowScene)
         
-        let vc = UserViewController()
+        let vc = PicsumViewController()
         let nav = UINavigationController(rootViewController: vc)
         window?.rootViewController = nav
         
