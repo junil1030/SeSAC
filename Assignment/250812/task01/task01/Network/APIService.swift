@@ -18,31 +18,24 @@ class APIService {
     
     private init() {}
     
-    func searchProduct(keyword: String, sort: SortType = .sim, start: Int = 1, display: Int = 30, completion: @escaping (NetworkResult<ShoppingResponse>) -> Void) {
-        let url = "https://openapi.naver.com/v1/search/shop"
-        
-        let headers: HTTPHeaders = [
-            "X-Naver-Client-Id": Bundle.main.object(forInfoDictionaryKey: "X-Naver-Client-Id") as! String,
-            "X-Naver-Client-Secret": Bundle.main.object(forInfoDictionaryKey: "X-Naver-Client-Secret") as! String
-        ]
-        
-        let parameters: [String: Any] = [
-            "query": keyword,
-            "display": display,
-            "start": start,
-            "sort": sort.rawValue
-        ]
-        
-        AF.request(url, parameters: parameters, headers: headers)
-            .responseDecodable(of: ShoppingResponse.self) { response in
-                let statusCode = response.response?.statusCode ?? 0
-                
-                switch response.result {
-                case .success(let data):
-                    completion(.success(data))
-                case .failure(let error):
-                    completion(.error(statusCode, error))
-                }
+    private func callRequest<T: Decodable>(api: ShoppingRouter, completionHandler: @escaping (NetworkResult<T>) -> Void) {
+        AF.request(api.endPoint,
+                   method: api.method,
+                   parameters: api.parameters,
+                   headers: api.headers)
+        .responseDecodable(of: T.self) { response in
+            let statusCode = response.response?.statusCode ?? 0
+            
+            switch response.result {
+            case .success(let data):
+                completionHandler(.success(data))
+            case .failure(let error):
+                completionHandler(.error(statusCode, error))
             }
+        }
+    }
+    
+    func searchProduct(keyword: String, sort: SortType = .sim, start: Int = 1, display: Int = 30, completion: @escaping (NetworkResult<ShoppingResponse>) -> Void) {
+        callRequest(api: .searchKeyword(keyword: keyword, sort: sort, start: start, display: display), completionHandler: completion)
     }
 }
