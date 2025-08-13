@@ -16,28 +16,67 @@ class ResultViewModel {
     private var currentPage = 1
     private var lastPage = 1
     
-    //MARK: - Observables
-    let shoppingItems = Observable<[ShoppingItem]>([])
-    let totalCount = Observable<Int>(0)
-    let isAPILoading = Observable<Bool>(false)
-    let searchResultText = Observable<String>("검색 중..")
-    let currentSortType = Observable<SortType>(.sim)
-    let errorMessage = Observable<String?>(nil)
+    var input: Input
+    var output: Output
+    
+    //MARK: - Observables Streams
+    struct Input {
+        let loadData = Observable<SortType>(.sim)
+        let loadMoreData = Observable<Int>(0)
+    }
+    
+    struct Output {
+        let shoppingItems = Observable<[ShoppingItem]>([])
+        let totalCount = Observable<Int>(0)
+        let isAPILoading = Observable<Bool>(false)
+        let searchResultText = Observable<String>("검색 중..")
+        let currentSortType = Observable<SortType>(.sim)
+        let errorMessage = Observable<String?>(nil)
+    }
     
     //MARK: - Initialize
     init(searchKeyword: String) {
         self.searchKeyword = searchKeyword
+        
+        input = Input()
+        output = Output()
+        
+        setupBind()
     }
         
     //MARK: - Methods
-    func loadData(sort: SortType = .sim, isPagination: Bool = false) {
-        guard !isAPILoading.value else { return }
-        isAPILoading.value = true
+    func getItemCount() -> Int {
+        return output.shoppingItems.value.count
+    }
+    
+    func getItem(at index: Int) -> ShoppingItem? {
+        guard index < output.shoppingItems.value.count else { return nil }
+        return output.shoppingItems.value[index]
+    }
+    
+    func getSearchKeyword() -> String {
+        return searchKeyword
+    }
+    
+    //MARK: - Private Methods
+    private func setupBind() {
+        input.loadData.bind { [weak self] type in
+            self?.loadData(sort: type)
+        }
+        
+        input.loadMoreData.bind { [weak self] index in
+            self?.loadMoreDataIfNeeded(for: index)
+        }
+    }
+    
+    private func loadData(sort: SortType = .sim, isPagination: Bool = false) {
+        guard !output.isAPILoading.value else { return }
+        output.isAPILoading.value = true
         
         if !isPagination {
-            currentSortType.value = sort
+            output.currentSortType.value = sort
             currentPage = 1
-            searchResultText.value = "검색 중.."
+            output.searchResultText.value = "검색 중.."
         }
         
         let startIndex = ((currentPage - 1) * itemsPerPage) + 1
@@ -46,7 +85,7 @@ class ResultViewModel {
             DispatchQueue.main.async {
                 guard let self = self else { return }
                 
-                self.isAPILoading.value = false
+                self.output.isAPILoading.value = false
                 
                 switch response {
                 case .success(let success):
@@ -58,43 +97,30 @@ class ResultViewModel {
         }
     }
     
-    func shouldLoadMoreData(for index: Int) -> Bool {
-        return index >= shoppingItems.value.count - 3 && currentPage <= lastPage && !isAPILoading.value
-    }
-    
-    func getItemCount() -> Int {
-        return shoppingItems.value.count
-    }
-    
-    func getItem(at index: Int) -> ShoppingItem? {
-        guard index < shoppingItems.value.count else { return nil }
-        return shoppingItems.value[index]
-    }
-    
-    func getSearchKeyword() -> String {
-        return searchKeyword
-    }
-    
-    func loadMoreDataIfNeeded(for index: Int) {
+    private func loadMoreDataIfNeeded(for index: Int) {
         if shouldLoadMoreData(for: index) {
-            loadData(sort: currentSortType.value, isPagination: true)
+            loadData(sort: output.currentSortType.value, isPagination: true)
         }
     }
     
-    //MARK: - Private Methods
+    private func shouldLoadMoreData(for index: Int) -> Bool {
+        return index >= output.shoppingItems.value.count - 3 && currentPage <= lastPage && !output.isAPILoading.value
+    }
+
+    
     private func handleSuccess(_ data: ShoppingResponse, isPagination: Bool) {
         let receivedItems = data.items
         
         lastPage = (data.total + itemsPerPage - 1) / itemsPerPage
         
         if isPagination {
-            var updatedItems = shoppingItems.value
+            var updatedItems = output.shoppingItems.value
             updatedItems.append(contentsOf: receivedItems)
-            shoppingItems.value = updatedItems
+            output.shoppingItems.value = updatedItems
         } else {
-            shoppingItems.value = receivedItems
-            totalCount.value = data.total
-            searchResultText.value = "\(data.total.formattedString) 개의 검색 결과"
+            output.shoppingItems.value = receivedItems
+            output.totalCount.value = data.total
+            output.searchResultText.value = "\(data.total.formattedString) 개의 검색 결과"
         }
         
         if currentPage <= lastPage {
@@ -103,7 +129,7 @@ class ResultViewModel {
     }
     
     private func handleError(errorCode: Int, error: Error) {
-        searchResultText.value = "검색 실패"
-        errorMessage.value = "에러: \(error)\nErrorCode: \(errorCode)"
+        output.searchResultText.value = "검색 실패"
+        output.errorMessage.value = "에러: \(error)\nErrorCode: \(errorCode)"
     }
 }

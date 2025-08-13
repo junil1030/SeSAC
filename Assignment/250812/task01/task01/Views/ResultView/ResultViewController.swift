@@ -68,7 +68,7 @@ class ResultViewController: BaseViewController {
         super.viewDidLoad()
         
         setupBind()
-        viewModel.loadData()
+        viewModel.input.loadData.value = .sim
     }
     
     override func viewDidLayoutSubviews() {
@@ -121,20 +121,20 @@ class ResultViewController: BaseViewController {
     }
     
     private func setupBind() {
-        viewModel.shoppingItems.bind { [weak self] items in
+        viewModel.output.shoppingItems.bind { [weak self] items in
             self?.collectionView.reloadData()
         }
         
-        viewModel.searchResultText.bind { [weak self] text in
+        viewModel.output.searchResultText.bind { [weak self] text in
             self?.searchResultCountLabel.text = text
         }
         
-        viewModel.errorMessage.bind { [weak self] errorMessage in
+        viewModel.output.errorMessage.bind { [weak self] errorMessage in
             guard let errorMessage = errorMessage else { return }
             self?.showAlert(type: .networkError, message: errorMessage)
         }
         
-        viewModel.currentSortType.bind { [weak self] sortType in
+        viewModel.output.currentSortType.bind { [weak self] sortType in
             self?.selectFilter(sortType)
         }
     }
@@ -169,11 +169,12 @@ class ResultViewController: BaseViewController {
     }
     
     private func didSelectFilter(_ sortType: SortType) {
-        guard sortType != viewModel.currentSortType.value else { return }
+        guard sortType != viewModel.output.currentSortType.value else { return }
         
         collectionView.setContentOffset(.zero, animated: true)
         
-        viewModel.loadData(sort: sortType)
+//        viewModel.loadData(sort: sortType)
+        viewModel.input.loadData.value = sortType
     }
     
     private func updateCollectionViewLayout() {
@@ -194,7 +195,8 @@ class ResultViewController: BaseViewController {
 
 extension ResultViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        viewModel.loadMoreDataIfNeeded(for: indexPath.item)
+//        viewModel.loadMoreDataIfNeeded(for: indexPath.item)
+        viewModel.input.loadMoreData.value = indexPath.item
     }
 }
 

@@ -50,12 +50,12 @@ class SearchViewController: BaseViewController {
     }
     
     private func setupBind() {
-        viewModel.outputSearchKeyword.lazyBind { [weak self] keyword in
+        viewModel.output.searchKeyword.lazyBind { [weak self] keyword in
             let vc = ResultViewController(searchKeyword: keyword)
             self?.navigationController?.pushViewController(vc, animated: true)
         }
         
-        viewModel.outputNetworkError.lazyBind { [weak self] error in
+        viewModel.output.networkError.lazyBind { [weak self] error in
             self?.showNetworkAlert(status: error)
         }
     }
@@ -63,6 +63,6 @@ class SearchViewController: BaseViewController {
 
 extension SearchViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        viewModel.inputSearchKeyword.value = searchBar.text
+        viewModel.input.searchKeyword.value = searchBar.text
     }
 }
