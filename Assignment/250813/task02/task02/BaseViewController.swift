@@ -23,19 +23,19 @@ class BaseViewController: UIViewController {
     }
     
     func setupStyle() {
-        view.backgroundColor = .black
+        view.backgroundColor = .white
         
         let appearance = UINavigationBarAppearance()
         appearance.backgroundColor = .clear
         appearance.configureWithTransparentBackground()
         appearance.titleTextAttributes = [
-            .foregroundColor: UIColor.white,
+            .foregroundColor: UIColor.black,
             .font: UIFont.systemFont(ofSize: 20, weight: .semibold)
         ]
         
         navigationController?.navigationBar.standardAppearance = appearance
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
-        navigationController?.navigationBar.tintColor = .pastelGreen
+        navigationController?.navigationBar.tintColor = .black
     }
     
     func setupDelegate() {}
