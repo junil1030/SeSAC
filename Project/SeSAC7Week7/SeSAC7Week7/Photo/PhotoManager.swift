@@ -14,10 +14,15 @@ final class PhotoManager {
     
     private init() { }
     
-    func getOnePhoto(id: Int, success: @escaping (Photo) -> Void) {
-        let url = "https://picsum.photos/id/\(id)/info"
-        
-        AF.request(url).responseDecodable(of: Photo.self) { response in
+    /*
+     1. AF.request 메서드 하나를 활용할 수 없나?
+     - endpoint, method를 한곳에서 관리하면? -> Router Pattern
+     - generic, meta type
+     2. 요청 로직을 한 곳에서 관리할 수 없나?
+     */
+    
+    private func callRequest<T: Decodable>(api: PhotoRouter, success: @escaping (T) -> Void) {
+        AF.request(api.endpoint, method: api.method, parameters: api.param).responseDecodable(of: T.self) { response in
             switch response.result {
             case .success(let value):
                 success(value)
@@ -26,17 +31,12 @@ final class PhotoManager {
             }
         }
     }
+
+    func getOnePhoto(api: PhotoRouter, success: @escaping (Photo) -> Void) {
+        callRequest(api: api, success: success)
+    }
     
-    func getPhotoList(success: @escaping ([PhotoList]) -> Void) {
-        let url = "https://picsum.photos/v2/list?page=1&limit=20"
-        
-        AF.request(url).responseDecodable(of: [PhotoList].self) { response in
-            switch response.result {
-            case .success(let value):
-                success(value)
-            case .failure(let error):
-                print(error)
-            }
-        }
+    func getPhotoList(api: PhotoRouter, success: @escaping ([PhotoList]) -> Void) {
+        callRequest(api: api, success: success)
     }
 }

@@ -10,28 +10,40 @@ import Alamofire
 
 final class UpbitViewModel {
     
-    var inputViewDidLoadTrigger = ReviewObservable<Void>(())
-    var inputCellSelectedTrigger = ReviewObservable<Upbit?>(nil)
+    var input: Input
+    var output: Output
     
-    var outputMarketData: ReviewObservable<[Upbit]> = ReviewObservable([])
-    var outputNavigationTitleData = ReviewObservable<String>("")
-    var outputSelectedTrigger = ReviewObservable<Upbit?>(nil)
+    struct Input {
+        var viewDidLoadTrigger = ReviewObservable<Void>(())
+        var cellSelectedTrigger = ReviewObservable<Upbit?>(nil)
+
+    }
+    
+    struct Output {
+        var marketData: ReviewObservable<[Upbit]> = ReviewObservable([])
+        var navigationTitleData = ReviewObservable<String>("")
+        var selectedTrigger = ReviewObservable<Upbit?>(nil)
+    }
     
     init() {
+        
+        input = Input()
+        output = Output()
+        
         /*
          중복 호출을 방지하기 위해서는
          - lazyBind로 개선하거나,
          - bind를 쓰되, viewController, viewDidLoad에서 트리거를 주지 않거나
          */
         
-        inputCellSelectedTrigger.bind {
-            print("viewModel InputcellSelectedTrigger ", self.inputCellSelectedTrigger.value)
-            let data = self.inputCellSelectedTrigger.value
-            self.outputSelectedTrigger.value = (data)
+        input.cellSelectedTrigger.bind {
+            print("viewModel InputcellSelectedTrigger ", self.input.cellSelectedTrigger.value)
+            let data = self.input.cellSelectedTrigger.value
+            self.output.selectedTrigger.value = (data)
         }
         
-        inputViewDidLoadTrigger.bind {
-            print("viewModel InputViewDidLoadTrigger ", self.inputViewDidLoadTrigger.value)
+        input.viewDidLoadTrigger.bind {
+            print("viewModel InputViewDidLoadTrigger ", self.input.viewDidLoadTrigger.value)
             self.callRequest()
         }
     }
@@ -41,8 +53,8 @@ final class UpbitViewModel {
         UpbitManager.shared.callRequest { [weak self] market, title in
             guard let self = self else { return }
             
-            self.outputMarketData.value = market
-            self.outputNavigationTitleData.value = title
+            self.output.marketData.value = market
+            self.output.navigationTitleData.value = title
         }
     }
     

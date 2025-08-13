@@ -8,6 +8,11 @@ import UIKit
 import SnapKit
 import Alamofire
 import Kingfisher
+
+struct User {
+    var age: Int = 10 // 저장 프로퍼티, 인스턴스 프로퍼티
+    static let name = "Junil" // 저장 프로퍼티, 타입 프로퍼티
+}
   
 class PicsumViewController: UIViewController {
      
@@ -25,19 +30,45 @@ class PicsumViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let junil = User()
+        print(junil.age)
+        print(type(of: junil))
+        
+        print(User.self.name)
+        
         setupUI()
         setupConstraints()
+        bindData()
+    }
+    
+    func bindData() {
+        viewModel.output.overView.bind {
+            let data = self.viewModel.output.overView.value
+            self.infoLabel.text = data
+        }
+        
+        viewModel.output.image.lazyBind {
+            if let url = self.viewModel.output.image.value {
+                self.photoImageView.kf.setImage(with: url)
+            }
+        }
+        
+        viewModel.output.list.lazyBind {
+            self.tableView.reloadData()
+        }
+//        viewModel.output.photo.lazyBind {
+//            guard let photo = self.viewModel.output.photo.value else {
+//                
+//                return
+//            }
+//            self.updatePhotoInfo(photo)
+//        }
     }
     
     @objc private func searchButtonTapped() {
-        guard let text = textField.text, let photoId = Int(text), photoId >= 0 && photoId <= 100 else {
-            print("0~100 사이의 숫자를 입력해주세요.")
-            return
-        }
-        
-        PhotoManager.shared.getOnePhoto(id: photoId) { photo in
-            self.updatePhotoInfo(photo)
-        }
+        viewModel.input.searchButtonTapped.value = ()
+        viewModel.input.text.value = textField.text
     }
     
     private func updatePhotoInfo(_ photo: Photo) {
@@ -49,10 +80,7 @@ class PicsumViewController: UIViewController {
     }
     
     @objc private func listButtonTapped() {
-        PhotoManager.shared.getPhotoList { photo in
-            self.photoList = photo
-            self.tableView.reloadData()
-        }
+        viewModel.input.fetchButtonTapped.value = ()
     }
     
     @objc private func dismissKeyboard() {
@@ -62,7 +90,7 @@ class PicsumViewController: UIViewController {
  
 extension PicsumViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return photoList.count
+        return viewModel.output.list.value.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -70,7 +98,7 @@ extension PicsumViewController: UITableViewDelegate, UITableViewDataSource {
             return UITableViewCell()
         }
         
-        let photo = photoList[indexPath.row]
+        let photo = viewModel.output.list.value[indexPath.row]
         cell.configure(with: photo)
         return cell
     }

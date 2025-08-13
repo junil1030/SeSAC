@@ -9,28 +9,42 @@ import Foundation
 
 final class ReviewNumberViewModel {
     
-    var inputAmount = ReviewObservable<String?>(nil)
-    var outputAmount = ReviewObservable<String>("")
+    var input: Input
+    var output: Output
+    
+    // 뷰컨에서 뷰모델로 들어온 값
+    struct Input {
+        var amount = ReviewObservable<String?>(nil)
+    }
+    
+    // 뷰모델에서 뷰컨으로 보여질 값
+    struct Output {
+        var amount = ReviewObservable<String>("")
+    }
     
     init() {
-        inputAmount.bind {
+        
+        input = Input()
+        output = Output()
+        
+        input.amount.bind {
             print("inputAmount 달라짐")
             
             //1.
-            guard let text = self.inputAmount.value else {
-                self.outputAmount.value = ""
+            guard let text = self.input.amount.value else {
+                self.output.amount.value = ""
                 return
             }
             
             //2.
             if text.isEmpty {
-                self.outputAmount.value = "값을 입력해주세요"
+                self.output.amount.value = "값을 입력해주세요"
                 return
             }
             
             //3.
             guard let num = Int(text) else {
-                self.outputAmount.value = "숫자만 입력해주세요"
+                self.output.amount.value = "숫자만 입력해주세요"
                 return
             }
             
@@ -40,7 +54,7 @@ final class ReviewNumberViewModel {
                 let format = NumberFormatter()
                 format.numberStyle = .decimal
                 let wonResult = format.string(from: num as NSNumber)!
-                self.outputAmount.value = "₩" + wonResult
+                self.output.amount.value = "₩" + wonResult
                 
                 //                        let converted = Double(num) / exchangeRate
                 //                        let convertedFormat = NumberFormatter()
@@ -50,7 +64,7 @@ final class ReviewNumberViewModel {
                 //                        convertedAmountLabel.text = convertedResult
                 
             } else {
-                self.outputAmount.value = "1,000만원 이하를 입력해주세요"
+                self.output.amount.value = "1,000만원 이하를 입력해주세요"
             }
         }
     }

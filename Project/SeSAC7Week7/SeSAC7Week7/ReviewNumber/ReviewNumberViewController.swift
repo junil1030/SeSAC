@@ -41,16 +41,16 @@ class ReviewNumberViewController: UIViewController {
     }
     
     func bindData() {
-        viewModel.outputAmount.bind {
-            print("outputAmount 달라짐", self.viewModel.outputAmount.value)
-            self.formattedAmountLabel.text = self.viewModel.outputAmount.value
+        viewModel.output.amount.bind {
+            print("outputAmount 달라짐", self.viewModel.output.amount.value)
+            self.formattedAmountLabel.text = self.viewModel.output.amount.value
         }
     }
     
     
     @objc private func amountChanged() {
         print(#function)
-        viewModel.inputAmount.value = amountTextField.text
+        viewModel.input.amount.value = amountTextField.text
     }
     
     func showAlert() {
