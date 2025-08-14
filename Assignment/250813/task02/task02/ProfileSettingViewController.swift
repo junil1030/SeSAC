@@ -122,11 +122,6 @@ class ProfileSettingViewController: BaseViewController {
         )
         backButton.tintColor = .black
         navigationItem.leftBarButtonItem = backButton
-        
-//        navigationController?.navigationBar.titleTextAttributes = [
-//            .font: UIFont.systemFont(ofSize: 16, weight: .medium),
-//            .foregroundColor: UIColor.black
-//        ]
     }
     
     private func setupConstraints() {
@@ -187,7 +182,6 @@ class ProfileSettingViewController: BaseViewController {
         
         view.addSubview(mbtiStackView)
         
-        // 스택뷰 제약조건 설정
         mbtiStackView.snp.makeConstraints { make in
             make.top.equalTo(mbtiLabel)
             make.leading.equalTo(mbtiLabel.snp.trailing).offset(16)

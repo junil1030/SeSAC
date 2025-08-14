@@ -41,7 +41,8 @@ class ReviewNumberViewController: UIViewController {
     }
     
     func bindData() {
-        viewModel.output.amount.bind {
+        viewModel.output.amount.bind { [weak self] in
+            guard let self = self else { return }
             print("outputAmount 달라짐", self.viewModel.output.amount.value)
             self.formattedAmountLabel.text = self.viewModel.output.amount.value
         }

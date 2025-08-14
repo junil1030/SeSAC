@@ -157,6 +157,7 @@
 				DEVELOPMENT_TEAM = MWBS4R8DBQ;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = task02/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "0813서준일_2";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = "";
@@ -185,6 +186,7 @@
 				DEVELOPMENT_TEAM = MWBS4R8DBQ;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = task02/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "0813서준일_2";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = "";

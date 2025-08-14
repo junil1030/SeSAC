@@ -47,8 +47,8 @@ class UpbitViewController: UIViewController {
          - lazyBind로 해결하거나
          - Optional이거나 빈 값일 때에는 실행되지 않도록 Early Exit을 하거나
          */
-        viewModel.output.selectedTrigger.bind {
-            print("viewController OutputSelectedTrigger ", self.viewModel.output.selectedTrigger.value)
+        viewModel.output.selectedTrigger.lazyBind { [weak self] in
+            guard let self = self else { return }
             let vc = UpbitDetailViewController()
             vc.viewModel.outputTitle.value = self.viewModel.output.selectedTrigger.value?.korean_name
             self.navigationController?.pushViewController(vc, animated: true)
