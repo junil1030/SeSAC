@@ -8,5 +8,5 @@
 import Foundation
 
 enum PhotoKey {
-    static let access = ""
+    static let access = APIKey.unsplashKey
 }
