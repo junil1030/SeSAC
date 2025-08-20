@@ -7,8 +7,10 @@
 
 import UIKit
 import SnapKit
+import RxSwift
+import RxCocoa
 
-struct Person: Identifiable {
+struct Person: Identifiable, Hashable {
     let id = UUID()
     let name: String
     let email: String
@@ -71,18 +73,64 @@ class HomeworkViewController: UIViewController {
         Person(name: "Ann", email: "ann.howard@example.com", profileImage: "https://randomuser.me/api/portraits/thumb/women/25.jpg")
     ]
     
+    let sampleTableViewUsers: BehaviorSubject<[Person]> = BehaviorSubject(value: [])
+    let sampleCollectionViewUsers: BehaviorSubject<[Person]> = BehaviorSubject(value: [])
+    
     let tableView = UITableView()
     lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout())
     let searchBar = UISearchBar()
+    
+    let disposeBag = DisposeBag()
      
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        sampleTableViewUsers.onNext(sampleUsers)
+        
         configure()
         bind()
     }
      
     private func bind() {
-          
+        sampleTableViewUsers
+            .bind(to: tableView.rx.items(cellIdentifier: PersonTableViewCell.identifier, cellType: PersonTableViewCell.self)) { row, element, cell in
+            cell.configureData(with: element)
+        }
+        .disposed(by: disposeBag)
+        
+        tableView.rx
+            .modelSelected(Person.self)
+            .subscribe(with: self) { owner, person in
+                var result = try! owner.sampleCollectionViewUsers.value()
+                result.append(person)
+                
+                let setResult = Set(result)
+                owner.sampleCollectionViewUsers.onNext(Array(setResult))
+                print(setResult.count)
+            }
+            .disposed(by: disposeBag)
+        
+        sampleCollectionViewUsers
+            .bind(to: collectionView.rx.items(cellIdentifier: UserCollectionViewCell.identifier, cellType: UserCollectionViewCell.self)) { row, element, cell in
+                cell.configureData(with: element)
+            }
+            .disposed(by: disposeBag)
+        
+        searchBar.rx.searchButtonClicked
+            .subscribe(with: self) { owner, _ in
+                guard let text = owner.searchBar.text else { return }
+                let gender = Bool.random() ? "men" : "women"
+                let number = Int.random(in: 26...100)
+                
+                let person = Person(name: text, email: "sample@sample.com", profileImage: "https://randomuser.me/api/portraits/thumb/\(gender)/\(number).jpg")
+                
+                var result = try! owner.sampleTableViewUsers.value()
+                result.append(person)
+                owner.sampleTableViewUsers.onNext(result)
+                
+                owner.searchBar.text = ""
+            }
+            .disposed(by: disposeBag)
     }
     
     private func configure() {

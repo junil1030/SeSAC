@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import Kingfisher
 
 final class PersonTableViewCell: UITableViewCell {
     
@@ -73,6 +74,13 @@ final class PersonTableViewCell: UITableViewCell {
             $0.height.equalTo(32)
             $0.width.equalTo(72)
         }
+    }
+    
+    func configureData(with person: Person) {
+        let imageUrl = URL(string: person.profileImage)
+        profileImageView.kf.setImage(with: imageUrl)
+        
+        usernameLabel.text = person.name
     }
 }
 

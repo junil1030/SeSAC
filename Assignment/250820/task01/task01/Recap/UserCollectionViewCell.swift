@@ -32,5 +32,8 @@ class UserCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func configureData(with person: Person) {
+        label.text = person.name
+    }
 }
 
