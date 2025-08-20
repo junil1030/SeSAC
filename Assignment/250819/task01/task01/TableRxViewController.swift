@@ -6,8 +6,84 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 final class TableRxViewController: UIViewController {
     
+    private let tableView = UITableView()
+    private let disposeBag = DisposeBag()
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        view.addSubview(tableView)
+        
+        tableView.snp.makeConstraints { make in
+            make.edges.equalTo(view.safeAreaLayoutGuide)
+        }
+        
+        tableView.register(RxTableViewCell.self, forCellReuseIdentifier: RxTableViewCell.identifier)
+        
+        setupBind()
+    }
+    
+    private func setupBind() {
+        let items = Observable.just(
+            (0..<100).map { "\($0)" }
+        )
+        
+        items
+            .bind(to: tableView.rx.items(cellIdentifier: "RxTableViewCell", cellType: RxTableViewCell.self)) { (row, element, cell) in
+                cell.configure(with: element, row: row)
+            }
+            .disposed(by: disposeBag)
+        
+        tableView.rx
+            .modelSelected(String.self)
+            .subscribe(onNext:  { value in
+                print("Tapped `\(value)`")
+            })
+            .disposed(by: disposeBag)
+
+        tableView.rx
+            .itemAccessoryButtonTapped
+            .subscribe(onNext: { indexPath in
+                print("Tapped Detail @ \(indexPath.section),\(indexPath.row)")
+            })
+            .disposed(by: disposeBag)
+
+    }
+}
+
+class RxTableViewCell: UITableViewCell {
+    
+    static let identifier = "RxTableViewCell"
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupCell()
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        setupCell()
+    }
+    
+    private func setupCell() {
+        accessoryType = .detailButton
+        selectionStyle = .default
+        
+        textLabel?.font = UIFont.systemFont(ofSize: 16)
+        textLabel?.textColor = .label
+    }
+    
+    func configure(with text: String, row: Int) {
+        textLabel?.text = "\(text) @ row \(row)"
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        textLabel?.text = nil
+    }
 }
