@@ -15,10 +15,14 @@ class PasswordViewController: UIViewController {
     let passwordPlaceholder = Observable.just("비밀번호를 입력해주세요")
     let nextButtonTitle = Observable.just("다음")
     
-    let disposeBag = DisposeBag()
+    var disposeBag = DisposeBag()
    
     let passwordTextField = SignTextField(placeholderText: "비밀번호를 입력해주세요")
     let nextButton = PointButton(title: "다음")
+    
+    deinit {
+        print("PasswordViewController Deinit")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,8 +32,10 @@ class PasswordViewController: UIViewController {
         configureLayout()
          
         //nextButton.addTarget(self, action: #selector(nextButtonClicked), for: .touchUpInside)
-        bind()
+        
         aboutDispose()
+        bind()
+     
     }
     
     private func aboutDispose() {
@@ -56,9 +62,12 @@ class PasswordViewController: UIViewController {
         // 옵저버블이 10 20 30 될 떄 수동으로 일일이 정리
         // 30개의 옵저버블을 개별적으로 정리하는 건 어렵기 때문에
         // 보통은 화면이 사라지거나 뷰컨트롤러 deinit이 될때라도 dispose
+        
+        var bag = DisposeBag()
+        
         let text = Observable<Int>.interval(.seconds(1), scheduler: MainScheduler.instance)
         
-        let result = text
+        text
             .subscribe(with: self) { owner, value in
                 print("result onNext", value)
             } onError: { owner, error in
@@ -68,10 +77,11 @@ class PasswordViewController: UIViewController {
             } onDisposed: { owner in
                 print("result onDisposed")
             }
+            .disposed(by: disposeBag)
         
         let text2 = Observable<Int>.interval(.seconds(1), scheduler: MainScheduler.instance)
         
-        let result2 = text2
+        text2
             .subscribe(with: self) { owner, value in
                 print("result2 onNext", value)
             } onError: { owner, error in
@@ -81,17 +91,15 @@ class PasswordViewController: UIViewController {
             } onDisposed: { owner in
                 print("result2 onDisposed")
             }
+            .disposed(by: disposeBag)
         
         // 무한대로 방출되는 infinite observable이 수백개라면?
         // 이렇게 매번 해제를 할 거냐고... 이건 좀 비효율 적임
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-            result.dispose()
-        }
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
-            result2.dispose()
-        }
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+//            // 다시 bag에다가 DisposeBag을 넣어주면 기존 인스턴스가 deinit이 되면서 dispose됨
+//            self.disposeBag = DisposeBag()
+//        }
     }
     
     private func bind() {
@@ -129,10 +137,24 @@ class PasswordViewController: UIViewController {
             .disposed(by: disposeBag)
         
         nextButton.rx.tap
-            .bind(with: self) { owner, _ in
-                owner.navigationController?.pushViewController(PhoneViewController(), animated: true)
+            .subscribe(with: self) { owner, _ in
+                owner.navigationController?.popViewController(animated: true)
+                print("button Tap", owner)
+            } onError: { owner, error in
+                print("button Tap onError")
+            } onCompleted: { owner in
+                print("button Tap onComplted")
+            } onDisposed: { owner in
+                print("button Tap onDisposed")
             }
             .disposed(by: disposeBag)
+
+        
+//            nextButton.rx.tap
+//                .bind(with: self) { owner, _ in
+//                    owner.navigationController?.pushViewController(PhoneViewController(), animated: true)
+//                }
+//                .disposed(by: disposeBag)
     }
     
     @objc func nextButtonClicked() {

@@ -24,13 +24,12 @@ class SearchViewController: UIViewController {
      }()
     
     let searchBar = UISearchBar()
-
-    let data = [
-        "First Item",
-        "Second Item",
-        "Third Item"
-    ]
-    lazy var items = Observable.just(data)
+    
+    let items = BehaviorSubject(value: ["First Item", "Second Item", "Third Item", "Fourth Item", "Fifth Item"])
+    
+//    lazy var items = Observable.just(
+//        ["First Item", "Second Item", "Third Item"]
+//    )
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -87,6 +86,36 @@ class SearchViewController: UIViewController {
     
     func bind() {
         print(#function)
+        
+        searchBar.rx.text.orEmpty
+            .debounce(.seconds(1), scheduler: MainScheduler.instance)
+            .distinctUntilChanged()
+            .subscribe(with: self) { owner, value in
+                print("searchBar text", value)
+                
+                let all = try! owner.items.value()
+                
+                let filter = all.filter { $0.contains(value) }
+                print(filter)
+            }
+            .disposed(by: disposeBag)
+        
+//        searchBar.rx.searchButtonClicked
+//            .subscribe(with: self) { owner, _ in
+//                
+//                // 1. 서치바에 글자를 가져온 후에
+//                // 2. items에 appen하면 될듯?
+//                
+//                // 1.
+//                guard let  text = owner.searchBar.text else { return }
+//                
+//                // 2.
+//                var result = try! owner.items.value()
+//                result.append(text)
+//                
+//                owner.items.onNext(result)
+//            }
+//            .disposed(by: disposeBag)
 
         items
         .bind(to: tableView.rx.items) { (tableView, row, element) in
@@ -109,13 +138,16 @@ class SearchViewController: UIViewController {
 //            }
 //            .disposed(by: disposeBag)
         
-        Observable.combineLatest(
-            tableView.rx.itemSelected,
-            tableView.rx.modelSelected(String.self)
+        Observable.zip(
+            tableView.rx.modelSelected(String.self),
+            tableView.rx.itemSelected
         )
         .bind(with: self) { owner, value in
             print(value.0)
             print(value.1)
+            
+            // 1. 배열이 아니기 때문에 append할 수 없음
+            // 2. Observable은 전달만 할 수 있기 때문
         }
         .disposed(by: disposeBag)
     }
