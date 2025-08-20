@@ -64,14 +64,14 @@ class SignUpViewController: UIViewController {
 
         basicObservableTest()
         
-        nextButton.rx.tap
-            .withUnretained(self)
-            .bind { _ in // 애초에 next 이벤트 밖에 처리를 못하는 구조
-                print("button bind ontNext")
-                let vc = PasswordViewController()
-                self.navigationController?.pushViewController(vc, animated: true)
-            }
-            .disposed(by: disposeBag)
+//        nextButton.rx.tap
+//            .withUnretained(self)
+//            .bind { _ in // 애초에 next 이벤트 밖에 처리를 못하는 구조
+//                print("button bind ontNext")
+//                let vc = PasswordViewController()
+//                self.navigationController?.pushViewController(vc, animated: true)
+//            }
+//            .disposed(by: disposeBag)
         
         nextButton.rx.tap
             .bind(with: self) { owner, _ in
