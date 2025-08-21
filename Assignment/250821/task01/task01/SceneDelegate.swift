@@ -17,13 +17,22 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let numberVC = NumberViewController()
         numberVC.tabBarItem = UITabBarItem(title: "number", image: UIImage(systemName: "plus"), tag: 0)
+        let numberNav = UINavigationController(rootViewController: numberVC)
+        
         let validVC = ValidViewController()
         validVC.tabBarItem = UITabBarItem(title: "valid", image: UIImage(systemName: "pencil.line"), tag: 1)
+        let validNav = UINavigationController(rootViewController: validVC)
+        
         let tableVC = TableRxViewController()
         tableVC.tabBarItem = UITabBarItem(title: "table", image: UIImage(systemName: "tablecells"), tag: 2)
+        let tableNav = UINavigationController(rootViewController: tableVC)
+        
+        let homeworkVC = HomeworkViewController()
+        homeworkVC.tabBarItem = UITabBarItem(title: "homework", image: UIImage(systemName: "pencil.circle"), tag: 3)
+        let homeworkNav = UINavigationController(rootViewController: homeworkVC)
         
         let tab = UITabBarController()
-        tab.viewControllers = [numberVC, validVC, tableVC]
+        tab.viewControllers = [numberNav, validNav, tableNav, homeworkNav]
         
         window = UIWindow(windowScene: windowScene)
         window?.rootViewController = tab
