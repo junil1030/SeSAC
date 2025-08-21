@@ -1,20 +1,14 @@
 //
-//  BirthdayViewController.swift
+//  BirthdayViewController2.swift
 //  SeSACRxThreads
 //
-//  Created by jack on 2023/10/30.
+//  Created by 서준일 on 8/21/25.
 //
- 
+
 import UIKit
 import SnapKit
-import RxSwift
-import RxCocoa
 
-class BirthdayViewController: UIViewController {
-    
-    let disposeBag = DisposeBag()
-//    let userDate = BehaviorSubject(value: Date())
-    let userDate = BehaviorRelay(value: Date())
+class BirthdayViewController2: UIViewController {
     
     let birthDayPicker: UIDatePicker = {
         let picker = UIDatePicker()
@@ -36,7 +30,7 @@ class BirthdayViewController: UIViewController {
         let stack = UIStackView()
         stack.axis = .horizontal
         stack.distribution = .equalSpacing
-        stack.spacing = 10 
+        stack.spacing = 10
         return stack
     }()
     
@@ -79,35 +73,11 @@ class BirthdayViewController: UIViewController {
         
         configureLayout()
         
-        bind()
+        nextButton.addTarget(self, action: #selector(nextButtonClicked), for: .touchUpInside)
     }
     
-    func bind() {
-        
-        birthDayPicker.rx.date
-            .bind(with: self) { owner, date in
-                print(date)
-                owner.userDate.accept(date) // BehaviorSubject의 onNext와 같은 기능 Relay인지 Subject인지 구분하기 위한 용도같다..
-                                            // 들어가보면 결국 onNext 보내고 있거든..
-            }
-            .disposed(by: disposeBag)
-        
-        birthDayPicker.rx.date
-            .asDriver() // 메인 쓰레드 동작을 보장함
-            .drive(with: self) { owner, date in
-                owner.userDate.accept(date)
-            }
-            .disposed(by: disposeBag)
-        
-        userDate
-            .bind(with: self) { owner, date in
-                let components = Calendar.current.dateComponents([.year, .month, .day], from: date)
-                
-                owner.yearLabel.text = "\(components.year!)년"
-                owner.monthLabel.text = "\(components.month!)월"
-                owner.dayLabel.text = "\(components.day!)일"
-            }
-            .disposed(by: disposeBag)
+    @objc func nextButtonClicked() {
+        navigationController?.pushViewController(SearchViewController(), animated: true)
     }
 
     

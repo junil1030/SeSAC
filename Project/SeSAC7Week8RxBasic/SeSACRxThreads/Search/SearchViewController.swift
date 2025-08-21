@@ -25,7 +25,10 @@ class SearchViewController: UIViewController {
     
     let searchBar = UISearchBar()
     
-    let items = BehaviorSubject(value: ["First Item", "Second Item", "Third Item", "Fourth Item", "Fifth Item"])
+    //let items = BehaviorSubject(value: ["First Item", "Second Item", "Third Item", "Fourth Item", "Fifth Item"])
+    
+    var data = ["김새싹", "김토르", "고래", "고래밥", "새우깡", "감자깡", "자색고구마칩"]
+    lazy var items = BehaviorSubject(value: data)
     
 //    lazy var items = Observable.just(
 //        ["First Item", "Second Item", "Third Item"]
@@ -87,18 +90,18 @@ class SearchViewController: UIViewController {
     func bind() {
         print(#function)
         
-        searchBar.rx.text.orEmpty
-            .debounce(.seconds(1), scheduler: MainScheduler.instance)
-            .distinctUntilChanged()
-            .subscribe(with: self) { owner, value in
-                print("searchBar text", value)
-                
-                let all = try! owner.items.value()
-                
-                let filter = all.filter { $0.contains(value) }
-                print(filter)
-            }
-            .disposed(by: disposeBag)
+//        searchBar.rx.text.orEmpty
+//            .debounce(.seconds(1), scheduler: MainScheduler.instance)
+//            .distinctUntilChanged()
+//            .subscribe(with: self) { owner, value in
+//                print("searchBar text", value)
+//                
+//                let all = try! owner.items.value()
+//                
+//                let filter = all.filter { $0.contains(value) }
+//                print(filter)
+//            }
+//            .disposed(by: disposeBag)
         
 //        searchBar.rx.searchButtonClicked
 //            .subscribe(with: self) { owner, _ in
@@ -116,11 +119,38 @@ class SearchViewController: UIViewController {
 //                owner.items.onNext(result)
 //            }
 //            .disposed(by: disposeBag)
+        
+        searchBar.rx.searchButtonClicked
+            .withLatestFrom(searchBar.rx.text.orEmpty)
+            .bind(with: self) { owner, value in
+                print(value)
+                owner.data.insert(value, at: 0)
+                owner.items.onNext(owner.data)
+            }
+            .disposed(by: disposeBag)
+        
+        searchBar.rx.text.orEmpty
+            .debounce(.seconds(1), scheduler: MainScheduler.instance)
+            .bind(with: self) { owner, value in
+                print(value)
+                
+                let filter = value.isEmpty ? owner.data : owner.data.filter { $0.contains(value) }
+                owner.items.onNext(filter)
+            }
+            .disposed(by: disposeBag)
 
         items
         .bind(to: tableView.rx.items) { (tableView, row, element) in
             let cell = tableView.dequeueReusableCell(withIdentifier: SearchTableViewCell.identifier) as! SearchTableViewCell
             cell.appNameLabel.text = "\(element) @ row \(row)"
+            cell.downloadButton.rx.tap
+                .bind(with: self) { owner, _ in
+                    // 여러 번 열림 구독 중첩이 됐음
+                    print("다운로드 버튼 클릭")
+                    let vc = DetailViewController()
+                    owner.navigationController?.pushViewController(vc, animated: true)
+                }
+                .disposed(by: cell.disposeBag)
             return cell
         }
         .disposed(by: disposeBag)
