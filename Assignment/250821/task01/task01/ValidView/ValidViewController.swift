@@ -20,6 +20,7 @@ final class ValidViewController: UIViewController {
     private let minimumUsernameTextlength = 5
     private let minimumPasswordTextlength = 5
     
+    private let viewModel = ValidViewModel()
     private let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
@@ -95,32 +96,34 @@ final class ValidViewController: UIViewController {
     }
     
     private func setupBind() {
-        let userValid = usernameTextField.rx.text.orEmpty
-            .map { $0.count >= self.minimumUsernameTextlength }
+        let input = ValidViewModel.Input(
+            userName: usernameTextField.rx.text.orEmpty,
+            passWord: passwordTextField.rx.text.orEmpty,
+            submitTap: submitButton.rx.tap
+        )
         
-        let passwordValid = passwordTextField.rx.text.orEmpty
-            .map { $0.count >= self.minimumPasswordTextlength }
+        let output = viewModel.transform(input: input)
         
-        let totalValid = Observable.combineLatest(userValid, passwordValid) { $0 && $1 }
-        
-        userValid
-            .bind(to: passwordTextField.rx.isEnabled)
-            .disposed(by: disposeBag)
-        
-        userValid
+        output.isUsernameValid
             .bind(to: usernameValidationLabel.rx.isHidden)
             .disposed(by: disposeBag)
         
-        passwordValid
+        output.isPasswordValid
             .bind(to: passwordValidationLabel.rx.isHidden)
             .disposed(by: disposeBag)
         
-        totalValid
+        output.isPasswordFieldEnabled
+            .bind(to: passwordTextField.rx.isEnabled)
+            .disposed(by: disposeBag)
+        
+        output.isSubmitButtonEnabled
             .bind(to: submitButton.rx.isEnabled)
             .disposed(by: disposeBag)
         
-        submitButton.rx.tap
-            .subscribe(onNext: { [weak self] _ in self?.showAlert() })
+        output.isShowAlert
+            .bind(with: self) { owner, _ in
+                owner.showAlert()
+            }
             .disposed(by: disposeBag)
     }
     

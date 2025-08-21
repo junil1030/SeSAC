@@ -12,13 +12,14 @@ import RxSwift
 
 final class NumberViewController: UIViewController {
     
-    let number1 = UITextField()
-    let number2 = UITextField()
-    let number3 = UITextField()
+    private let number1 = UITextField()
+    private let number2 = UITextField()
+    private let number3 = UITextField()
     
-    let resultLabel = UILabel()
+    private let resultLabel = UILabel()
     
-    let disposeBag = DisposeBag()
+    private let viewModel = NumberViewModel()
+    private let disposeBag = DisposeBag()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -74,12 +75,17 @@ final class NumberViewController: UIViewController {
     }
     
     private func setupBind() {
-        Observable.combineLatest(number1.rx.text.orEmpty, number2.rx.text.orEmpty, number3.rx.text.orEmpty) { value1, value2, value3 -> Int in
-            return (Int(value1) ?? 0) + (Int(value2) ?? 0) + (Int(value3) ?? 0)
-        }
-        .map { $0.description }
-        .bind(to: resultLabel.rx.text)
-        .disposed(by: disposeBag)
+        
+        let input = NumberViewModel.Input(
+            number1: number1.rx.text.orEmpty,
+            number2: number2.rx.text.orEmpty,
+            number3: number3.rx.text.orEmpty)
+        
+        let output = viewModel.transfrom(input: input)
+        
+        output.result
+            .bind(to: resultLabel.rx.text)
+            .disposed(by: disposeBag)
     }
 }
 
