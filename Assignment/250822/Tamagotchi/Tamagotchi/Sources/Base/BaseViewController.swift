@@ -31,7 +31,7 @@ class BaseViewController: UIViewController {
         
         navigationController?.navigationBar.standardAppearance = appearance
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
-        navigationController?.navigationBar.tintColor = .black
+        navigationController?.navigationBar.tintColor = .clear
     }
     
     func setupDelegate() {}

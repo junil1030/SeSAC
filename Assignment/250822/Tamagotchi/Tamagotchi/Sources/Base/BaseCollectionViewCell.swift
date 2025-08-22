@@ -1,5 +1,5 @@
 //
-//  BaseView.swift
+//  BaseCollectionViewCell.swift
 //  Tamagotchi
 //
 //  Created by 서준일 on 8/22/25.
@@ -7,11 +7,16 @@
 
 import UIKit
 
-class BaseView: UIView {
+class BaseCollectionViewCell: UICollectionViewCell {
+    
+    static var identifier: String {
+        return String(describing: self)
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        setupHierachy()
+        setupHierarchy()
         setupLayout()
         setupStyle()
     }
@@ -20,9 +25,11 @@ class BaseView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setupHierachy() {}
-    func setupLayout() {}
+    func setupHierarchy() { }
+    
+    func setupLayout() { }
+    
     func setupStyle() {
-        self.backgroundColor = UIColor(named: ColorName.backgroundColor)
+        backgroundColor = .clear
     }
 }
