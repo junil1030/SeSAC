@@ -11,7 +11,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		F90CE23A2E584DFF007E7A98 /* Exceptions for "Tamagotchi" folder in "Tamagotchi" target */ = {
+		F90CE4002E5867F9007E7A98 /* Exceptions for "Tamagotchi" folder in "Tamagotchi" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Application/Info.plist,
@@ -24,7 +24,7 @@
 		F90CE22A2E584DFD007E7A98 /* Tamagotchi */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				F90CE23A2E584DFF007E7A98 /* Exceptions for "Tamagotchi" folder in "Tamagotchi" target */,
+				F90CE4002E5867F9007E7A98 /* Exceptions for "Tamagotchi" folder in "Tamagotchi" target */,
 			);
 			path = Tamagotchi;
 			sourceTree = "<group>";
@@ -147,7 +147,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = MWBS4R8DBQ;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Tamagotchi/Info.plist;
+				INFOPLIST_FILE = Tamagotchi/Application/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = JunilSeo;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -181,7 +181,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = MWBS4R8DBQ;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Tamagotchi/Info.plist;
+				INFOPLIST_FILE = Tamagotchi/Application/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = JunilSeo;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
