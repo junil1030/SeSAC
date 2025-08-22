@@ -7,6 +7,12 @@
 
 import UIKit
 import SnapKit
+import RxSwift
+import RxCocoa
+
+enum junError: Error {
+    case invalid
+}
 
 class BirthdayViewController2: UIViewController {
     
@@ -66,20 +72,115 @@ class BirthdayViewController2: UIViewController {
   
     let nextButton = PointButton(title: "가입하기")
     
+    let viewModel = BirthdayViewModel()
+    let disposeBag = DisposeBag()
+//    let text = PublishSubject<String>()
+        //BehaviorSubject(value: "")
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         view.backgroundColor = Color.white
         
         configureLayout()
-        
-        nextButton.addTarget(self, action: #selector(nextButtonClicked), for: .touchUpInside)
+        bind()
+        aboutBehaviorSubject()
     }
     
-    @objc func nextButtonClicked() {
-        navigationController?.pushViewController(SearchViewController(), animated: true)
+    func bind() {
+        let input = BirthdayViewModel.Input()
+        let output = viewModel.transform(input: input)
+        
+        birthDayPicker.rx.date
+            .subscribe(with: self) { owner, date in
+                owner.viewModel.date.onNext(date)
+            }
+            .disposed(by: disposeBag)
+        
+        output.year
+            .observe(on: MainScheduler.instance)
+            .bind(to: yearLabel.rx.text)
+            .disposed(by: disposeBag)
+        
+        output.month
+            .asDriver(onErrorJustReturn: "OO월")
+            .drive(monthLabel.rx.text)
+            .disposed(by: disposeBag)
+        
+        output.day
+            .asDriver(onErrorJustReturn: "OO일")
+            .drive(dayLabel.rx.text)
+            .disposed(by: disposeBag)
     }
 
+//    func bind() {
+//        
+//        // 모두 다른 숫자가 나오고 있음
+//        // 근데 이건 스트림이 공유되고 있지 않다는 것이고..
+//        // 버튼이 세번 클릭 되는 현상임
+//        // 근데 만약 tap이 네트워크 콜을 하는 거라면?
+//        // 통신을 3번이나 하게 되는 거지
+//        // 그래서 스트림을 공유하는 구조를 작성해줘야함
+//        
+//        let _ = nextButton.rx.tap
+//            .map { "랜덤 \(Int.random(in: 1...100))" }
+//            .share() // 이게 스트림을 공유하는 방법임
+//        
+//        // 근데 드라이브를 사용하면 스트림이 공유 됨
+//        let tapp = nextButton.rx.tap
+//            .map { "랜덤 \(Int.random(in: 1...100))" }
+//            .asDriver(onErrorJustReturn: "")
+//        
+//        tapp
+//            .drive(yearLabel.rx.text)
+//            .disposed(by: disposeBag)
+//        
+//        tapp
+//            .drive(monthLabel.rx.text)
+//            .disposed(by: disposeBag)
+//        
+//        tapp
+//            .drive(dayLabel.rx.text)
+//            .disposed(by: disposeBag)
+//        
+////        text
+////            .asDriver(onErrorJustReturn: "unknown")
+////            .drive(yearLabel.rx.text)
+////            .disposed(by: disposeBag)
+////        
+////        nextButton.rx.tap
+////            .asDriver()
+////            .drive(with: self) { owner, _ in
+////                owner.infoLabel.text = "입력했어요"
+////                owner.text.onError(junError.invalid)
+////            }
+////            .disposed(by: disposeBag)
+//    }
+    
+    func aboutBehaviorSubject() {
+        
+        let text = BehaviorSubject(value: "고래밥")
+        
+        text.onNext("칙촉")
+        text.onNext("칫솔")
+        
+        text
+            .subscribe(with: self) { owner, value in
+                print("next", value)
+            } onError: { owner, error in
+                print("error", error)
+            } onCompleted: { owner in
+                print("complete")
+            } onDisposed: { owner in
+                print("disposed")
+            }
+            .disposed(by: disposeBag)
+        
+        text.onNext("치약")
+        text.onError(junError.invalid)
+        text.onNext("음료수")
+
+    }
     
     func configureLayout() {
         view.addSubview(infoLabel)

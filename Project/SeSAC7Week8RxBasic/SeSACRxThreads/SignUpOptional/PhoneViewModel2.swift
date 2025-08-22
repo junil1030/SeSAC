@@ -16,7 +16,9 @@ class PhoneViewModel2 {
     }
     
     struct Output {
-        let text: BehaviorSubject<String>
+        let text: PublishSubject<String>
+        let placeholder: PublishSubject<String>
+        let nextText: PublishSubject<String>
     }
     
     private let disposeBag = DisposeBag()
@@ -27,14 +29,23 @@ class PhoneViewModel2 {
     
     func transform(input: Input) -> Output {
         
-        let text = BehaviorSubject(value: "")
-        
+        let text = PublishSubject<String>()
         input.buttonTap
             .bind(with: self) { owner, _ in
                 text.onNext("칙촉 \(Int.random(in: 1...100))")
             }
             .disposed(by: disposeBag)
         
-        return Output(text: text)
+        let placeholder = PublishSubject<String>()
+        let nextText = PublishSubject<String>()
+        
+        placeholder.onNext("연락처를 입력해주세요")
+        nextText.onNext("다음")
+        
+        return Output(
+            text: text,
+            placeholder: placeholder,
+            nextText: nextText
+        )
     }
 }

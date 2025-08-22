@@ -12,8 +12,8 @@ import RxCocoa
 
 class PhoneViewController2: UIViewController {
    
-    let phoneTextField = SignTextField(placeholderText: "연락처를 입력해주세요")
-    let nextButton = PointButton(title: "다음")
+    let phoneTextField = SignTextField(placeholderText: "")
+    let nextButton = PointButton(title: "")
     
     let viewModel = PhoneViewModel2()
     
@@ -35,15 +35,23 @@ class PhoneViewController2: UIViewController {
         let input = PhoneViewModel2.Input(buttonTap: nextButton.rx.tap)
         let output = viewModel.transform(input: input)
 
-        // 버튼 클릭 시 Subject
-        nextButton.rx.tap
-            .bind(with: self) { owner, _ in
-                owner.text.onNext("칙촉 \(Int.random(in: 1...100))")
-            }
+//        // 버튼 클릭 시 Subject
+//        nextButton.rx.tap
+//            .bind(with: self) { owner, _ in
+//                owner.text.onNext("칙촉 \(Int.random(in: 1...100))")
+//            }
+//            .disposed(by: disposeBag)
+//        // 텍스트 필드에 Subject 글자 출력
+//        text
+//            .bind(to: phoneTextField.rx.text)
+//            .disposed(by: disposeBag)
+        
+        output.placeholder
+            .bind(to: phoneTextField.rx.placeholder)
             .disposed(by: disposeBag)
-        // 텍스트 필드에 Subject 글자 출력
-        text
-            .bind(to: phoneTextField.rx.text)
+        
+        output.nextText
+            .bind(to: nextButton.rx.title())
             .disposed(by: disposeBag)
     }
 
