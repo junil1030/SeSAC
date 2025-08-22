@@ -36,6 +36,7 @@ final class SelectionViewModel {
             .withLatestFrom(itemsRelay.asObservable()) { indexPath, items in
                 return items[indexPath.item]
             }
+            .filter { $0.isAvailable}
             .asDriver(onErrorJustReturn: TamagotchiItem(type: .none, title: TamagotchiType.none.selectName, isAvailable: false))
         
         return Output(
