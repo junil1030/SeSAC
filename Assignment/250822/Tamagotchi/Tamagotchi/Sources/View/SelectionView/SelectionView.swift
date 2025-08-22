@@ -10,10 +10,16 @@ import SnapKit
 
 final class SelectionView: BaseView {
     
-    private let collectionView: UICollectionView = {
+    lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        layout.minimumLineSpacing = 20
-        layout.minimumInteritemSpacing = 10
+        layout.minimumLineSpacing = Size.SelectionViewSize.minimumLineSpacing
+        layout.minimumInteritemSpacing = Size.SelectionViewSize.minimumInteritemSpacing
+        layout.sectionInset = UIEdgeInsets(
+            top: Size.SelectionViewSize.Inset.top,
+            left: Size.SelectionViewSize.Inset.left,
+            bottom: Size.SelectionViewSize.Inset.bottom,
+            right: Size.SelectionViewSize.Inset.right
+        )
         
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.backgroundColor = .clear
@@ -31,9 +37,7 @@ final class SelectionView: BaseView {
         super.setupLayout()
         
         collectionView.snp.makeConstraints { make in
-            make.top.equalTo(safeAreaLayoutGuide).offset(20)
-            make.leading.trailing.equalToSuperview().inset(20)
-            make.bottom.equalTo(safeAreaLayoutGuide)
+            make.edges.equalToSuperview()
         }
     }
     

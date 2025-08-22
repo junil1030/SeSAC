@@ -8,24 +8,28 @@
 import UIKit
 import SnapKit
 
-final class TamagotchiCell: UICollectionViewCell {
-    static let identifier = "TamagotchiCell"
+final class TamagotchiCell: BaseCollectionViewCell {
     
     private let containerView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor(named: ColorName.backgroundColor)
-        view.layer.cornerRadius = 8
-        view.layer.borderWidth = 1
-        view.layer.borderColor = UIColor.lightGray.cgColor
+        view.backgroundColor = .clear
         return view
     }()
     
     private let imageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.backgroundColor = .systemGray4
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         return imageView
+    }()
+    
+    private let titleContainerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(named: ColorName.backgroundColor)
+        view.layer.borderWidth = 1
+        view.layer.borderColor = UIColor.lightGray.cgColor
+        view.layer.cornerRadius = 6
+        return view
     }()
     
     private let titleLabel: UILabel = {
@@ -39,7 +43,7 @@ final class TamagotchiCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupUI()
+        
     }
     
     required init?(coder: NSCoder) {
@@ -53,31 +57,44 @@ final class TamagotchiCell: UICollectionViewCell {
         imageView.layer.cornerRadius = imageSize / 2
     }
     
-    private func setupUI() {
+    override func setupHierarchy() {
         contentView.addSubview(containerView)
+        contentView.addSubview(titleContainerView)
         containerView.addSubview(imageView)
-        containerView.addSubview(titleLabel)
+        titleContainerView.addSubview(titleLabel)
+    }
+    
+    override func setupLayout() {
+        super.setupLayout()
         
         containerView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
         
         imageView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(15)
-            make.centerX.equalToSuperview()
-            make.leading.trailing.equalToSuperview().inset(15)
+            make.top.horizontalEdges.equalTo(containerView)
             make.height.equalTo(imageView.snp.width)
         }
         
+        titleContainerView.snp.makeConstraints { make in
+            make.top.equalTo(imageView.snp.bottom).offset(6)
+            make.bottom.lessThanOrEqualToSuperview().offset(-6)
+            make.centerX.equalToSuperview()
+        }
+        
         titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(imageView.snp.bottom).offset(8)
-            make.leading.trailing.equalToSuperview().inset(8)
-            make.bottom.equalToSuperview().offset(-8)
+            make.edges.equalToSuperview().inset(5)
         }
     }
     
-    func configure(type: TamagotchiType) {
-        titleLabel.text = type.selectName
-        imageView.image = UIImage(named: type.selectImage)
+    override func setupStyle() {
+        super.setupStyle()
+        
+        titleLabel.layer.cornerRadius = 5
+    }
+    
+    func configure(item: TamagotchiItem) {
+        titleLabel.text = item.title
+        imageView.image = UIImage(named: item.type.selectImage)
     }
 }
