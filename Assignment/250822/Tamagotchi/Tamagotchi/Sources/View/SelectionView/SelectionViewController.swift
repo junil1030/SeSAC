@@ -61,7 +61,29 @@ final class SelectionViewController: BaseViewController {
     }
     
     private func itemSelected(item: TamagotchiItem) {
-        print(item.title)
+        let popupViewController = PopupViewController(selectedItem: item)
+        
+        popupViewController.onStartTapped = { [weak self] in
+            self?.startTamagotchi(with: item)
+        }
+        
+        popupViewController.onCancelTapped = {
+            print("취소")
+        }
+        
+        present(popupViewController, animated: true)
+    }
+    
+    private func startTamagotchi(with item: TamagotchiItem) {
+        dismiss(animated: true) { [weak self] in
+            print("다마고치: \(item.title)")
+            
+            self?.navigateToMainViewController(with: item)
+        }
+    }
+    
+    private func navigateToMainViewController(with item: TamagotchiItem) {
+        print("메인 화면 이동하면 됨")
     }
 }
 

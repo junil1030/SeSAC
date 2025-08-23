@@ -14,6 +14,7 @@ enum UserDefaultsKey {
 enum ColorName {
     static let backgroundColor = "backgroundColor"
     static let textColor = "textColor"
+    static let buttonTappedColor = "buttonTappedColor"
 }
 
 enum Text {
