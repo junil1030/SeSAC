@@ -17,7 +17,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         window = UIWindow(windowScene: windowScene)
         
-        if UserDefaults.standard.string(forKey: UserDefaultsKey.userNickname) != nil {
+        if DataManager.shared.isSelected {
 
         } else {
             let vc = SelectionViewController()

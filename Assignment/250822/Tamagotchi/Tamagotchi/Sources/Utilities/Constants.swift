@@ -8,7 +8,8 @@
 import Foundation
 
 enum UserDefaultsKey {
-    static let userNickname = "UserNickname"
+    static let userNickname = "userNickname"
+    static let selectedTamagotchi = "selectedTamagotchi"
 }
 
 enum ColorName {

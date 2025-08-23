@@ -7,11 +7,11 @@
 
 import Foundation
 
-enum TamagotchiType {
-    case cactus
-    case cloud
-    case star
-    case none
+enum TamagotchiType: String ,CaseIterable {
+    case cactus = "cactus"
+    case cloud = "cloud"
+    case star = "star"
+    case none = "none"
     
     var selectImage: String {
         switch self {
