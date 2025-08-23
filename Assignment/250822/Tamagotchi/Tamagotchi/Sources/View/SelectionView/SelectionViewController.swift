@@ -15,6 +15,11 @@ final class SelectionViewController: BaseViewController {
     private let selectionView = SelectionView()
     private let viewModel = SelectionViewModel()
     private let disposeBag = DisposeBag()
+    
+    private let startButtonTappedSubject = PublishSubject<TamagotchiItem>()
+    private let cancelButtonTappedSubject = PublishSubject<Void>()
+    
+    private var currentPopupViewController: PopupViewController?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,7 +46,9 @@ final class SelectionViewController: BaseViewController {
         super.setupBind()
         
         let input = SelectionViewModel.Input(
-            itemSelected: selectionView.collectionView.rx.itemSelected.asObservable()
+            itemSelected: selectionView.collectionView.rx.itemSelected.asObservable(),
+            startButtonTapped: startButtonTappedSubject.asObservable(),
+            cancelButtonTapped: cancelButtonTappedSubject.asObservable()
         )
         
         let output = viewModel.transform(input: input)
@@ -52,38 +59,49 @@ final class SelectionViewController: BaseViewController {
             }
             .disposed(by: disposeBag)
         
-        output.selectedItem
+        output.showPopup
             .drive(with: self) { owner, item in
-                owner.itemSelected(item: item)
+                owner.showPopup(with: item)
             }
             .disposed(by: disposeBag)
         
+        output.dismissPopup
+            .drive(with: self) { owner, _ in
+                owner.dismissPopup()
+            }
+            .disposed(by: disposeBag)
+        
+        output.navigateToMain
+            .drive(with: self) { owner, tamagotchiType in
+                owner.navigateToMainViewController(with: tamagotchiType)
+            }
+            .disposed(by: disposeBag)
+
     }
     
-    private func itemSelected(item: TamagotchiItem) {
+    private func showPopup(with item: TamagotchiItem) {
         let popupViewController = PopupViewController(selectedItem: item)
         
         popupViewController.onStartTapped = { [weak self] in
-            self?.startTamagotchi(with: item)
+            self?.startButtonTappedSubject.onNext(item)
         }
         
-        popupViewController.onCancelTapped = {
-            print("취소")
+        popupViewController.onCancelTapped = { [weak self] in
+            self?.cancelButtonTappedSubject.onNext(())
         }
         
+        currentPopupViewController = popupViewController
         present(popupViewController, animated: true)
     }
     
-    private func startTamagotchi(with item: TamagotchiItem) {
-        dismiss(animated: true) { [weak self] in
-            print("다마고치: \(item.title)")
-            
-            self?.navigateToMainViewController(with: item)
+    private func dismissPopup() {
+        currentPopupViewController?.dismiss(animated: true) { [weak self] in
+            self?.currentPopupViewController = nil
         }
     }
     
-    private func navigateToMainViewController(with item: TamagotchiItem) {
-        print("메인 화면 이동하면 됨")
+    private func navigateToMainViewController(with tamagotchiType: TamagotchiType) {
+        print("메인 화면으로 이동: \(tamagotchiType.selectName)")
     }
 }
 

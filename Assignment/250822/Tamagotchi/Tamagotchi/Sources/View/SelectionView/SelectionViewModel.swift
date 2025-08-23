@@ -19,11 +19,15 @@ final class SelectionViewModel {
     
     struct Input {
         let itemSelected: Observable<IndexPath>
+        let startButtonTapped: Observable<TamagotchiItem>
+        let cancelButtonTapped: Observable<Void>
     }
     
     struct Output {
         let items: Driver<[TamagotchiItem]>
-        let selectedItem: Driver<TamagotchiItem>
+        let showPopup: Driver<TamagotchiItem>
+        let dismissPopup: Driver<Void>
+        let navigateToMain: Driver<TamagotchiType>
     }
     
     private let maxItemCount = 21
@@ -37,11 +41,29 @@ final class SelectionViewModel {
                 return items[indexPath.item]
             }
             .filter { $0.isAvailable}
+            .share()
+        
+        let showPopup = selectedItem
             .asDriver(onErrorJustReturn: TamagotchiItem(type: .none, title: TamagotchiType.none.selectName, isAvailable: false))
+        
+        let dismissPopup = Observable.merge(
+            input.cancelButtonTapped,
+            input.startButtonTapped.map { _ in () }
+        )
+            .asDriver(onErrorJustReturn: ())
+        
+        let navigateToMain = input.startButtonTapped
+            .do(onNext: { [weak self] item in
+                self?.saveTamagotchiSelection(item.type)
+            })
+            .map { $0.type }
+            .asDriver(onErrorJustReturn: .none)
         
         return Output(
             items: itemsRelay.asDriver(),
-            selectedItem: selectedItem
+            showPopup: showPopup,
+            dismissPopup: dismissPopup,
+            navigateToMain: navigateToMain
         )
     }
     
@@ -59,5 +81,9 @@ final class SelectionViewModel {
         }
         
         return items
+    }
+    
+    private func saveTamagotchiSelection(_ type: TamagotchiType) {
+        DataManager.shared.saveSelectedTamagotchiType(type)
     }
 }
