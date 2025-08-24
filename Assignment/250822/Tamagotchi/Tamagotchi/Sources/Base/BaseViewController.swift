@@ -25,7 +25,7 @@ class BaseViewController: UIViewController {
         appearance.backgroundColor = .clear
         appearance.configureWithTransparentBackground()
         appearance.titleTextAttributes = [
-            .foregroundColor: UIColor.black,
+            .foregroundColor: UIColor(named: ColorName.textColor) ?? .black,
             .font: UIFont.boldSystemFont(ofSize: 20)
         ]
         
@@ -36,4 +36,9 @@ class BaseViewController: UIViewController {
     
     func setupDelegate() {}
     func setupBind() {}
+    
+    func changeRootViewController(to vc: UIViewController) {
+        guard let window = view.window else { return }
+        window.rootViewController = vc
+    }
 }

@@ -101,7 +101,9 @@ final class SelectionViewController: BaseViewController {
     }
     
     private func navigateToMainViewController(with tamagotchiType: TamagotchiType) {
-        print("메인 화면으로 이동: \(tamagotchiType.selectName)")
+        let vc = MainViewController()
+        let nav = UINavigationController(rootViewController: vc)
+        changeRootViewController(to: nav)
     }
 }
 
