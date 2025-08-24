@@ -35,3 +35,7 @@ enum Size {
         }
     }
 }
+
+enum Image {
+    static let bubbleImage = "bubble"
+}
