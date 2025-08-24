@@ -76,7 +76,9 @@ final class SettingViewController: BaseViewController {
     }
     
     private func pushChangeNicknameView() {
-        self.navigationController?.pushViewController(UIViewController(), animated: true)
+        self.navigationItem.backButtonTitle = "설정"
+        let vc = ChangeNicknameViewController()
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     private func changeTamagotchi() {
