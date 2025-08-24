@@ -26,6 +26,19 @@ enum TamagotchiType: String ,CaseIterable {
         }
     }
     
+    var imagePrefix: String {
+        switch self {
+        case .cactus:
+            return "1"
+        case .cloud:
+            return "2"
+        case .star:
+            return "3"
+        case .none:
+            return "0"
+        }
+    }
+    
     var selectName: String {
         switch self {
         case .cactus:

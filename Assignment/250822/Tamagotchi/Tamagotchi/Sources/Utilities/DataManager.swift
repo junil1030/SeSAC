@@ -14,6 +14,7 @@ final class DataManager {
     
     private let manager = UserDefaults.standard
     
+    //MARK: - Nickname Management
     func saveUserNickname(_ nickname: String) {
         manager.set(nickname, forKey: UserDefaultsKey.userNickname)
     }
@@ -26,6 +27,7 @@ final class DataManager {
         manager.removeObject(forKey: UserDefaultsKey.userNickname)
     }
     
+    //MARK: - TamagotchiType Management
     func saveSelectedTamagotchiType(_ type: TamagotchiType) {
         manager.set(type.rawValue, forKey: UserDefaultsKey.selectedTamagotchi)
     }
@@ -41,9 +43,56 @@ final class DataManager {
         manager.removeObject(forKey: UserDefaultsKey.selectedTamagotchi)
     }
     
+    // MARK: - Rice Management
+    func saveRice(_ rice: Int) {
+        manager.set(rice, forKey: UserDefaultsKey.tamagotchiRice)
+    }
+    
+    func loadRice() -> Int {
+        return manager.integer(forKey: UserDefaultsKey.tamagotchiRice)
+    }
+    
+    func removeRice() {
+        manager.removeObject(forKey: UserDefaultsKey.tamagotchiRice)
+    }
+    
+    // MARK: - Water Management
+    func saveWater(_ water: Int) {
+        manager.set(water, forKey: UserDefaultsKey.tamagotchiWater)
+    }
+    
+    func loadWater() -> Int {
+        return manager.integer(forKey: UserDefaultsKey.tamagotchiWater)
+    }
+    
+    func removeWater() {
+        manager.removeObject(forKey: UserDefaultsKey.tamagotchiWater)
+    }
+    
+    // MARK: - Level Management
+    func saveLevel(_ level: Int) {
+        manager.set(level, forKey: UserDefaultsKey.tamagotchiLevel)
+    }
+    
+    func loadLevel() -> Int {
+        return manager.integer(forKey: UserDefaultsKey.tamagotchiLevel)
+    }
+    
+    func removeLevel() {
+        manager.removeObject(forKey: UserDefaultsKey.tamagotchiLevel)
+    }
+    
+    // MARK: - Reset All Stats
+    func resetTamagotchiStats() {
+        removeRice()
+        removeWater()
+        removeLevel()
+    }
+    
     func resetAllData() {
         removeUserNickname()
         removeSelectedTamagotchiType()
+        resetTamagotchiStats()
     }
     
     var isSelected: Bool {

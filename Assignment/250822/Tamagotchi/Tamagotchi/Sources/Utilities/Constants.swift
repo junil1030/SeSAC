@@ -10,6 +10,9 @@ import Foundation
 enum UserDefaultsKey {
     static let userNickname = "userNickname"
     static let selectedTamagotchi = "selectedTamagotchi"
+    static let tamagotchiRice = "tamagotchi_rice"
+    static let tamagotchiWater = "tamagotchi_water"
+    static let tamagotchiLevel = "tamagotchi_level"
 }
 
 enum ColorName {
