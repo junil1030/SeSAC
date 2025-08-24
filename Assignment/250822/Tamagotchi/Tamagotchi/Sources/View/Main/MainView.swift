@@ -10,6 +10,9 @@ import SnapKit
 
 final class MainView: BaseView {
     
+    var onMealButtonTapped: ((String?) -> Void)?
+    var onDropButtonTapped: ((String?) -> Void)?
+    
     private let tabBarLineLabel: UILabel = {
         let label = UILabel()
         label.backgroundColor = UIColor(named: ColorName.buttonTappedColor)
@@ -252,8 +255,9 @@ final class MainView: BaseView {
         
         // 메시지 라벨 - 말풍선 내부에 배치
         messageLabel.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.centerY.equalToSuperview().offset(-5)
+//            make.centerX.equalToSuperview()
+//            make.centerY.equalToSuperview().offset(-5)
+            make.edges.equalToSuperview().inset(5)
         }
         
         // 다마고치 이미지
@@ -332,8 +336,27 @@ final class MainView: BaseView {
         }
     }
     
-    func configure(tamagotchi: TamagotchiItem, stats: TamagotchiStats, message: String) {
-        tamagotchiImage.image = UIImage(named: tamagotchi.type.selectImage)
+    override func setupStyle() {
+        super.setupStyle()
+        
+        setupButtonActions()
+    }
+    
+    private func setupButtonActions() {
+        mealButton.addTarget(self, action: #selector(mealButtonTapped), for: .touchUpInside)
+        dropButton.addTarget(self, action: #selector(dropButtonTapped), for: .touchUpInside)
+    }
+    
+    @objc private func mealButtonTapped() {
+        onMealButtonTapped?(inputMealField.text)
+    }
+    
+    @objc private func dropButtonTapped() {
+        onDropButtonTapped?(inputDropField.text)
+    }
+    
+    func configure(tamagotchi: TamagotchiItem, stats: TamagotchiStats, message: String, imageText: String) {
+        tamagotchiImage.image = UIImage(named: imageText)
         titleLabel.text = tamagotchi.title
         lvLabel.text = "LV\(stats.level)"
         mealLabel.text = "밥알 \(stats.mealCount)개"
