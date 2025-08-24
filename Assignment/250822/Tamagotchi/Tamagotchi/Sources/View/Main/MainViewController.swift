@@ -5,7 +5,7 @@
 //  Created by 서준일 on 8/24/25.
 //
 
-import Foundation
+import UIKit
 import SnapKit
 import RxSwift
 import RxCocoa
@@ -38,6 +38,7 @@ final class MainViewController: BaseViewController {
     override func setupStyle() {
         super.setupStyle()
         
+        setupNavigationBarItems()
     }
     
     override func setupDelegate() {
@@ -84,5 +85,22 @@ final class MainViewController: BaseViewController {
             message: data.message,
             imageText: data.imageText
         )
+    }
+    
+    private func setupNavigationBarItems() {
+        let settingButton = UIBarButtonItem(
+            image: UIImage(systemName: "person.circle"),
+            style: .plain,
+            target: self,
+            action: #selector(settingButtonTapped)
+        )
+        
+        settingButton.tintColor = UIColor(named: ColorName.textColor)
+        navigationItem.rightBarButtonItem = settingButton
+    }
+    
+    @objc private func settingButtonTapped() {
+        let vc = SettingViewController()
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 }
