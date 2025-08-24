@@ -73,6 +73,10 @@ class CustomButton: UIButton {
         stackView.addArrangedSubview(iconImageView)
         stackView.addArrangedSubview(textLabel)
         
+        stackView.isUserInteractionEnabled = false
+        iconImageView.isUserInteractionEnabled = false
+        textLabel.isUserInteractionEnabled = false
+        
         stackView.snp.makeConstraints { make in
             make.edges.equalToSuperview().inset(5)
         }
