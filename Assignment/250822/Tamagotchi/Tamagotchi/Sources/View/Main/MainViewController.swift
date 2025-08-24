@@ -7,15 +7,23 @@
 
 import Foundation
 import SnapKit
+import RxSwift
+import RxCocoa
 
 final class MainViewController: BaseViewController {
     
-    let mainView = MainView()
+    private let mainView = MainView()
+    private let mainViewModel = MainViewModel()
+    private let disposeBag = DisposeBag()
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    private let mealButtonTappedRelay = PublishRelay<String?>()
+    private let dropButtonTappedRelay = PublishRelay<String?>()
+    private let viewWillAppearRelay = PublishRelay<Bool>()
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
-        
+        viewWillAppearRelay.accept(animated)
     }
     
     override func setupLayout() {
@@ -25,5 +33,56 @@ final class MainViewController: BaseViewController {
         mainView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+    }
+    
+    override func setupStyle() {
+        super.setupStyle()
+        
+    }
+    
+    override func setupDelegate() {
+        super.setupDelegate()
+        
+    }
+    
+    override func setupBind() {
+        super.setupBind()
+        
+        let input = MainViewModel.Input(
+            mealButtonTapped: mealButtonTappedRelay.asObservable(),
+            dropButtonTapped: dropButtonTappedRelay.asObservable(),
+            viewWillAppear: viewWillAppearRelay.asObservable()
+        )
+        
+        let output = mainViewModel.transform(input: input)
+        
+        output.title
+            .drive(with: self) { owner, text in
+                owner.title = text
+            }
+            .disposed(by: disposeBag)
+        
+        output.updateUI
+            .drive(with: self) { owner, uiModel in
+                owner.updateView(with: uiModel)
+            }
+            .disposed(by: disposeBag)
+        
+        mainView.onMealButtonTapped = { [weak self] text in
+            self?.mealButtonTappedRelay.accept(text)
+        }
+        
+        mainView.onDropButtonTapped = { [weak self] text in
+            self?.dropButtonTappedRelay.accept(text)
+        }
+    }
+    
+    private func updateView(with data: MainViewTamagotchiInfo) {
+        mainView.configure(
+            tamagotchi: data.tamagotchi,
+            stats: data.stats,
+            message: data.message,
+            imageText: data.imageText
+        )
     }
 }
