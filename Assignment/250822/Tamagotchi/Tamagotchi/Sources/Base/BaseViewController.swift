@@ -31,7 +31,8 @@ class BaseViewController: UIViewController {
         
         navigationController?.navigationBar.standardAppearance = appearance
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
-        navigationController?.navigationBar.tintColor = .clear
+        navigationController?.navigationBar.tintColor = UIColor(named: ColorName.textColor)
+        navigationItem.backButtonTitle = ""
     }
     
     func setupDelegate() {}
