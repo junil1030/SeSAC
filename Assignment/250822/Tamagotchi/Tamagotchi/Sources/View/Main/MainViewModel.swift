@@ -54,7 +54,7 @@ final class MainViewModel {
             .share()
         
         validMealInput
-            .subscribe(onNext: { [weak self] text in
+            .subscribe(with: self, onNext: { owner, text in
                 guard let amount = Int(text) else {
                     showAlertRelay.accept(.invalidMealInput)
                     return
@@ -70,10 +70,10 @@ final class MainViewModel {
                     return
                 }
                 
-                self?.tamagotchiManager.eatRice(amount)
+                owner.tamagotchiManager.eatRice(amount)
                 updateUIRelay.accept(())
                 
-                if self?.tamagotchiManager.isMaxLevel == true {
+                if owner.tamagotchiManager.isMaxLevel == true {
                     print("다마고치가 최대 레벨에 도달했습니다")
                 }
             })
@@ -92,7 +92,7 @@ final class MainViewModel {
             .share()
         
         validDropInput
-            .subscribe(onNext: { [weak self] text in
+            .subscribe(with: self, onNext: { owner, text in
                 guard let amount = Int(text) else {
                     showAlertRelay.accept(.invalidWaterInput)
                     return
@@ -108,10 +108,10 @@ final class MainViewModel {
                     return
                 }
                 
-                self?.tamagotchiManager.drinkWater(amount)
+                owner.tamagotchiManager.drinkWater(amount)
                 updateUIRelay.accept(())
                 
-                if self?.tamagotchiManager.isMaxLevel == true {
+                if owner.tamagotchiManager.isMaxLevel == true {
                     print("다마고치가 최대 레벨에 도달했습니다")
                 }
             })

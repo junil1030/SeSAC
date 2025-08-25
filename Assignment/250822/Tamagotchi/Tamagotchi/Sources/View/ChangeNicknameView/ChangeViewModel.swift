@@ -20,7 +20,7 @@ final class ChangeViewModel {
     struct Output {
         let title: Driver<String>
         let changeComplete: Driver<Void>
-        let changeFail: Driver<Void>
+        let showInputValidationAlert: Driver<ChangeNicknameViewController.InputValidationType>
     }
     
     func transfer(input: Input) -> Output {
@@ -29,26 +29,47 @@ final class ChangeViewModel {
         let navigationTitle = "\(title ?? "대장")님 이름 정하기"
         let titleDriver = Driver.just(navigationTitle)
         
+        let showAlertRelay = PublishRelay<ChangeNicknameViewController.InputValidationType>()
+        let changeCompleteRelay = PublishRelay<Void>()
+        
         let nicknameText = input.saveButtonTapped
             .compactMap { $0 }
             .share()
         
-        let changeComplete = nicknameText
-            .filter { $0.count >= 2 && $0.count <= 6 }
-            .withUnretained(self) { owner, nickname in
+        nicknameText
+            .subscribe(with: self, onNext: { owner, nickname in
+                if nickname.hasPrefix(" ") {
+                    showAlertRelay.accept(.startsWithSpace)
+                    return
+                }
+                
+                let trimmedNickname = nickname.trimmingCharacters(in: .whitespacesAndNewlines)
+                
+                if trimmedNickname.count < 2 {
+                    showAlertRelay.accept(.tooShort)
+                    return
+                }
+                
+                if nickname.count >= 6 {
+                    showAlertRelay.accept(.tooLong)
+                    return
+                }
+                
                 owner.dataManager.saveUserNickname(nickname)
-            }
+                changeCompleteRelay.accept(())
+            })
+            .disposed(by: disposeBag)
+        
+        let changeComplete = changeCompleteRelay
             .asDriver(onErrorJustReturn: ())
         
-        let changeFail = nicknameText
-            .filter { $0.count < 2 && $0.count > 6 }
-            .map { _ in () }
-            .asDriver(onErrorJustReturn: ())
+        let showInputValidationAlert = showAlertRelay
+            .asDriver(onErrorJustReturn: .tooShort)
         
         return Output(
             title: titleDriver,
             changeComplete: changeComplete,
-            changeFail: changeFail
+            showInputValidationAlert: showInputValidationAlert
         )
     }
 }

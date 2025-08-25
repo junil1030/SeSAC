@@ -51,9 +51,9 @@ final class ChangeNicknameViewController: BaseViewController {
             }
             .disposed(by: disposeBag)
         
-        output.changeFail
-            .drive(with: self) { owner, _ in
-                owner.fail()
+        output.showInputValidationAlert
+            .drive(with: self) { owner, validationType in
+                owner.showInputValidationAlert(for: validationType)
             }
             .disposed(by: disposeBag)
     }
@@ -76,5 +76,32 @@ final class ChangeNicknameViewController: BaseViewController {
     
     @objc private func saveButtonTapped() {
         saveButtonTappedRelay.accept(changeView.getText())
+    }
+}
+
+extension ChangeNicknameViewController {
+    enum InputValidationType {
+        case tooShort
+        case tooLong
+        case startsWithSpace
+        case containsInvalidCharacters
+        
+        var alertInfo: (title: String, message: String) {
+            switch self {
+            case .tooShort:
+                return ("입력 제한", "이름은 2글자 이상이어야 해요!")
+            case .tooLong:
+                return ("입력 제한", "이름은 6글자 미만이어야 해요!")
+            case .startsWithSpace:
+                return ("잘못된 입력", "이름의 첫 글자는 공백일 수 없어요!")
+            case .containsInvalidCharacters:
+                return ("잘못된 입력", "이름에 사용할 수 없는 문자가 포함되어 있어요!")
+            }
+        }
+    }
+    
+    func showInputValidationAlert(for type: InputValidationType) {
+        let (title, message) = type.alertInfo
+        showAlert(title: title, message: message)
     }
 }
