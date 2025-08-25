@@ -42,4 +42,13 @@ class BaseViewController: UIViewController {
         guard let window = view.window else { return }
         window.rootViewController = vc
     }
+    
+    func showAlert(title: String, message: String, completion: (() -> Void)? = nil) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "확인", style: .default) { _ in
+            completion?()
+        }
+        alert.addAction(okAction)
+        present(alert, animated: true)
+    }
 }

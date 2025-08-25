@@ -32,11 +32,13 @@ final class MainViewModel {
     struct Output {
         let updateUI: Driver<MainViewTamagotchiInfo>
         let title: Driver<String>
+        let showInputValidationAlert: Driver<MainViewController.InputValidationType>
     }
     
     func transform(input: Input) -> Output {
         
-        let updateUIRealay = PublishRelay<Void>()
+        let updateUIRelay = PublishRelay<Void>()
+        let showAlertRelay = PublishRelay<MainViewController.InputValidationType>()
         
         setupSelectedTamagotchi()
         
@@ -52,17 +54,31 @@ final class MainViewModel {
             .share()
         
         validMealInput
-            .compactMap { Int($0) }
-            .filter { $0 > 0 && $0 < 100}
-            .bind(with: self) { owner, amount in
-                owner.tamagotchiManager.eatRice(amount)
-                updateUIRealay.accept(())
+            .subscribe(onNext: { [weak self] text in
+                guard let amount = Int(text) else {
+                    showAlertRelay.accept(.invalidMealInput)
+                    return
+                }
                 
-                if owner.tamagotchiManager.isMaxLevel {
+                if amount <= 0 {
+                    showAlertRelay.accept(.invalidMealInput)
+                    return
+                }
+                
+                if amount > 99 {
+                    showAlertRelay.accept(.mealOverLimit)
+                    return
+                }
+                
+                self?.tamagotchiManager.eatRice(amount)
+                updateUIRelay.accept(())
+                
+                if self?.tamagotchiManager.isMaxLevel == true {
                     print("다마고치가 최대 레벨에 도달했습니다")
                 }
-            }
+            })
             .disposed(by: disposeBag)
+
         
         let validDropInput = input.dropButtonTapped
             .compactMap { $0 }
@@ -76,21 +92,34 @@ final class MainViewModel {
             .share()
         
         validDropInput
-            .compactMap { Int($0) }
-            .filter { $0 > 0 && $0 < 50}
-            .bind(with: self) { owner, amount in
-                owner.tamagotchiManager.drinkWater(amount)
-                updateUIRealay.accept(())
+            .subscribe(onNext: { [weak self] text in
+                guard let amount = Int(text) else {
+                    showAlertRelay.accept(.invalidWaterInput)
+                    return
+                }
                 
-                if owner.tamagotchiManager.isMaxLevel {
+                if amount <= 0 {
+                    showAlertRelay.accept(.invalidWaterInput)
+                    return
+                }
+                
+                if amount > 49 {
+                    showAlertRelay.accept(.waterOverLimit)
+                    return
+                }
+                
+                self?.tamagotchiManager.drinkWater(amount)
+                updateUIRelay.accept(())
+                
+                if self?.tamagotchiManager.isMaxLevel == true {
                     print("다마고치가 최대 레벨에 도달했습니다")
                 }
-            }
+            })
             .disposed(by: disposeBag)
         
         input.viewWillAppear
             .map { _ in () }
-            .bind(to: updateUIRealay)
+            .bind(to: updateUIRelay)
             .disposed(by: disposeBag)
         
         let title = input.viewWillAppear
@@ -100,7 +129,7 @@ final class MainViewModel {
             }
             .asDriver(onErrorJustReturn: "대장님의 다마고치")
         
-        let uiModel = updateUIRealay
+        let uiModel = updateUIRelay
             .withUnretained(self)
             .compactMap { owner, _ in
                 guard let tamagotchi = owner.selectedTamagotchi else { return nil }
@@ -118,9 +147,13 @@ final class MainViewModel {
             }
             .asDriver(onErrorJustReturn: createDefaultUIModel())
         
+        let showInputValidationAlert = showAlertRelay
+            .asDriver(onErrorJustReturn: .invalidMealInput)
+        
         return Output(
             updateUI: uiModel,
-            title: title
+            title: title,
+            showInputValidationAlert: showInputValidationAlert
         )
     }
     
