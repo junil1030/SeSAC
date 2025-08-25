@@ -13,7 +13,6 @@ final class MainTabBarController: UITabBarController {
         super.viewDidLoad()
         
         setupVC()
-//        setupUI()
     }
     
     private func setupVC() {
@@ -25,9 +24,8 @@ final class MainTabBarController: UITabBarController {
         let lottoNav = UINavigationController(rootViewController: lottoVC)
         lottoVC.tabBarItem = UITabBarItem(title: "Lotto", image: UIImage(systemName: "dollarsign.circle"), tag: 1)
         
-        let movieVC = UIViewController()
+        let movieVC = MovieViewController()
         let movieNav = UINavigationController(rootViewController: movieVC)
-        movieNav.view.backgroundColor = .black
         movieVC.tabBarItem = UITabBarItem(title: "CINEMA", image: UIImage(systemName: "popcorn"), tag: 2)
         
         viewControllers = [mainNav, lottoNav, movieNav]

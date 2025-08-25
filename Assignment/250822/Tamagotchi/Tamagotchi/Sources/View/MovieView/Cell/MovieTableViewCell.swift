@@ -1,5 +1,5 @@
 //
-//  LottoTableViewCell.swift
+//  MovieTableViewCell.swift
 //  Tamagotchi
 //
 //  Created by 서준일 on 8/25/25.
@@ -8,9 +8,9 @@
 import UIKit
 import SnapKit
 
-final class LottoTableViewCell: UITableViewCell {
+final class MovieTableViewCell: UITableViewCell {
     
-    static let identifier = "PersonTableViewCell"
+    static let identifier = "MovieTableViewCell"
     
     let resultLabel: UILabel = {
         let label = UILabel()
