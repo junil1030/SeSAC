@@ -21,7 +21,7 @@ final class MainTabBarController: UITabBarController {
         let mainNav = UINavigationController(rootViewController: mainVC)
         mainVC.tabBarItem = UITabBarItem(title: "Tamagotchi", image: UIImage(systemName: "gamecontroller.circle"), tag: 0)
         
-        let lottoVC = UIViewController()
+        let lottoVC = LottoViewController()
         let lottoNav = UINavigationController(rootViewController: lottoVC)
         lottoVC.tabBarItem = UITabBarItem(title: "Lotto", image: UIImage(systemName: "dollarsign.circle"), tag: 1)
         
