@@ -18,9 +18,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: windowScene)
         
         if DataManager.shared.isSelected {
-            let vc = MainViewController()
-            let nav = UINavigationController(rootViewController: vc)
-            window?.rootViewController = nav
+            let tabVC = MainTabBarController()
+            window?.rootViewController = tabVC
         } else {
             let vc = SelectionViewController()
             let nav = UINavigationController(rootViewController: vc)

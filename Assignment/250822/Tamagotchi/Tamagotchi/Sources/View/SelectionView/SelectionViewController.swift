@@ -101,9 +101,8 @@ final class SelectionViewController: BaseViewController {
     }
     
     private func navigateToMainViewController(with tamagotchiType: TamagotchiType) {
-        let vc = MainViewController()
-        let nav = UINavigationController(rootViewController: vc)
-        changeRootViewController(to: nav)
+        let tabVC = MainTabBarController()
+        changeRootViewController(to: tabVC)
     }
 }
 
