@@ -38,6 +38,8 @@ final class MovieTableViewCell: UITableViewCell {
             make.centerY.equalToSuperview()
             make.horizontalEdges.equalToSuperview().inset(20)
         }
+        
+        backgroundColor = .white
     }
 }
 

@@ -14,39 +14,38 @@ final class MovieViewController: BaseViewController {
     private let tableView = UITableView()
     private let searchBar = UISearchBar()
     
-    private let disposeBag = DisposeBag()
+    private let searchButtonClickedRelay = PublishRelay<String>()
     
-    private var movieList: BehaviorRelay<[Movie]> = BehaviorRelay(value: [])
+    private let viewModel = MovieViewModel()
+    
+    private let disposeBag = DisposeBag()
     
     override func setupBind() {
         super.setupBind()
         
-        movieList
-            .bind(to: tableView.rx.items(cellIdentifier: MovieTableViewCell.identifier, cellType: MovieTableViewCell.self)) { row, element, cell in
-                cell.resultLabel.text = element.movieNm
+        searchBar.rx.searchButtonClicked
+            .withLatestFrom(searchBar.rx.text.orEmpty)
+            .bind(with: self) { owner, text in
+                owner.searchButtonClickedRelay.accept(text)
             }
             .disposed(by: disposeBag)
         
-        searchBar.rx.searchButtonClicked
-            .withLatestFrom(searchBar.rx.text.orEmpty)
-            .distinctUntilChanged()
-            .flatMap { text in
-                CustomObservable.getDailyBoxOffice(date: text)
-            }
-            .subscribe(with: self) { owner, value in
-                var data = owner.movieList.value
-                data.append(contentsOf: value)
-                
-                owner.movieList.accept(data)
-            } onError: { owner, error in
-                print("onError", error)
-            } onCompleted: { owner in
-                print("onCompleted")
-            } onDisposed: { owner in
-                print("onDisposed")
+        let input = MovieViewModel.Input(searchButtonClicked: searchButtonClickedRelay.asObservable())
+
+        let output = viewModel.transform(input: input)
+        
+        output.movieList
+            .drive(tableView.rx.items(cellIdentifier: MovieTableViewCell.identifier, cellType: MovieTableViewCell.self)) { index, movie, cell in
+                cell.resultLabel.text = movie.movieNm
             }
             .disposed(by: disposeBag)
 
+        output.errorMessage
+            .compactMap { $0 }
+            .drive(with: self) { owner, message in
+                owner.showAlert(title: "오류", message: message)
+            }
+            .disposed(by: disposeBag)
     }
     
     override func setupLayout() {

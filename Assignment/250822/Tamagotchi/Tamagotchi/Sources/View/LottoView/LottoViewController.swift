@@ -15,6 +15,10 @@ final class LottoViewController: BaseViewController {
     private let searchBar = UISearchBar()
     private let resultLabel = UILabel()
     
+    private let searchButtonClickedRelay = PublishRelay<String>()
+    
+    private let viewModel = LottoViewModel()
+    
     private let disposeBag = DisposeBag()
     
     override func setupBind() {
@@ -22,18 +26,25 @@ final class LottoViewController: BaseViewController {
         
         searchBar.rx.searchButtonClicked
             .withLatestFrom(searchBar.rx.text.orEmpty)
-            .distinctUntilChanged()
-            .flatMap { text in
-                CustomObservable.getLotto(query: text)
+            .bind(with: self) { owner, text in
+                owner.searchButtonClickedRelay.accept(text)
             }
-            .subscribe(with: self) { owner, value in
-                owner.configure(to: value)
-            } onError: { owner, error in
-                print("onError", error)
-            } onCompleted: { owner in
-                print("onCompleted", owner)
-            } onDisposed: { owner in
-                print("onDisposed", owner)
+            .disposed(by: disposeBag)
+        
+        let input = LottoViewModel.Input(searchButtonClicked: searchButtonClickedRelay.asObservable())
+        
+        let output = viewModel.transform(input: input)
+        
+        output.lottoResult
+            .drive(with: self) { owner, response in
+                switch response {
+                case .success(let value):
+                    owner.searchBar.resignFirstResponder()
+                    owner.searchBar.endEditing(true)
+                    owner.configure(to: value)
+                case .failure(let error):
+                    owner.showAlert(title: "경고", message: error.localizedDescription)
+                }
             }
             .disposed(by: disposeBag)
 
