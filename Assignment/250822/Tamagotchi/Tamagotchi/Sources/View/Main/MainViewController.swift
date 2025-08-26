@@ -22,7 +22,7 @@ final class MainViewController: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+        //
         viewWillAppearRelay.accept(animated)
     }
     
@@ -112,26 +112,6 @@ final class MainViewController: BaseViewController {
 }
 
 extension MainViewController {
-    enum InputValidationType {
-        case mealOverLimit
-        case waterOverLimit
-        case invalidMealInput
-        case invalidWaterInput
-        
-        var alertInfo: (title: String, message: String) {
-            switch self {
-            case .mealOverLimit:
-                return ("입력 제한", "밥은 최대 99개까지만 줄 수 있어요!")
-            case .waterOverLimit:
-                return ("입력 제한", "물은 최대 49개까지만 줄 수 있어요!")
-            case .invalidMealInput:
-                return ("잘못된 입력", "밥의 개수는 숫자로만 입력해주세요!")
-            case .invalidWaterInput:
-                return ("잘못된 입력", "물의 개수는 숫자로만 입력해주세요!")
-            }
-        }
-    }
-    
     func showInputValidationAlert(for type: InputValidationType) {
         let (title, message) = type.alertInfo
         showAlert(title: title, message: message)

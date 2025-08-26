@@ -20,7 +20,7 @@ final class ChangeViewModel {
     struct Output {
         let title: Driver<String>
         let changeComplete: Driver<Void>
-        let showInputValidationAlert: Driver<ChangeNicknameViewController.InputValidationType>
+        let showInputValidationAlert: Driver<ChangeNicknameViewController.InputNicknameValidationType>
     }
     
     func transfer(input: Input) -> Output {
@@ -29,7 +29,7 @@ final class ChangeViewModel {
         let navigationTitle = "\(title ?? "대장")님 이름 정하기"
         let titleDriver = Driver.just(navigationTitle)
         
-        let showAlertRelay = PublishRelay<ChangeNicknameViewController.InputValidationType>()
+        let showAlertRelay = PublishRelay<ChangeNicknameViewController.InputNicknameValidationType>()
         let changeCompleteRelay = PublishRelay<Void>()
         
         let nicknameText = input.saveButtonTapped

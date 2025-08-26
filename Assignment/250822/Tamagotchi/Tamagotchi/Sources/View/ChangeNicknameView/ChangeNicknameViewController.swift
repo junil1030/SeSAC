@@ -80,7 +80,7 @@ final class ChangeNicknameViewController: BaseViewController {
 }
 
 extension ChangeNicknameViewController {
-    enum InputValidationType {
+    enum InputNicknameValidationType {
         case tooShort
         case tooLong
         case startsWithSpace
@@ -100,7 +100,7 @@ extension ChangeNicknameViewController {
         }
     }
     
-    func showInputValidationAlert(for type: InputValidationType) {
+    func showInputValidationAlert(for type: InputNicknameValidationType) {
         let (title, message) = type.alertInfo
         showAlert(title: title, message: message)
     }

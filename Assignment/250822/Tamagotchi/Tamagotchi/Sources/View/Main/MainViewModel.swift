@@ -9,6 +9,29 @@ import Foundation
 import RxSwift
 import RxCocoa
 
+enum InputValidationType: Error {
+    case mealOverLimit
+    case waterOverLimit
+    case invalidMealInput
+    case invalidWaterInput
+    case unknown
+
+    var alertInfo: (title: String, message: String) {
+        switch self {
+        case .mealOverLimit:
+            return ("입력 제한", "밥은 최대 99개까지만 줄 수 있어요!")
+        case .waterOverLimit:
+            return ("입력 제한", "물은 최대 49개까지만 줄 수 있어요!")
+        case .invalidMealInput:
+            return ("잘못된 입력", "밥의 개수는 숫자로만 입력해주세요!")
+        case .invalidWaterInput:
+            return ("잘못된 입력", "물의 개수는 숫자로만 입력해주세요!")
+        case .unknown:
+            return ("오류", "알 수 없는 오류가 발생했습니다.")
+        }
+    }
+}
+
 struct MainViewTamagotchiInfo {
     let tamagotchi: TamagotchiItem
     let stats: TamagotchiStats
@@ -32,13 +55,13 @@ final class MainViewModel {
     struct Output {
         let updateUI: Driver<MainViewTamagotchiInfo>
         let title: Driver<String>
-        let showInputValidationAlert: Driver<MainViewController.InputValidationType>
+        let showInputValidationAlert: Driver<InputValidationType>
     }
     
     func transform(input: Input) -> Output {
         
         let updateUIRelay = PublishRelay<Void>()
-        let showAlertRelay = PublishRelay<MainViewController.InputValidationType>()
+        let showAlertRelay = PublishRelay<InputValidationType>()
         
         setupSelectedTamagotchi()
         
@@ -73,7 +96,7 @@ final class MainViewModel {
                 owner.tamagotchiManager.eatRice(amount)
                 updateUIRelay.accept(())
                 
-                if owner.tamagotchiManager.isMaxLevel == true {
+                if owner.tamagotchiManager.isMaxLevel {
                     print("다마고치가 최대 레벨에 도달했습니다")
                 }
             })
@@ -111,7 +134,7 @@ final class MainViewModel {
                 owner.tamagotchiManager.drinkWater(amount)
                 updateUIRelay.accept(())
                 
-                if owner.tamagotchiManager.isMaxLevel == true {
+                if owner.tamagotchiManager.isMaxLevel {
                     print("다마고치가 최대 레벨에 도달했습니다")
                 }
             })
@@ -182,3 +205,4 @@ final class MainViewModel {
         )
     }
 }
+
