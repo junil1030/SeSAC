@@ -16,9 +16,9 @@ struct Lotto: Decodable {
 
 final class CustomObservable {
     
-    static func getLotto(query: String) -> Observable<Lotto> {
+    static func getLottoWithSingle(query: String) -> Single<Result<Lotto, junError>> {
         
-        return Observable<Lotto>.create { observer in
+        return Single.create { observer in
             
             let url = "https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=\(query)"
             
@@ -26,12 +26,51 @@ final class CustomObservable {
                 switch response.result {
                 case .success(let value):
                     print(value)
-                    observer.onNext(value)
+                    observer(.success(.success(value)))
+                case .failure(let error):
+                    print(error)
+                    observer(.success(.failure(.invalid)))
+                }
+            }
+            
+            return Disposables.create()
+        }
+    }
+    
+    static func textCompletionHandler(query: String, handler: @escaping (Result<Lotto, Error>) -> Void) {
+        
+        let url = "https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=\(query)"
+        
+        AF.request(url).responseDecodable(of: Lotto.self) { response in
+            switch response.result {
+            case .success(let value):
+                print(value)
+                handler(.success(value))
+            case .failure(let error):
+                print(error)
+                handler(.failure(error))
+            }
+        }
+    }
+    
+    static func getLotto(query: String) -> Observable<Result<Lotto, junError>> {
+        
+        return Observable<Result<Lotto, junError>>.create { observer in
+            
+            let url = "https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=\(query)"
+            
+            AF.request(url).responseDecodable(of: Lotto.self) { response in
+                switch response.result {
+                case .success(let value):
+                    print(value)
+                    observer.onNext(.success(value))
                     observer.onCompleted()
                     
                 case .failure(let error):
                     print(error)
-                    observer.onError(error)
+                    observer.onNext(.failure(junError.invalid))
+                    observer.onCompleted()
+
                 }
             }
             

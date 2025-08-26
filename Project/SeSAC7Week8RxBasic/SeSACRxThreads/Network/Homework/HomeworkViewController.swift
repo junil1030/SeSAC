@@ -22,6 +22,8 @@ class HomeworkViewController: UIViewController {
     let list: BehaviorRelay<[Lotto]> = BehaviorRelay(value: [])
     let items = BehaviorRelay(value: ["a", "b", "c"])
     
+    private let viewModel = HomeworkViewModel()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
@@ -29,52 +31,32 @@ class HomeworkViewController: UIViewController {
     }
     
     private func bind() {
-        list
+        
+        let input = HomeworkViewModel.Input(
+            searchTap: searchBar.rx.searchButtonClicked,
+            searchText: searchBar.rx.text.orEmpty,
+            cellSelected: tableView.rx.modelSelected(Lotto.self)
+        )
+        let output = viewModel.transform(input: input)
+        
+        output.list
             .bind(to: tableView.rx.items(cellIdentifier: PersonTableViewCell.identifier, cellType: PersonTableViewCell.self)) { row, element, cell in
                 let text = "\(element.drwNoDate)일, \(element.firstAccumamnt.formatted())원"
                 cell.usernameLabel.text = text
             }
             .disposed(by: disposeBag)
         
-        items
+        output.items
             .bind(to: collectionView.rx.items(cellIdentifier: UserCollectionViewCell.identifier, cellType: UserCollectionViewCell.self)) { row, element, cell in
                 cell.label.text = element
             }
             .disposed(by: disposeBag)
         
-        tableView.rx.modelSelected(Int.self)
-            .map { "셀 \($0)" }
-            .bind(with: self) { owner, number in
-                var original = owner.items.value
-                original.insert(number, at: 0)
-                
-                owner.items.accept(original)
+        output.showAlert
+            .bind(with: self) { owner, result in
+                if result { print("얼럿 띄우기") }
             }
             .disposed(by: disposeBag)
-        
-        searchBar.rx.searchButtonClicked
-            .withLatestFrom(searchBar.rx.text.orEmpty)
-            .distinctUntilChanged()
-            .flatMap { text in
-                CustomObservable.getLotto(query: text)
-                    .debug("커스텀 옵저버블 겟 로또")
-            }
-            .debug("서치바 옵저버블")
-            .subscribe(with: self) { owner, lotto in
-                print("onNext", lotto)
-                
-                var data = owner.list.value
-                data.insert(lotto, at: 0)
-                owner.list.accept(data)
-            } onError: { owner, error in
-                print("onError", error)
-            } onCompleted: { owner in
-                print("onCompleted")
-            } onDisposed: { owner in
-                print("onDisposed")
-            }
-            .disposed(by: disposeBag)
-
     }
     
     func hide() {
