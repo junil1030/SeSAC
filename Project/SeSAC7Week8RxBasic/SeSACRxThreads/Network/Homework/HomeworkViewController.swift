@@ -22,7 +22,16 @@ class HomeworkViewController: UIViewController {
     let list: BehaviorRelay<[Lotto]> = BehaviorRelay(value: [])
     let items = BehaviorRelay(value: ["a", "b", "c"])
     
-    private let viewModel = HomeworkViewModel()
+    private let viewModel: HomeworkViewModel
+    
+    init(viewModel: HomeworkViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
