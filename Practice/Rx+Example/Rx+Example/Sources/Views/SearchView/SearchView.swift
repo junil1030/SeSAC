@@ -10,7 +10,7 @@ import SnapKit
 
 final class SearchView: BaseView {
     
-    private let searchBar: UISearchBar = {
+    let searchBar: UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.placeholder = "브랜드, 상품 프로필, 태그 등"
         return searchBar
