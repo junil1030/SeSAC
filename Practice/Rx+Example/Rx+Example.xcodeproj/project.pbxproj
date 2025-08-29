@@ -14,7 +14,7 @@
 		F93578F82E616B2700737435 /* Exceptions for "Rx+Example" folder in "Rx+Example" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Info.plist,
+				Application/Info.plist,
 			);
 			target = F93578E52E616B2500737435 /* Rx+Example */;
 		};
