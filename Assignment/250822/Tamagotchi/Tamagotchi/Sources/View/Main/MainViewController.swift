@@ -16,6 +16,7 @@ final class MainViewController: BaseViewController {
     private let mainViewModel = MainViewModel()
     private let disposeBag = DisposeBag()
     
+    // 한번 더 나누면 좋을듯?
     private let mealButtonTappedRelay = PublishRelay<String?>()
     private let dropButtonTappedRelay = PublishRelay<String?>()
     private let viewWillAppearRelay = PublishRelay<Bool>()
