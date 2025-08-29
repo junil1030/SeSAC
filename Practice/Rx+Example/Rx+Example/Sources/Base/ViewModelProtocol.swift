@@ -6,3 +6,13 @@
 //
 
 import Foundation
+import RxSwift
+
+protocol BaseViewModel {
+    var disposeBag: DisposeBag { get }
+    
+    associatedtype Input
+    associatedtype Output
+    
+    func transform(input: Input) -> Output
+}

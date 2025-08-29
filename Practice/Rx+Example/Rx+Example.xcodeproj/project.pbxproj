@@ -6,6 +6,13 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		F935790B2E61736E00737435 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = F935790A2E61736E00737435 /* RxCocoa */; };
+		F935790D2E61736E00737435 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F935790C2E61736E00737435 /* RxSwift */; };
+		F93579102E61737A00737435 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = F935790F2E61737A00737435 /* Alamofire */; };
+		F93579132E61738400737435 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = F93579122E61738400737435 /* SnapKit */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		F93578E62E616B2500737435 /* Rx+Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Rx+Example.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -36,6 +43,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F93579102E61737A00737435 /* Alamofire in Frameworks */,
+				F93579132E61738400737435 /* SnapKit in Frameworks */,
+				F935790D2E61736E00737435 /* RxSwift in Frameworks */,
+				F935790B2E61736E00737435 /* RxCocoa in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +89,10 @@
 			);
 			name = "Rx+Example";
 			packageProductDependencies = (
+				F935790A2E61736E00737435 /* RxCocoa */,
+				F935790C2E61736E00737435 /* RxSwift */,
+				F935790F2E61737A00737435 /* Alamofire */,
+				F93579122E61738400737435 /* SnapKit */,
 			);
 			productName = "Rx+Example";
 			productReference = F93578E62E616B2500737435 /* Rx+Example.app */;
@@ -107,6 +122,11 @@
 			);
 			mainGroup = F93578DD2E616B2500737435;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				F93579092E61736E00737435 /* XCRemoteSwiftPackageReference "RxSwift" */,
+				F935790E2E61737A00737435 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				F93579112E61738300737435 /* XCRemoteSwiftPackageReference "SnapKit" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = F93578E72E616B2500737435 /* Products */;
 			projectDirPath = "";
@@ -335,6 +355,56 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		F93579092E61736E00737435 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.9.0;
+			};
+		};
+		F935790E2E61737A00737435 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.10.2;
+			};
+		};
+		F93579112E61738300737435 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		F935790A2E61736E00737435 /* RxCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F93579092E61736E00737435 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxCocoa;
+		};
+		F935790C2E61736E00737435 /* RxSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F93579092E61736E00737435 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxSwift;
+		};
+		F935790F2E61737A00737435 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F935790E2E61737A00737435 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		F93579122E61738400737435 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F93579112E61738300737435 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = F93578DE2E616B2500737435 /* Project object */;
 }
