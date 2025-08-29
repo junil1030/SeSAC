@@ -6,3 +6,16 @@
 //
 
 import Foundation
+
+extension Int {
+    
+    var formattedString: String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        return formatter.string(from: NSNumber(value: self)) ?? "\(self)"
+    }
+    
+    var wonString: String {
+        return formattedString + "원"
+    }
+}
