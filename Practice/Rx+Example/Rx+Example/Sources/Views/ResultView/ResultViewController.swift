@@ -6,3 +6,16 @@
 //
 
 import Foundation
+import SnapKit
+import RxSwift
+import RxCocoa
+
+final class ResultViewController: BaseViewController {
+    
+    private let resultView = ResultView()
+    
+    override func setupHierachy() {
+        super.setupHierachy()
+        
+    }
+}
