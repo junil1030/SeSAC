@@ -19,19 +19,17 @@ final class SearchViewModel: BaseViewModel {
     }
     
     struct Output {
-        let searchResult: Driver<String>
+        let searchResult: Driver<Result<ShoppingResponse, APIError>>
     }
     
     func transform(input: Input) -> Output {
         
         let searchResult = input.searchButtonTapped
             .withLatestFrom(input.searchBarText)
-            .map { text in
-                // 네트워킹
-                
-                return text
+            .flatMap { text in
+                return CustomObservable.searchProduct(query: text, start: 1)
             }
-            .asDriver(onErrorJustReturn: "")
+            .asDriver(onErrorJustReturn: .failure(.unknownError))
         
         return Output(searchResult: searchResult)
     }

@@ -47,10 +47,19 @@ final class SearchViewController: BaseViewController {
         
         let output = viewModel.transform(input: input)
         
-        output.searchTextKeyword
-            .drive(with: self) { owner, text in
-                print(text)
+        output.searchResult
+            .drive(with: self) { owner, response in
+                switch response {
+                case .success(let value):
+                    owner.navigateToResult(result: value)
+                case .failure(let error):
+                    print(error.description)
+                }
             }
             .disposed(by: disposeBag)
+    }
+    
+    private func navigateToResult(result: ShoppingResponse) {
+        // ResultViewModel에 넣고 push
     }
 }
