@@ -6,49 +6,72 @@
 //
 
 import Foundation
+import RxSwift
+import RxCocoa
 
 final class SearchViewModel {
     
-    //MARK: - Properties
-    let networkManager = NetworkManager.shared
+    //MARK: - Private Properties
+    private let networkManager = NetworkManager.shared
     
-    var input: Input
-    var output: Output
-    
-    //MARK: - Observable Stream
+    //MARK: - ObservableCustom Stream
     struct Input {
-        var searchKeyword = Observable<String?>(nil)
+        var searchBarText: Observable<String>
+        var searchButtonClicked: Observable<Void>
     }
     
     struct Output {
-        var searchKeyword = Observable<String>("")
-        var networkError = Observable<NetworkStatus>(.cellular)
+        var searchKeyword: Driver<String>
+        var showEmptyAlert: Driver<String>
+        var showNetworkErrorAlert: Driver<String>
     }
     
-    //MARK: - Initialize
-    init() {
-        input = Input()
-        output = Output()
+    func transform(input: Input) -> Output {
         
-        setupBind()
-    }
-    
-    //MARK: - Private Method
-    private func setupBind() {
-        input.searchKeyword.lazyBind { [weak self] keyword in
-            self?.checkKeyword(keyword)
-        }
-    }
-    
-    private func checkKeyword(_ keyword: String?) {
-        guard let keyword = keyword, keyword.trimmingCharacters(in: .whitespacesAndNewlines).count > 1 else { return }
+        let searchText = input.searchButtonClicked
+            .withLatestFrom(input.searchBarText)
         
+        let showEmptyAlert = searchText
+            .filter { $0.isEmpty }
+            .map { _ in "검색 키워드를 입력해주세요" }
+            .asDriver(onErrorJustReturn: "알 수 없는 오류")
+        
+        let validText = searchText
+            .filter { !$0.isEmpty  &&
+                $0.trimmingCharacters(in: .whitespacesAndNewlines).count > 1
+            }
+        
+        let validatedText = validText
+            .withUnretained(self)
+            .map { owner, text in
+                return (text: text, isNetworkOk: owner.checkNetwork())
+            }
+            .share()
+        
+        let showNetworkErrorAlert = validatedText
+            .filter { !$0.isNetworkOk }
+            .withUnretained(self)
+            .map { owner, _ in
+                owner.networkManager.currentStatus.description
+            }
+            .asDriver(onErrorJustReturn: "")
+        
+        let searchKeyword = validatedText
+            .filter { $0.isNetworkOk }
+            .map { $0.text }
+            .asDriver(onErrorJustReturn: "")
+        
+        return Output(searchKeyword: searchKeyword,
+                      showEmptyAlert: showEmptyAlert,
+                      showNetworkErrorAlert: showNetworkErrorAlert
+        )
+    }
+    
+    private func checkNetwork() -> Bool {
         let status = networkManager.currentStatus
-        guard status.isConnected  else {
-            output.networkError.value = status
-            return
+        guard status.isConnected else {
+            return false
         }
-        
-        output.searchKeyword.value = keyword
+        return true
     }
 }

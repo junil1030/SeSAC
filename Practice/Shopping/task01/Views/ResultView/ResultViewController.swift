@@ -7,7 +7,8 @@
 
 import UIKit
 import SnapKit
-import Alamofire
+import RxSwift
+import RxCocoa
 
 class ResultViewController: BaseViewController {
     
@@ -16,10 +17,14 @@ class ResultViewController: BaseViewController {
     private let itemSpacing: CGFloat = 12
     private let lineSpacing: CGFloat = 16
     
-    private var viewModel: ResultViewModel!
+    private var viewModel: ResultViewModel
+    private let disposeBag = DisposeBag()
     
     private var filterViews: [SortType: FilterView] = [:]
     private var currentSelectedView: FilterView?
+    
+    private let sortButtonClicked = PublishSubject<SortType>()
+    private let loadMoreTrigger = PublishSubject<Void>()
     
     //MARK: - UI Components
     let collectionView: UICollectionView = {
@@ -56,8 +61,8 @@ class ResultViewController: BaseViewController {
     private var dscLabel: FilterView!
     
     init(searchKeyword: String) {
-        super.init(nibName: nil, bundle: nil)
         self.viewModel = ResultViewModel(searchKeyword: searchKeyword)
+        super.init(nibName: nil, bundle: nil)
     }
     
     required init?(coder: NSCoder) {
@@ -68,7 +73,7 @@ class ResultViewController: BaseViewController {
         super.viewDidLoad()
         
         setupBind()
-        viewModel.input.loadData.value = .sim
+        sortButtonClicked.onNext(.sim)
     }
     
     override func viewDidLayoutSubviews() {
@@ -111,32 +116,40 @@ class ResultViewController: BaseViewController {
     override func configureView() {
         super.configureView()
         
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        
-        navigationItem.title = viewModel.getSearchKeyword()
-        searchResultCountLabel.text = "Test"
-        
         setupFilterViews()
+        setupCollectionView()
     }
     
     private func setupBind() {
-        viewModel.output.shoppingItems.bind { [weak self] items in
-            self?.collectionView.reloadData()
-        }
         
-        viewModel.output.searchResultText.bind { [weak self] text in
-            self?.searchResultCountLabel.text = text
-        }
+        let input = ResultViewModel.Input(
+            sortButtonClicked: sortButtonClicked.asObservable(),
+            loadMoreData: loadMoreTrigger.asObserver()
+        )
         
-        viewModel.output.errorMessage.bind { [weak self] errorMessage in
-            guard let errorMessage = errorMessage else { return }
-            self?.showAlert(type: .networkError, message: errorMessage)
-        }
+        let output = viewModel.transforom(input: input)
         
-        viewModel.output.currentSortType.bind { [weak self] sortType in
-            self?.selectFilter(sortType)
-        }
+        output.items
+            .drive(collectionView.rx.items(cellIdentifier: ProductCell.identifier, cellType: ProductCell.self)) { index, item, cell in
+                cell.configureData(with: item)
+            }
+            .disposed(by: disposeBag)
+        
+        output.itemCount
+            .drive(with: self) { owner, count in
+                owner.searchResultCountLabel.text = "\(count.formattedString) 개의 검색 결과"
+            }
+            .disposed(by: disposeBag)
+        
+        output.showErrorAlert
+            .drive(with: self) { owner, message in
+                owner.showAlert(type: .error, message: message)
+            }
+            .disposed(by: disposeBag)
+        
+        output.title
+            .drive(navigationItem.rx.title)
+            .disposed(by: disposeBag)
     }
     
     private func createFilterViews() {
@@ -153,10 +166,23 @@ class ResultViewController: BaseViewController {
         for (_, filterView) in filterViews {
             filterView.onTap = { [weak self] tappedSortType in
                 self?.didSelectFilter(tappedSortType)
+                self?.sortButtonClicked.onNext(tappedSortType)
             }
         }
         
         selectFilter(.sim)
+    }
+    
+    private func setupCollectionView() {
+        collectionView.rx.willDisplayCell
+            .withUnretained(self)
+            .filter { owner, indexPath in
+                let itemCount = self.collectionView.numberOfItems(inSection: 0)
+                return indexPath.at.item >= itemCount - 3
+            }
+            .map { _ in }
+            .bind(to: loadMoreTrigger)
+            .disposed(by: disposeBag)
     }
     
     private func selectFilter(_ sortType: SortType) {
@@ -169,12 +195,8 @@ class ResultViewController: BaseViewController {
     }
     
     private func didSelectFilter(_ sortType: SortType) {
-        guard sortType != viewModel.output.currentSortType.value else { return }
-        
+        selectFilter(sortType)
         collectionView.setContentOffset(.zero, animated: true)
-        
-//        viewModel.loadData(sort: sortType)
-        viewModel.input.loadData.value = sortType
     }
     
     private func updateCollectionViewLayout() {
@@ -190,28 +212,5 @@ class ResultViewController: BaseViewController {
         layout.minimumInteritemSpacing = itemSpacing
         layout.minimumLineSpacing = lineSpacing
         layout.invalidateLayout()
-    }
-}
-
-extension ResultViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-//        viewModel.loadMoreDataIfNeeded(for: indexPath.item)
-        viewModel.input.loadMoreData.value = indexPath.item
-    }
-}
-
-extension ResultViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.getItemCount()
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProductCell.identifier, for: indexPath) as! ProductCell
-        
-        if let item = viewModel.getItem(at: indexPath.item) {
-            cell.configureData(with: item)
-        }
-        
-        return cell
     }
 }

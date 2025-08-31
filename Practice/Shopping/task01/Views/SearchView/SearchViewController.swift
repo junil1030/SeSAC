@@ -7,8 +7,10 @@
 
 import UIKit
 import SnapKit
+import RxSwift
+import RxCocoa
 
-class SearchViewController: BaseViewController {
+final class SearchViewController: BaseViewController {
     
     let viewModel = SearchViewModel()
     
@@ -20,6 +22,8 @@ class SearchViewController: BaseViewController {
         searchBar.searchTextField.attributedPlaceholder = NSAttributedString(string: "브랜드, 상품, 프로핑, 태그 등", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray])
         return searchBar
     }()
+    
+    private let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,23 +50,33 @@ class SearchViewController: BaseViewController {
         super.configureView()
         
         navigationItem.title = AppStrings.appTItle
-        searchbar.delegate = self
     }
     
     private func setupBind() {
-        viewModel.output.searchKeyword.lazyBind { [weak self] keyword in
-            let vc = ResultViewController(searchKeyword: keyword)
-            self?.navigationController?.pushViewController(vc, animated: true)
-        }
+        let input = SearchViewModel.Input(
+            searchBarText: searchbar.rx.text.orEmpty.asObservable(),
+            searchButtonClicked: searchbar.rx.searchButtonClicked.asObservable()
+        )
         
-        viewModel.output.networkError.lazyBind { [weak self] error in
-            self?.showNetworkAlert(status: error)
-        }
-    }
-}
-
-extension SearchViewController: UISearchBarDelegate {
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        viewModel.input.searchKeyword.value = searchBar.text
+        let output = viewModel.transform(input: input)
+        
+        output.showEmptyAlert
+            .drive(with: self) { owner, message in
+                owner.showAlert(type: .error, message: message)
+            }
+            .disposed(by: disposeBag)
+        
+        output.showNetworkErrorAlert
+            .drive(with: self) { owner, message in
+                owner.showAlert(type: .networkError, message: message)
+            }
+            .disposed(by: disposeBag)
+        
+        output.searchKeyword
+            .drive(with: self) { owner, keyword in
+                let vc = ResultViewController(searchKeyword: keyword)
+                owner.navigationController?.pushViewController(vc, animated: true)
+            }
+            .disposed(by: disposeBag)
     }
 }

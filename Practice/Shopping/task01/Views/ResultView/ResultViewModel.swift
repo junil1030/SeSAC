@@ -6,130 +6,125 @@
 //
 
 import Foundation
+import RxSwift
+import RxCocoa
 
 class ResultViewModel {
     
     //MARK: - Properties
     private let searchKeyword: String
+    private var currentSortType = SortType.sim
     private let itemsPerPage = 30
-    
     private var currentPage = 1
     private var lastPage = 1
-    
-    var input: Input
-    var output: Output
+    private var totalCount = 0
+    private var allItems: [ShoppingItem] = []
     
     //MARK: - Observables Streams
     struct Input {
-        let loadData = Observable<SortType>(.sim)
-        let loadMoreData = Observable<Int>(0)
+        let sortButtonClicked: Observable<SortType>
+        let loadMoreData: Observable<Void>
     }
     
     struct Output {
-        let shoppingItems = Observable<[ShoppingItem]>([])
-        let totalCount = Observable<Int>(0)
-        let isAPILoading = Observable<Bool>(false)
-        let searchResultText = Observable<String>("검색 중..")
-        let currentSortType = Observable<SortType>(.sim)
-        let errorMessage = Observable<String?>(nil)
+        let items: Driver<[ShoppingItem]>
+        let itemCount: Driver<Int>
+        let showErrorAlert: Driver<String>
+        let title: Driver<String>
     }
     
     //MARK: - Initialize
     init(searchKeyword: String) {
         self.searchKeyword = searchKeyword
-        
-        input = Input()
-        output = Output()
-        
-        setupBind()
-    }
-        
-    //MARK: - Methods
-    func getItemCount() -> Int {
-        return output.shoppingItems.value.count
     }
     
-    func getItem(at index: Int) -> ShoppingItem? {
-        guard index < output.shoppingItems.value.count else { return nil }
-        return output.shoppingItems.value[index]
-    }
-    
-    func getSearchKeyword() -> String {
-        return searchKeyword
+    //MARK: - Transform
+    func transforom(input: Input) -> Output {
+        
+        let sortChange = input.sortButtonClicked
+            .distinctUntilChanged()
+            .withUnretained(self)
+            .flatMapLatest { owner, sortType in
+                
+                owner.currentSortType = sortType
+                owner.currentPage = 1
+                owner.allItems = []
+                
+                return CustomObservable.fetchItems(with: owner.searchKeyword, sort: owner.currentSortType, start: owner.currentPage)
+            }
+            .share()
+        
+        let loadMore = input.loadMoreData
+            .withUnretained(self)
+            .filter { owner, _ in
+                return owner.currentPage <= owner.lastPage
+            }
+            .flatMapLatest { owner, _ in
+                return CustomObservable.fetchItems(with: owner.searchKeyword, sort: owner.currentSortType, start: owner.currentPage)
+            }
+            .share()
+        
+        let allResponse = Observable.merge(sortChange, loadMore)
+        
+        let successResponse = allResponse
+            .withUnretained(self)
+            .compactMap { (owner, response) -> ShoppingResponse? in
+                switch response {
+                case .success(let value):
+                    owner.updatePagination(with: value)
+                    return value
+                case .failure:
+                    return nil
+                }
+            }
+            .share()
+        
+        let items = successResponse
+            .withUnretained(self)
+            .map { owner, _ in owner.allItems }
+            .asDriver(onErrorJustReturn: [])
+        
+        let itemCount = successResponse
+            .withUnretained(self)
+            .map { owner, _ in owner.totalCount }
+            .asDriver(onErrorJustReturn: 0)
+        
+        let showErrorAlert = allResponse
+            .compactMap { response -> String? in
+                switch response {
+                case .success(let value):
+                    return value.items.isEmpty ? "검색 결과가 없습니다" : nil
+                case .failure(let error):
+                    return error.localizedDescription
+                }
+            }
+            .asDriver(onErrorJustReturn: "알 수 없는 오류")
+        
+        let title = successResponse
+            .withUnretained(self)
+            .map { owner, _ in owner.searchKeyword}
+            .asDriver(onErrorJustReturn: "")
+        
+        return Output(
+            items: items,
+            itemCount: itemCount,
+            showErrorAlert: showErrorAlert,
+            title: title
+        )
     }
     
     //MARK: - Private Methods
-    private func setupBind() {
-        input.loadData.bind { [weak self] type in
-            self?.loadData(sort: type)
-        }
+    private func updatePagination(with response: ShoppingResponse) {
+        totalCount = response.total
+        currentPage = response.start
+        lastPage = (totalCount + itemsPerPage - 1) / itemsPerPage
         
-        input.loadMoreData.bind { [weak self] index in
-            self?.loadMoreDataIfNeeded(for: index)
-        }
-    }
-    
-    private func loadData(sort: SortType = .sim, isPagination: Bool = false) {
-        guard !output.isAPILoading.value else { return }
-        output.isAPILoading.value = true
-        
-        if !isPagination {
-            output.currentSortType.value = sort
-            currentPage = 1
-            output.searchResultText.value = "검색 중.."
-        }
-        
-        let startIndex = ((currentPage - 1) * itemsPerPage) + 1
-        
-        APIService.shared.searchProduct(keyword: searchKeyword, sort: sort, start: startIndex ,display: itemsPerPage) { [weak self] response in
-            DispatchQueue.main.async {
-                guard let self = self else { return }
-                
-                self.output.isAPILoading.value = false
-                
-                switch response {
-                case .success(let success):
-                    self.handleSuccess(success, isPagination: isPagination)
-                case .error(let errorCode, let error):
-                    self.handleError(errorCode: errorCode, error: error)
-                }
-            }
-        }
-    }
-    
-    private func loadMoreDataIfNeeded(for index: Int) {
-        if shouldLoadMoreData(for: index) {
-            loadData(sort: output.currentSortType.value, isPagination: true)
-        }
-    }
-    
-    private func shouldLoadMoreData(for index: Int) -> Bool {
-        return index >= output.shoppingItems.value.count - 3 && currentPage <= lastPage && !output.isAPILoading.value
-    }
-
-    
-    private func handleSuccess(_ data: ShoppingResponse, isPagination: Bool) {
-        let receivedItems = data.items
-        
-        lastPage = (data.total + itemsPerPage - 1) / itemsPerPage
-        
-        if isPagination {
-            var updatedItems = output.shoppingItems.value
-            updatedItems.append(contentsOf: receivedItems)
-            output.shoppingItems.value = updatedItems
+        if currentPage == 1 {
+            allItems = response.items
         } else {
-            output.shoppingItems.value = receivedItems
-            output.totalCount.value = data.total
-            output.searchResultText.value = "\(data.total.formattedString) 개의 검색 결과"
+            allItems.append(contentsOf: response.items)
         }
         
-        if currentPage <= lastPage {
-            currentPage += 1
-        }
-    }
-    
-    private func handleError(errorCode: Int, error: Error) {
-        output.searchResultText.value = "검색 실패"
-        output.errorMessage.value = "에러: \(error)\nErrorCode: \(errorCode)"
+        currentPage += 1
     }
 }
