@@ -1,5 +1,5 @@
 //
-//  Observable.swift
+//  ObservableCustom.swift
 //  task01
 //
 //  Created by 서준일 on 8/12/25.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-class Observable<T> {
+class ObservableCustom<T> {
     
     private var action: ((T) -> Void)?
     
