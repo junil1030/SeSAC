@@ -53,7 +53,7 @@ class ResultViewModel {
                 return CustomObservable.fetchItems(with: owner.searchKeyword, sort: owner.currentSortType, start: owner.currentPage)
             }
             .share()
-        
+          
         let loadMore = input.loadMoreData
             .withUnretained(self)
             .filter { owner, _ in
