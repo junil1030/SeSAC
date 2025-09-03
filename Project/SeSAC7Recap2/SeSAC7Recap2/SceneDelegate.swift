@@ -16,11 +16,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         guard let scene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: scene)
+        
+        let nav = UINavigationController(rootViewController: ViewController())
+        window?.rootViewController = nav
 
-        let rootViewController = UINavigationController(rootViewController: SignInViewController())
-        window?.rootViewController = rootViewController
+//        if let token = UserDefaults.standard.string(forKey: "token") {
+//            let rootViewController = UINavigationController(rootViewController: ProfileViewController())
+//            window?.rootViewController = rootViewController
+//        } else {
+//            let rootViewController = UINavigationController(rootViewController: SignInViewController())
+//            window?.rootViewController = rootViewController
+//        }
         window?.makeKeyAndVisible()
- 
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -31,8 +38,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     func sceneDidBecomeActive(_ scene: UIScene) {
-        // Called when the scene has moved from an inactive state to an active state.
-        // Use this method to restart any tasks that were paused (or not yet started) when the scene was inactive.
+        print(#function)
+        
+        UNUserNotificationCenter.current().setBadgeCount(0)
+        
+        // 카톡 채팅 클릭 > 특정 친구의 채팅방으로 이동하는 기능
+        // 근데 상대방이 나를 차단함.
+        // 또는 단톡방이 사라졌다면
+        // 카톡을 켰을 때 쌓였던 알림 목록이 다 제거
+        UNUserNotificationCenter.current().removeAllDeliveredNotifications()
     }
 
     func sceneWillResignActive(_ scene: UIScene) {

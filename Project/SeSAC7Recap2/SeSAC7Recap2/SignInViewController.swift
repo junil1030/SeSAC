@@ -8,6 +8,13 @@
 import UIKit
 import Alamofire
 import SnapKit
+
+struct Login: Decodable {
+    let user_id: String
+    let email: String
+    let nick: String
+    let accessToken: String
+}
  
 class SignInViewController: UIViewController {
 
@@ -24,9 +31,41 @@ class SignInViewController: UIViewController {
         signInButton.addTarget(self, action: #selector(signInButtonClicked), for: .touchUpInside)
     }
     
-    @objc func signInButtonClicked() { 
-        let vc = ProfileViewController()
-        self.navigationController?.pushViewController(vc, animated: true)
+    @objc func signInButtonClicked() {
+        // 로그인 성공하면 프로필 화면으로 전환
+        
+        let url = APIKey.baseURL + "v1/users/login"
+        let header: HTTPHeaders = [
+            "Content-Type": "application/json",
+            "SesacKey": APIKey.sesacKey
+        ]
+        
+        let parameters = [
+            "email": "a@a.com",
+            "password": "a"
+        ]
+    
+        
+        AF.request(url,
+                   method: .post,
+                   parameters: parameters,
+                   encoder: JSONParameterEncoder.default, // 기본 데이터 타입은 json으로 변환
+                   headers: header)
+        .responseDecodable(of: Login.self) { response in
+                    switch response.result {
+                    case .success(let value):
+                        print(value)
+                        
+                        UserDefaults.standard.set(value.accessToken, forKey: "token")
+                        let vc = ProfileViewController()
+                        self.navigationController?.pushViewController(vc, animated: true)
+
+                    case .failure(let error):
+                        print(error)
+                        
+            }
+                
+        }
     }
     
     @objc func signUpButtonClicked() {
