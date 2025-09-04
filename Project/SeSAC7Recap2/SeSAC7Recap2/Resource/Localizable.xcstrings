@@ -1,0 +1,153 @@
+{
+  "sourceLanguage" : "ko",
+  "strings" : {
+    "button_noti_calear_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "캘린더 기반 로컬 알람 보내기"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "캘린더 기반 로컬 알람 보내기"
+          }
+        }
+      }
+    },
+    "button_noti_time_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "타임 기반 로컬 알람 보내기"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "타임 기반 로컬 알람 보내기"
+          }
+        }
+      }
+    },
+    "cancel" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "취소"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "취소"
+          }
+        }
+      }
+    },
+    "introduce" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "와타시노 %@(%lld세)데스"
+          }
+        }
+      }
+    },
+    "introduce_age" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "와타시노 나이와 %lld살 데 스"
+          }
+        }
+      }
+    },
+    "introduce_nick" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "와타시노 닉네이므와 %@데스"
+          }
+        }
+      }
+    },
+    "navigation_title" : {
+      "comment" : "Localizable.strings\n  SeSAC7Recap2\n\n  Created by 서준일 on 9/4/25.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "나의 리캡"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "와타시노 리캐브"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "나의 리캡"
+          }
+        }
+      }
+    },
+    "user_login_field_placeholder" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "아이디오 뉴우료쿠 시테 쿠다사이"
+          }
+        }
+      }
+    },
+    "user_login_field_placholder" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "아이디를 입력해주세요"
+          }
+        }
+      }
+    },
+    "user_password_field_placeholder" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "파스워드오 뉴우료쿠 시테 쿠다사이"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "비밀번호를 입력해주세요"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

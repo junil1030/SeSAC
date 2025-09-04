@@ -1,0 +1,10 @@
+/* 
+  InfoPlist.strings
+  SeSAC7Recap2
+
+  Created by 서준일 on 9/4/25.
+  
+*/
+
+NSCameraUsageDescription = "카메라 쿠다사이";
+CFBundleDisplayName = "카카오토끄";

@@ -1,0 +1,30 @@
+{
+  "sourceLanguage" : "ko",
+  "strings" : {
+    "Yp5-LQ-qkU.text" : {
+      "comment" : "Class = \"UITextField\"; text = \"안녕하세요\"; ObjectID = \"Yp5-LQ-qkU\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "안녕하세요"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "こんにちは"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "안녕하세요"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

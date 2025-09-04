@@ -21,6 +21,13 @@ Notification 관련 정책
  - 알 수 없음.. 안드는 가능한데 iOS는 다 보내졌는지는 알 수 없음. 대신 몇명이 클릭했는 지는 알 수 있음
  */
 
+enum MyString: String {
+    case navTitle = "navigation_title"
+    case introduceNickname = "introduce_nick"
+    case introduceAge = "introduce_age"
+    case introduce = "intorcue"
+}
+
 class ViewController: UIViewController {
     
     let emailTextField = SignTextField(placeholderText: "이메일을 입력해주세요")
@@ -34,6 +41,14 @@ class ViewController: UIViewController {
         configureLayout()
         signInButton.addTarget(self, action: #selector(timeButtonClicked), for: .touchUpInside)
         signUpButton.addTarget(self, action: #selector(calendarButtonClicked), for: .touchUpInside)
+        
+        navigationItem.title = MyString.navTitle.rawValue.localized
+        
+        let introduce = String(format: MyString.introduceNickname.rawValue.localized, "달봉")
+        signInButton.setTitle(introduce, for: .normal)
+        
+        let age = String(format: MyString.introduceAge.rawValue.localized(with: "고래밥", age: 9))
+        signUpButton.setTitle(age, for: .normal)
     }
     
     @objc func timeButtonClicked() {

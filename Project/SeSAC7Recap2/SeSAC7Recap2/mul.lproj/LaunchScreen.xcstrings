@@ -1,0 +1,78 @@
+{
+  "sourceLanguage" : "ko",
+  "strings" : {
+    "g79-7s-Z40.normalTitle" : {
+      "comment" : "Class = \"UIButton\"; normalTitle = \"저는 Junil입니다\"; ObjectID = \"g79-7s-Z40\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I'm Junil"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "저는 Junil입니다"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "저는 Junil입니다"
+          }
+        }
+      }
+    },
+    "L6g-ZX-egV.text" : {
+      "comment" : "Class = \"UILabel\"; text = \"저작권있음\"; ObjectID = \"L6g-ZX-egV\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copyright"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "저작권있음"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "저작권있음"
+          }
+        }
+      }
+    },
+    "pVb-nv-QZN.text" : {
+      "comment" : "Class = \"UILabel\"; text = \"안녕하세요\"; ObjectID = \"pVb-nv-QZN\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hello"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "こんにちは"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "안녕하세요"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}
