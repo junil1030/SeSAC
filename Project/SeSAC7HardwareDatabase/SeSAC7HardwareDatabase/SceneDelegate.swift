@@ -16,10 +16,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
         
-        let vc = ViewController()
+        let vc = CameraViewController()
         let nav = UINavigationController(rootViewController: vc)
         
-        window?.rootViewController = OnboardingViewController()
+        window?.rootViewController = vc
         window?.makeKeyAndVisible()
     }
 

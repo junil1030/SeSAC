@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		F9C5852B2E6FB41000388269 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = F9C5852A2E6FB41000388269 /* SnapKit */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		F9ED46D42E6E5FA7000CFFDC /* SeSAC7HardwareDatabase.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SeSAC7HardwareDatabase.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -36,6 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F9C5852B2E6FB41000388269 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +83,7 @@
 			);
 			name = SeSAC7HardwareDatabase;
 			packageProductDependencies = (
+				F9C5852A2E6FB41000388269 /* SnapKit */,
 			);
 			productName = SeSAC7HardwareDatabase;
 			productReference = F9ED46D42E6E5FA7000CFFDC /* SeSAC7HardwareDatabase.app */;
@@ -107,6 +113,9 @@
 			);
 			mainGroup = F9ED46CB2E6E5FA7000CFFDC;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				F9C585292E6FB41000388269 /* XCRemoteSwiftPackageReference "SnapKit" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = F9ED46D52E6E5FA7000CFFDC /* Products */;
 			projectDirPath = "";
@@ -347,6 +356,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		F9C585292E6FB41000388269 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		F9C5852A2E6FB41000388269 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F9C585292E6FB41000388269 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = F9ED46CC2E6E5FA7000CFFDC /* Project object */;
 }
