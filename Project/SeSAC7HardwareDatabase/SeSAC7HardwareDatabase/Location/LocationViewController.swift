@@ -19,8 +19,9 @@ class LocationViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        locationManager.delegate = self
         configure()
+        
+        locationManager.delegate = self
     }
     
     private let button = UIButton()

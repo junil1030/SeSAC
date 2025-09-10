@@ -18,6 +18,10 @@ import Photos
  -> iOS13까지는 UIImagePickerController (시스템UI) (현재는 1번만 담당을하고)
     -> 갤러리에서 여러 장 선택하는 것이 불가능sadfjidfdfㅑ
  -> iOS14부터는 PHPicker(out of process)가 등장 (2, 3번은 요놈이 담당)
+ 
+ Out of Process: 앱에서 접근할 수 없는 상태로 갤러리가 나타남
+ 단순히 사진을 갤러리에서 가져오는 것은 권한이 필요가 없음
+ 
  */
 
 class CameraViewController: UIViewController {
@@ -28,21 +32,21 @@ class CameraViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        manager.delegate = self
-        
         view.backgroundColor = .white
         view.addSubview(imageView)
         imageView.snp.makeConstraints { make in
             make.edges.equalToSuperview().inset(100)
         }
         imageView.backgroundColor = .lightGray
+        
+        manager.delegate = self
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
 //        manager.sourceType = .camera // 카메라로 사용
-        manager.allowsEditing = true // 간단한 편집
+//        manager.allowsEditing = true // 간단한 편집
         
         present(manager, animated: true)
     }
