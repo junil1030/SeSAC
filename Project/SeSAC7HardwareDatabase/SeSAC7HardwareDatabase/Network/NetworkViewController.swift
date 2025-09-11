@@ -18,7 +18,44 @@ class NetworkViewController: UIViewController {
         super.viewDidLoad()
 
         view.backgroundColor = .white
-        callRequest()
+        callLotto()
+    }
+    
+    func callLotto() {
+        let url = URL(string: "https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=1150")!
+        
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            
+            guard error == nil else {
+                print("Failed Request", error)
+                return
+            }
+            
+            guard let data = data else {
+                print("No Data return")
+                return
+            }
+            
+            guard let response = response as? HTTPURLResponse else {
+                print("Unable Response")
+                return
+            }
+            
+            guard response.statusCode == 200 else {
+                print("status code Error")
+                return
+            }
+            
+            print("이제 식판에 담을 수 있는 상태!")
+            
+            do {
+                let result = try JSONDecoder().decode(Lotto.self, from: data)
+                print("success", result)
+            } catch {
+                print("error")
+            }
+            
+        }.resume()
     }
 
     func callRequest() {
