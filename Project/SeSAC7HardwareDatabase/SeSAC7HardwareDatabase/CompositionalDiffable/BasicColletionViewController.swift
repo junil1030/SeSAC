@@ -8,7 +8,8 @@
 import UIKit
 import SnapKit
 
-struct Basic: Hashable {
+struct Basic: Hashable, Identifiable {
+    let id = UUID()
     let name: String
     let age: Int
 }
@@ -29,7 +30,7 @@ class BasicCollectionViewController: UIViewController {
     private var registration: UICollectionView.CellRegistration<UICollectionViewListCell, Basic>!
     
     // Hashable한데 데이터가 같으면 어떻게 처리됨?
-    private let list = [
+    private var list = [
         Basic(name: "김민수", age: 25),
         Basic(name: "이지현", age: 32),
         Basic(name: "박준호", age: 28),
@@ -94,8 +95,13 @@ class BasicCollectionViewController: UIViewController {
         
         var snapshot = NSDiffableDataSourceSnapshot<Section, Basic>()
         snapshot.appendSections(Section.allCases)
-        snapshot.appendItems(list, toSection: Section.main)
-        snapshot.appendItems([Basic(name: "새싹이", age: 27)], toSection: Section.sub)
+        snapshot.appendItems(list, toSection: .caption)
+        snapshot.appendItems([
+            Basic(name: "새싹이", age: 27),
+            Basic(name: "새싹이", age: 14),
+        ], toSection: .main)
+        
+        snapshot.appendItems([Basic(name: "새싹이", age: 14)], toSection: .sub)
         
         dataSource.apply(snapshot)
     }
@@ -125,7 +131,7 @@ class BasicCollectionViewController: UIViewController {
             content.text = itemIdentifier.name
             content.textProperties.color = .brown
             
-            content.secondaryText = "\(itemIdentifier.age)세"
+            content.secondaryText = "\(itemIdentifier.id)세"
             
             cell.contentConfiguration = content
             
@@ -144,23 +150,24 @@ class BasicCollectionViewController: UIViewController {
 }
 
 // Diffable을 사용하기 때문에 아예 필요가 없어짐
-//extension BasicCollectionViewController: UICollectionViewDataSource, UICollectionViewDelegate {
-//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return list.count
-//    }
-//    
-//     1. Custom Cell + register + identifier
-//     2. System Cell +
-//    
-//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        
-//        let cell = collectionView.dequeueConfiguredReusableCell(using: registration, for: indexPath, item: list[indexPath.row])
-//        
-//        print("cellForItemAt", indexPath)
-//        
-//        return cell
-//    }
-//}
+extension BasicCollectionViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        // list[indexPath.itme] X
+        let item = dataSource.itemIdentifier(for: indexPath)
+        print(item)
+    }
+}
+
+extension BasicCollectionViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        
+        let data = Basic(name: searchBar.text!, age: .random(in: 1...100))
+        list.insert(data, at: .random(in: 0...3))
+        
+        updateSnapshot()
+    }
+}
 
 extension BasicCollectionViewController {
     private func setupUI() {
@@ -168,12 +175,13 @@ extension BasicCollectionViewController {
          
         searchBar.placeholder = "검색어를 입력하세요"
         searchBar.searchBarStyle = .minimal
+        searchBar.delegate = self
         view.addSubview(searchBar)
          
         collectionView.backgroundColor = .clear
 //        collectionView.register(PhotoCollectionViewCell.self, forCellWithReuseIdentifier: PhotoCollectionViewCell.id)
 //        collectionView.dataSource = self
-//        collectionView.delegate = self
+        collectionView.delegate = self
         view.addSubview(collectionView)
     }
  

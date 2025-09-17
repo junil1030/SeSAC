@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F95C107D2E7A4C76004C8564 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F95C107C2E7A4C76004C8564 /* RealmSwift */; };
 		F9C5852B2E6FB41000388269 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = F9C5852A2E6FB41000388269 /* SnapKit */; };
 /* End PBXBuildFile section */
 
@@ -40,6 +41,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F95C107D2E7A4C76004C8564 /* RealmSwift in Frameworks */,
 				F9C5852B2E6FB41000388269 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -84,6 +86,7 @@
 			name = SeSAC7HardwareDatabase;
 			packageProductDependencies = (
 				F9C5852A2E6FB41000388269 /* SnapKit */,
+				F95C107C2E7A4C76004C8564 /* RealmSwift */,
 			);
 			productName = SeSAC7HardwareDatabase;
 			productReference = F9ED46D42E6E5FA7000CFFDC /* SeSAC7HardwareDatabase.app */;
@@ -115,6 +118,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				F9C585292E6FB41000388269 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				F95C107B2E7A4C76004C8564 /* XCRemoteSwiftPackageReference "realm-swift" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = F9ED46D52E6E5FA7000CFFDC /* Products */;
@@ -358,6 +362,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		F95C107B2E7A4C76004C8564 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-swift.git";
+			requirement = {
+				kind = exactVersion;
+				version = 20.0.3;
+			};
+		};
 		F9C585292E6FB41000388269 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
@@ -369,6 +381,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		F95C107C2E7A4C76004C8564 /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F95C107B2E7A4C76004C8564 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = RealmSwift;
+		};
 		F9C5852A2E6FB41000388269 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = F9C585292E6FB41000388269 /* XCRemoteSwiftPackageReference "SnapKit" */;
