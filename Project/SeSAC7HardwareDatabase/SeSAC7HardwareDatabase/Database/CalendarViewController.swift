@@ -18,6 +18,8 @@ class CalendarViewController: UIViewController {
     let realm = try! Realm()
     
     var list: [MoneyTable] = []
+    
+    var folder: MoneyFolder!
       
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,16 +29,18 @@ class CalendarViewController: UIViewController {
         configureConstraints()
         
         print(realm.configuration.fileURL)
-        let data = realm.objects(MoneyTable.self)
-//            .where { table in
-//            return table.category == 1
-//        }.sorted(byKeyPath: "money", ascending: false)
-        list = Array(data)
+        navigationItem.title = folder.name
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         print(#function)
+        let data = realm.objects(MoneyTable.self).where {
+//            .where { table in
+//            return table.category == 1
+            $0.folder == folder!.id
+        }.sorted(byKeyPath: "money", ascending: false)
+        list = Array(data)
         tableView.reloadData()
     }
     

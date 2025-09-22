@@ -76,6 +76,12 @@ class AddViewController: UIViewController {
         // 1. 레코드 만들고
         let data = MoneyTable(money: .random(in: 100...5000) * 100, type: true, useDate: Date(), category: category, memo: memoField.text!)
         
+        let folder = realm.objects(MoneyFolder.self).where {
+            $0.name == "개인"
+        }.first!
+        
+        data.folder = folder.id
+        
         if let image = photoImageView.image {
             saveImageToDocument(image: image, filename: "\(data.id)")
         }

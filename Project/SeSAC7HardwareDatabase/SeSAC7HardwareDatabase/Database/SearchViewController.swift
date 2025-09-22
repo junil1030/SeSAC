@@ -10,13 +10,15 @@ import SnapKit
 import RealmSwift
 
 class SearchViewController: UIViewController {
+    
+    var account: List<Account>! // 렘 리스트를 통해서 폴더 내 레코드를 조회하기 위함
  
     let tableView = UITableView()
     let searchBar = UISearchBar()
     
     let realm = try! Realm()
     
-    var list: Results<MoneyTable>!
+    var list: Results<Account>! // 렘 리스트랑 상관없이 레코드 전체를 조회하기
       
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,7 +29,7 @@ class SearchViewController: UIViewController {
         
         searchBar.delegate = self
         
-        list = realm.objects(MoneyTable.self)
+        list = realm.objects(Account.self)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -65,16 +67,16 @@ class SearchViewController: UIViewController {
 }
 
 extension SearchViewController: UISearchBarDelegate {
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        print(#function, searchBar.text)
-        let data = realm.objects(MoneyTable.self).where {
-            $0.memo.contains(searchText, options: .caseInsensitive)
-        }.sorted(byKeyPath: "money", ascending: false)
-        
-        list = data
-        
-        tableView.reloadData()
-    }
+//    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+//        print(#function, searchBar.text)
+//        let data = realm.objects(MoneyTable.self).where {
+//            $0.memo.contains(searchText, options: .caseInsensitive)
+//        }.sorted(byKeyPath: "money", ascending: false)
+//        
+//        list = data
+//        
+//        tableView.reloadData()
+//    }
 }
 
 extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
@@ -89,8 +91,10 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
          
         let row = list[indexPath.row]
         
-        cell.titleLabel.text = row.memo
+        cell.titleLabel.text = row.title
         cell.subTitleLabel.text = row.money.formatted() + "원"
+        
+        cell.overviewLabel.text = row.folder.first?.name ?? "폴더 없음"
         
         return cell
     }
