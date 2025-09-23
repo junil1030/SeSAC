@@ -41,10 +41,30 @@ class FolderViewController: UIViewController {
 //        createAccount(title: "안주 8")
         
 //        createMemo()
+//        createDiary()
+//        create()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+    }
+    
+    func create() {
+        for _ in 1...100 {
+            createDiary()
+        }
+    }
+    
+    func createDiary() {
+        let diary = Diary(name: "일기 제목 \(Int.random(in: 1...100))", contents: "일기 내용 \(Int.random(in: 1...100))")
+        
+        do {
+            try realm.write() {
+                realm.add(diary)
+            }
+        } catch {
+            print("에러")
+        }
     }
     
     func createMemo() {
