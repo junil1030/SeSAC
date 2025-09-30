@@ -21,7 +21,6 @@ protocol JunRepository {
 final class FolderRepository: JunRepository {
     
     func createItem() {
-        <#code#>
     }
     
     func readItem() -> MoneyFolder {
@@ -29,11 +28,9 @@ final class FolderRepository: JunRepository {
     }
     
     func readAllItemCount() {
-        <#code#>
     }
     
     func deleteItem() {
-        <#code#>
     }
     
     

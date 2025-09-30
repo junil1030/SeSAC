@@ -11,7 +11,7 @@ import RealmSwift
 final class AccountRepository: JunRepository {
 
     func createItem() {
-        <#code#>
+        
     }
     
     func readItem() -> Account {
@@ -19,11 +19,11 @@ final class AccountRepository: JunRepository {
     }
     
     func readAllItemCount() {
-        <#code#>
+        
     }
     
     func deleteItem() {
-        <#code#>
+        
     }
     
     let realm = try! Realm()
