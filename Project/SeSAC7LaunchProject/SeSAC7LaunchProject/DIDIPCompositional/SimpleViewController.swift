@@ -45,6 +45,13 @@ class SimpleViewController: UIViewController {
         navigationItem.title = "영화 3열 그리드"
         
         configureCollectionView()
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Test Crash" , style: .plain, target: self, action: #selector(crashButtonTapped))
+    }
+    
+    @objc func crashButtonTapped(_ sender: AnyObject) {
+        let numbers = [0]
+        let _ = numbers[1]
     }
     
     /*

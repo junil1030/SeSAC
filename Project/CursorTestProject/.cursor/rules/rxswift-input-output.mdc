@@ -1,0 +1,159 @@
+---
+globs: *ViewModel.swift,*ViewController.swift
+description: RxSwift 및 Input-Output 패턴 적용 가이드
+---
+
+# RxSwift 및 Input-Output 패턴
+
+## Input-Output 패턴 구조
+Input과 Output은 모두 구조체로 구성하며, ViewModel의 입출력을 명확히 정의합니다.
+
+### Input 구조체 규칙
+```swift
+extension SomeViewModel {
+    struct Input {
+        let viewDidLoad = PublishSubject<Void>()
+        let buttonTapped = PublishSubject<Void>()
+        let textChanged = PublishSubject<String>()
+        let itemSelected = PublishSubject<IndexPath>()
+    }
+}
+```
+
+### Output 구조체 규칙
+```swift
+extension SomeViewModel {
+    struct Output {
+        let title = BehaviorSubject<String>(value: "")
+        let isLoading = BehaviorSubject<Bool>(value: false)
+        let errorMessage = PublishSubject<String>()
+        let dataSource = BehaviorSubject<[ItemModel]>(value: [])
+        let navigationEvent = PublishSubject<NavigationEvent>()
+    }
+}
+```
+
+## ViewModel 구현 패턴
+```swift
+final class SomeViewModel {
+    // MARK: - Properties
+    let input: Input
+    let output: Output
+    
+    private let useCase: SomeUseCase
+    private let disposeBag = DisposeBag()
+    
+    // MARK: - Initialization
+    init(useCase: SomeUseCase) {
+        self.useCase = useCase
+        self.input = Input()
+        self.output = Output()
+        
+        bindInput()
+    }
+    
+    // MARK: - Private Methods
+    private func bindInput() {
+        input.viewDidLoad
+            .subscribe(onNext: { [weak self] in
+                self?.handleViewDidLoad()
+            })
+            .disposed(by: disposeBag)
+            
+        input.buttonTapped
+            .flatMapLatest { [weak self] _ -> Observable<Result<Data, Error>> in
+                guard let self = self else { return .empty() }
+                return self.useCase.fetchData()
+            }
+            .subscribe(onNext: { [weak self] result in
+                self?.handleFetchResult(result)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func handleViewDidLoad() {
+        output.isLoading.onNext(true)
+        // 초기 로딩 로직
+    }
+    
+    private func handleFetchResult(_ result: Result<Data, Error>) {
+        output.isLoading.onNext(false)
+        
+        switch result {
+        case .success(let data):
+            // 성공 처리
+        case .failure(let error):
+            output.errorMessage.onNext(error.localizedDescription)
+        }
+    }
+}
+```
+
+## ViewController 바인딩 패턴
+```swift
+final class SomeViewController: UIViewController {
+    // MARK: - Properties
+    private let viewModel: SomeViewModel
+    private let disposeBag = DisposeBag()
+    
+    // MARK: - UI Components
+    private let titleLabel = UILabel()
+    private let loadingIndicator = UIActivityIndicatorView()
+    
+    // MARK: - Initialization
+    init(viewModel: SomeViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    // MARK: - Lifecycle
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupUI()
+        bindViewModel()
+        bindInput()
+    }
+    
+    // MARK: - Private Methods
+    private func bindViewModel() {
+        viewModel.output.title
+            .bind(to: titleLabel.rx.text)
+            .disposed(by: disposeBag)
+            
+        viewModel.output.isLoading
+            .bind(to: loadingIndicator.rx.isAnimating)
+            .disposed(by: disposeBag)
+            
+        viewModel.output.errorMessage
+            .subscribe(onNext: { [weak self] message in
+                self?.showError(message)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func bindInput() {
+        viewDidLoad
+            .bind(to: viewModel.input.viewDidLoad)
+            .disposed(by: disposeBag)
+            
+        someButton.rx.tap
+            .bind(to: viewModel.input.buttonTapped)
+            .disposed(by: disposeBag)
+    }
+}
+```
+
+## RxSwift 베스트 프랙티스
+1. **메모리 관리**: `[weak self]` 사용으로 순환 참조 방지
+2. **DisposeBag**: ViewController와 ViewModel에서 각각 관리
+3. **Subject 사용**: 
+   - `PublishSubject`: 일회성 이벤트
+   - `BehaviorSubject`: 상태 값 (초기값 필요)
+   - `ReplaySubject`: 최근 N개 값 캐싱
+4. **에러 처리**: `catchError`, `retry` 연산자 활용
+5. **스레드 관리**: `observeOn`, `subscribeOn` 적절히 사용
+
+## 네이밍 규칙
+- Input 프로퍼티: 동사 + 과거분사 (`viewDidLoad`, `buttonTapped`)
+- Output 프로퍼티: 명사 또는 형용사 (`title`, `isLoading`, `dataSource`)
+- Subject 타입: 명확한 타입 지정 (`PublishSubject<Void>`, `BehaviorSubject<String>`)

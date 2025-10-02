@@ -1,0 +1,97 @@
+---
+globs: *.swift
+description: MVVM 패턴 및 SRP 원칙 적용 가이드
+---
+
+# MVVM 아키텍처 및 SRP 원칙
+
+## MVVM 패턴 구조
+- **View**: UIViewController + UIView (UI 표시만 담당)
+- **ViewModel**: 비즈니스 로직 및 UI 상태 관리
+- **Model**: 데이터 모델 및 비즈니스 엔티티
+
+## SRP (Single Responsibility Principle) 준수
+
+### ViewController 규칙
+```swift
+final class SomeViewController: UIViewController {
+    // MARK: - Properties
+    private let viewModel: SomeViewModel
+    private let disposeBag = DisposeBag()
+    
+    // MARK: - UI Components
+    private let titleLabel = UILabel()
+    private let contentView = UIView()
+    
+    // MARK: - Initialization
+    init(viewModel: SomeViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    // MARK: - Lifecycle
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupUI()
+        bindViewModel()
+    }
+    
+    // MARK: - Private Methods
+    private func setupUI() {
+        // UI 설정만 담당
+    }
+    
+    private func bindViewModel() {
+        // ViewModel 바인딩만 담당
+    }
+}
+```
+
+### ViewModel 규칙
+```swift
+final class SomeViewModel {
+    // MARK: - Input
+    let input: Input
+    
+    // MARK: - Output
+    let output: Output
+    
+    // MARK: - Private Properties
+    private let useCase: SomeUseCase
+    private let disposeBag = DisposeBag()
+    
+    // MARK: - Initialization
+    init(useCase: SomeUseCase) {
+        self.useCase = useCase
+        self.input = Input()
+        self.output = Output()
+        
+        bindInput()
+    }
+    
+    // MARK: - Private Methods
+    private func bindInput() {
+        // Input 처리 로직
+    }
+}
+```
+
+## 의존성 주입 금지
+- DI, DIP 패턴 사용하지 않음
+- ViewModel은 직접 UseCase를 초기화
+- 필요한 경우 Factory 패턴 활용
+
+## 책임 분리 원칙
+1. **ViewController**: UI 표시 및 사용자 입력 처리만
+2. **ViewModel**: 비즈니스 로직 및 상태 관리만
+3. **Model**: 데이터 구조 정의만
+4. **UseCase**: 특정 비즈니스 로직 실행만
+5. **Repository**: 데이터 접근만
+
+## 네이밍 규칙
+- ViewController: `[Feature]ViewController`
+- ViewModel: `[Feature]ViewModel`
+- View: `[Feature]View`
+- Model: `[Feature]Model`
+- UseCase: `[Feature]UseCase`
+- Repository: `[Feature]Repository`

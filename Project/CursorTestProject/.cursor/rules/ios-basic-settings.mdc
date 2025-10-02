@@ -1,0 +1,51 @@
+---
+alwaysApply: true
+description: iOS 기본 설정 및 프로젝트 구조 가이드
+---
+
+# iOS 기본 설정 및 프로젝트 구조
+
+## 프로젝트 설정
+- **최소 타겟**: iOS 15.0 이상
+- **지원 방향**: 세로모드(Portrait)만 지원
+- **테마**: 라이트모드(Light Mode)만 지원
+- **UI 프레임워크**: UIKit (Storyboard 사용 금지)
+- **레이아웃**: SnapKit 사용
+
+## 프로젝트 구조
+```
+Project/
+├── App/
+│   ├── AppDelegate.swift
+│   ├── SceneDelegate.swift
+│   └── Info.plist
+├── Presentation/
+│   ├── ViewControllers/
+│   ├── Views/
+│   └── ViewModels/
+├── Domain/
+│   ├── Models/
+│   ├── UseCases/
+│   └── Repositories/
+├── Data/
+│   ├── Network/
+│   ├── Local/
+│   └── Repositories/
+└── Resources/
+    ├── Assets.xcassets
+    └── Localizable.strings
+```
+
+## 코딩 컨벤션
+- **언어**: 한국어 주석, 영어 코드
+- **네이밍**: Swift API Design Guidelines 준수
+- **접근 제어**: 명시적 접근 제어자 사용 (private, internal, public)
+- **성능**: final 키워드 적극 활용
+- **메모리**: weak, unowned 적절히 사용하여 메모리 누수 방지
+
+## 파일 생성 규칙
+- 모든 ViewController는 `ViewController` 접미사 사용
+- 모든 ViewModel은 `ViewModel` 접미사 사용
+- 모든 View는 `View` 접미사 사용
+- 모든 Model은 `Model` 접미사 사용
+- 중복된 파일명과 클래스명 금지

@@ -1,0 +1,228 @@
+---
+globs: *Network*.swift,*Repository*.swift
+description: URLSession 기반 네트워크 통신 가이드
+---
+
+# URLSession 네트워크 통신
+
+## 네트워크 레이어 구조
+CompletionHandler 기반 URLSession을 사용하여 네트워크 통신을 구현합니다.
+
+### NetworkService 프로토콜
+```swift
+protocol NetworkServiceProtocol {
+    func request<T: Codable>(
+        endpoint: APIEndpoint,
+        responseType: T.Type,
+        completion: @escaping (Result<T, NetworkError>) -> Void
+    )
+}
+
+final class NetworkService: NetworkServiceProtocol {
+    private let session: URLSession
+    private let decoder: JSONDecoder
+    
+    init(session: URLSession = .shared, decoder: JSONDecoder = JSONDecoder()) {
+        self.session = session
+        self.decoder = decoder
+    }
+    
+    func request<T: Codable>(
+        endpoint: APIEndpoint,
+        responseType: T.Type,
+        completion: @escaping (Result<T, NetworkError>) -> Void
+    ) {
+        guard let urlRequest = endpoint.urlRequest else {
+            completion(.failure(.invalidURL))
+            return
+        }
+        
+        session.dataTask(with: urlRequest) { [weak self] data, response, error in
+            DispatchQueue.main.async {
+                self?.handleResponse(
+                    data: data,
+                    response: response,
+                    error: error,
+                    responseType: responseType,
+                    completion: completion
+                )
+            }
+        }.resume()
+    }
+    
+    private func handleResponse<T: Codable>(
+        data: Data?,
+        response: URLResponse?,
+        error: Error?,
+        responseType: T.Type,
+        completion: @escaping (Result<T, NetworkError>) -> Void
+    ) {
+        if let error = error {
+            completion(.failure(.networkError(error)))
+            return
+        }
+        
+        guard let httpResponse = response as? HTTPURLResponse else {
+            completion(.failure(.invalidResponse))
+            return
+        }
+        
+        guard 200...299 ~= httpResponse.statusCode else {
+            completion(.failure(.httpError(httpResponse.statusCode)))
+            return
+        }
+        
+        guard let data = data else {
+            completion(.failure(.noData))
+            return
+        }
+        
+        do {
+            let decodedData = try decoder.decode(responseType, from: data)
+            completion(.success(decodedData))
+        } catch {
+            completion(.failure(.decodingError(error)))
+        }
+    }
+}
+```
+
+### APIEndpoint 정의
+```swift
+enum APIEndpoint {
+    case fetchUsers
+    case fetchUser(id: Int)
+    case createUser(UserModel)
+    case updateUser(id: Int, UserModel)
+    case deleteUser(id: Int)
+    
+    var baseURL: String {
+        return "https://api.example.com"
+    }
+    
+    var path: String {
+        switch self {
+        case .fetchUsers:
+            return "/users"
+        case .fetchUser(let id):
+            return "/users/\(id)"
+        case .createUser:
+            return "/users"
+        case .updateUser(let id, _):
+            return "/users/\(id)"
+        case .deleteUser(let id):
+            return "/users/\(id)"
+        }
+    }
+    
+    var method: HTTPMethod {
+        switch self {
+        case .fetchUsers, .fetchUser:
+            return .GET
+        case .createUser:
+            return .POST
+        case .updateUser:
+            return .PUT
+        case .deleteUser:
+            return .DELETE
+        }
+    }
+    
+    var urlRequest: URLRequest? {
+        guard let url = URL(string: baseURL + path) else { return nil }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = method.rawValue
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        switch self {
+        case .createUser(let user), .updateUser(_, let user):
+            do {
+                request.httpBody = try JSONEncoder().encode(user)
+            } catch {
+                return nil
+            }
+        default:
+            break
+        }
+        
+        return request
+    }
+}
+
+enum HTTPMethod: String {
+    case GET = "GET"
+    case POST = "POST"
+    case PUT = "PUT"
+    case DELETE = "DELETE"
+}
+```
+
+### NetworkError 정의
+```swift
+enum NetworkError: Error, LocalizedError {
+    case invalidURL
+    case noData
+    case invalidResponse
+    case httpError(Int)
+    case networkError(Error)
+    case decodingError(Error)
+    
+    var errorDescription: String? {
+        switch self {
+        case .invalidURL:
+            return "유효하지 않은 URL입니다."
+        case .noData:
+            return "데이터가 없습니다."
+        case .invalidResponse:
+            return "유효하지 않은 응답입니다."
+        case .httpError(let statusCode):
+            return "HTTP 오류: \(statusCode)"
+        case .networkError(let error):
+            return "네트워크 오류: \(error.localizedDescription)"
+        case .decodingError(let error):
+            return "디코딩 오류: \(error.localizedDescription)"
+        }
+    }
+}
+```
+
+### Repository 구현
+```swift
+protocol UserRepositoryProtocol {
+    func fetchUsers(completion: @escaping (Result<[UserModel], NetworkError>) -> Void)
+    func fetchUser(id: Int, completion: @escaping (Result<UserModel, NetworkError>) -> Void)
+}
+
+final class UserRepository: UserRepositoryProtocol {
+    private let networkService: NetworkServiceProtocol
+    
+    init(networkService: NetworkServiceProtocol = NetworkService()) {
+        self.networkService = networkService
+    }
+    
+    func fetchUsers(completion: @escaping (Result<[UserModel], NetworkError>) -> Void) {
+        networkService.request(
+            endpoint: .fetchUsers,
+            responseType: [UserModel].self,
+            completion: completion
+        )
+    }
+    
+    func fetchUser(id: Int, completion: @escaping (Result<UserModel, NetworkError>) -> Void) {
+        networkService.request(
+            endpoint: .fetchUser(id: id),
+            responseType: UserModel.self,
+            completion: completion
+        )
+    }
+}
+```
+
+## 네트워크 통신 베스트 프랙티스
+1. **에러 처리**: 명확한 에러 타입 정의 및 사용자 친화적 메시지
+2. **메모리 관리**: `[weak self]` 사용으로 순환 참조 방지
+3. **스레드 관리**: 네트워크 콜백은 메인 스레드에서 처리
+4. **타입 안전성**: Codable 프로토콜 활용
+5. **재사용성**: 프로토콜 기반 설계로 테스트 용이성 확보
+6. **URL 구성**: enum을 활용한 타입 안전한 URL 구성

@@ -1,0 +1,223 @@
+---
+globs: *.swift
+description: Swift API Design Guidelines 기반 코딩 규칙
+---
+
+# Swift API Design Guidelines
+
+## 네이밍 규칙
+
+### 명확성 우선
+```swift
+// 좋은 예: 명확하고 이해하기 쉬움
+func removeBox(havingLength length: Int)
+func move(from start: Point, to end: Point)
+
+// 나쁜 예: 모호함
+func remove(length: Int)
+func move(start: Point, end: Point)
+```
+
+### 일관성 유지
+```swift
+// 동일한 의미의 메서드는 동일한 네이밍 패턴 사용
+func addSubview(_ view: UIView)
+func addTarget(_ target: Any?, action: Selector, for controlEvents: UIControl.Event)
+func addObserver(_ observer: NSObject, forKeyPath keyPath: String, options: NSKeyValueObservingOptions)
+```
+
+### 용어 사용
+```swift
+// 표준 용어 사용
+var isEmpty: Bool
+var count: Int
+var first: Element?
+var last: Element?
+
+// 도메인 특화 용어 사용
+var movieTitle: String
+var releaseDate: Date
+var posterImage: UIImage?
+```
+
+## 메서드 및 함수
+
+### 인수 레이블
+```swift
+// 인수가 구분되지 않으면 레이블 생략
+func min(_ x: Int, _ y: Int) -> Int
+func zip(_ sequence1: Sequence, _ sequence2: Sequence) -> Zip2Sequence
+
+// 첫 번째 인수가 전치사구의 일부면 레이블 사용
+func move(from start: Point, to end: Point)
+func removeBoxes(havingLength length: Int)
+
+// 첫 번째 인수가 문법적 구문의 일부면 레이블 생략
+func addSubview(_ view: UIView)
+func dismiss(animated: Bool)
+```
+
+### 기본값 매개변수
+```swift
+// 기본값이 있는 매개변수는 뒤쪽에 배치
+func request(
+    endpoint: APIEndpoint,
+    responseType: T.Type,
+    timeout: TimeInterval = 30.0,
+    retryCount: Int = 3,
+    completion: @escaping (Result<T, NetworkError>) -> Void
+)
+```
+
+## 프로퍼티 및 서브스크립트
+
+### 계산 프로퍼티
+```swift
+// 부작용이 없는 계산 프로퍼티
+var isEmpty: Bool {
+    return count == 0
+}
+
+// 부작용이 있는 경우 메서드로 구현
+func loadData() {
+    // 데이터 로딩 로직
+}
+```
+
+### 서브스크립트
+```swift
+// 서브스크립트는 컬렉션의 요소에 접근할 때 사용
+subscript(index: Int) -> Element {
+    get { return elements[index] }
+    set { elements[index] = newValue }
+}
+
+// 의미있는 이름의 서브스크립트
+subscript(key: String) -> Value? {
+    get { return dictionary[key] }
+    set { dictionary[key] = newValue }
+}
+```
+
+## 초기화
+
+### 편의 초기화
+```swift
+// 기본 초기화
+init(title: String, releaseDate: Date, posterURL: URL) {
+    self.title = title
+    self.releaseDate = releaseDate
+    self.posterURL = posterURL
+}
+
+// 편의 초기화
+convenience init(title: String, releaseDate: Date) {
+    self.init(title: title, releaseDate: releaseDate, posterURL: URL(string: "")!)
+}
+```
+
+### 실패 가능 초기화
+```swift
+init?(json: [String: Any]) {
+    guard let title = json["title"] as? String,
+          let releaseDateString = json["release_date"] as? String else {
+        return nil
+    }
+    
+    self.title = title
+    self.releaseDate = DateFormatter.movieDateFormatter.date(from: releaseDateString) ?? Date()
+}
+```
+
+## 문서화
+
+### 문서 주석
+```swift
+/// 영화 정보를 나타내는 모델
+/// 
+/// TMDB API에서 받아온 영화 데이터를 저장하고 관리합니다.
+/// 
+/// - Note: 모든 프로퍼티는 옵셔널이 아닌 값으로 보장됩니다.
+/// - SeeAlso: `MovieRepository`에서 데이터를 가져옵니다.
+final class MovieModel {
+    /// 영화 제목
+    let title: String
+    
+    /// 개봉일
+    let releaseDate: Date
+    
+    /// 포스터 이미지 URL
+    let posterURL: URL?
+}
+```
+
+### 매개변수 문서화
+```swift
+/// 영화 목록을 가져옵니다.
+/// 
+/// - Parameters:
+///   - category: 가져올 영화 카테고리 (nowPlaying, popular, topRated, upcoming)
+///   - page: 페이지 번호 (기본값: 1)
+///   - completion: 완료 시 호출될 클로저
+/// - Returns: 요청된 영화 목록
+func fetchMovies(
+    category: MovieCategory,
+    page: Int = 1,
+    completion: @escaping (Result<[MovieModel], NetworkError>) -> Void
+) {
+    // 구현
+}
+```
+
+## 에러 처리
+
+### 에러 타입 정의
+```swift
+enum NetworkError: Error, LocalizedError {
+    case invalidURL
+    case noData
+    case invalidResponse
+    case httpError(Int)
+    case networkError(Error)
+    case decodingError(Error)
+    
+    var errorDescription: String? {
+        switch self {
+        case .invalidURL:
+            return "유효하지 않은 URL입니다."
+        case .noData:
+            return "데이터가 없습니다."
+        case .invalidResponse:
+            return "유효하지 않은 응답입니다."
+        case .httpError(let statusCode):
+            return "HTTP 오류: \(statusCode)"
+        case .networkError(let error):
+            return "네트워크 오류: \(error.localizedDescription)"
+        case .decodingError(let error):
+            return "디코딩 오류: \(error.localizedDescription)"
+        }
+    }
+}
+```
+
+## 프로토콜
+
+### 프로토콜 네이밍
+```swift
+// 명사로 시작하는 프로토콜
+protocol MovieRepositoryProtocol { }
+protocol NetworkServiceProtocol { }
+
+// 능동태로 시작하는 프로토콜
+protocol Drawable { }
+protocol Equatable { }
+```
+
+### 프로토콜 확장
+```swift
+extension MovieRepositoryProtocol {
+    func fetchPopularMovies(completion: @escaping (Result<[MovieModel], NetworkError>) -> Void) {
+        fetchMovies(category: .popular, completion: completion)
+    }
+}
+```
