@@ -46,7 +46,7 @@ class SimpleViewController: UIViewController {
         
         configureCollectionView()
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Test Crash" , style: .plain, target: self, action: #selector(crashButtonTapped))
+//        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Test Crash" , style: .plain, target: self, action: #selector(crashButtonTapped))
     }
     
     @objc func crashButtonTapped(_ sender: AnyObject) {
