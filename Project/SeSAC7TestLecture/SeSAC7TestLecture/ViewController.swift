@@ -19,6 +19,9 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
+        let manager: NetworkProvider = NetworkManager.shared
+        let viewModel = LottoViewModel(networkManager: manager)
+        
         idField.accessibilityIdentifier = "login_id_field"
         pwField.accessibilityIdentifier = "login_pw_field"
         loginButton.accessibilityIdentifier = "login_btn_signin"
@@ -36,12 +39,12 @@ class ViewController: UIViewController {
     
     func isValidID() -> Bool {
         guard let email = idField.text else { return false }
-        return email.contains("@") && email.count >= 6
+        return Validator().isValidID(email: email)
     }
     
     func isValidPassword() -> Bool {
         guard let password = pwField.text else { return false }
-        return password.count >= 6 && password.count < 10
+        return Validator().isValidPassword(password: password)
     }
 }
 

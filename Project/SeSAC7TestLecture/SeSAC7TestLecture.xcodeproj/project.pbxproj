@@ -6,8 +6,19 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		F9E9405A2EA090560006B397 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = F9E940592EA090560006B397 /* Alamofire */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		F91BF4CC2E9F3AEF001A80C1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F91BF49E2E9F3702001A80C1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F91BF4A52E9F3702001A80C1;
+			remoteInfo = SeSAC7TestLecture;
+		};
+		F91BFE442EA07DDF001A80C1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F91BF49E2E9F3702001A80C1 /* Project object */;
 			proxyType = 1;
@@ -19,6 +30,7 @@
 /* Begin PBXFileReference section */
 		F91BF4A62E9F3702001A80C1 /* SeSAC7TestLecture.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SeSAC7TestLecture.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F91BF4C62E9F3AEF001A80C1 /* SeSAC7TestLectureUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SeSAC7TestLectureUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F91BFE402EA07DDF001A80C1 /* SeSAC7TestLectureUnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SeSAC7TestLectureUnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -29,6 +41,14 @@
 			);
 			target = F91BF4A52E9F3702001A80C1 /* SeSAC7TestLecture */;
 		};
+		F91BFE4E2EA0809B001A80C1 /* Exceptions for "SeSAC7TestLecture" folder in "SeSAC7TestLectureUnitTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				NetworkManager.swift,
+				Validator.swift,
+			);
+			target = F91BFE3F2EA07DDF001A80C1 /* SeSAC7TestLectureUnitTests */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -36,6 +56,7 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				F91BF4B82E9F3704001A80C1 /* Exceptions for "SeSAC7TestLecture" folder in "SeSAC7TestLecture" target */,
+				F91BFE4E2EA0809B001A80C1 /* Exceptions for "SeSAC7TestLecture" folder in "SeSAC7TestLectureUnitTests" target */,
 			);
 			path = SeSAC7TestLecture;
 			sourceTree = "<group>";
@@ -45,6 +66,11 @@
 			path = SeSAC7TestLectureUITests;
 			sourceTree = "<group>";
 		};
+		F91BFE412EA07DDF001A80C1 /* SeSAC7TestLectureUnitTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = SeSAC7TestLectureUnitTests;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,10 +78,18 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F9E9405A2EA090560006B397 /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		F91BF4C32E9F3AEF001A80C1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F91BFE3D2EA07DDF001A80C1 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -70,6 +104,7 @@
 			children = (
 				F91BF4A82E9F3702001A80C1 /* SeSAC7TestLecture */,
 				F91BF4C72E9F3AEF001A80C1 /* SeSAC7TestLectureUITests */,
+				F91BFE412EA07DDF001A80C1 /* SeSAC7TestLectureUnitTests */,
 				F91BF4A72E9F3702001A80C1 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -79,6 +114,7 @@
 			children = (
 				F91BF4A62E9F3702001A80C1 /* SeSAC7TestLecture.app */,
 				F91BF4C62E9F3AEF001A80C1 /* SeSAC7TestLectureUITests.xctest */,
+				F91BFE402EA07DDF001A80C1 /* SeSAC7TestLectureUnitTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -103,6 +139,7 @@
 			);
 			name = SeSAC7TestLecture;
 			packageProductDependencies = (
+				F9E940592EA090560006B397 /* Alamofire */,
 			);
 			productName = SeSAC7TestLecture;
 			productReference = F91BF4A62E9F3702001A80C1 /* SeSAC7TestLecture.app */;
@@ -131,6 +168,29 @@
 			productReference = F91BF4C62E9F3AEF001A80C1 /* SeSAC7TestLectureUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		F91BFE3F2EA07DDF001A80C1 /* SeSAC7TestLectureUnitTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F91BFE482EA07DDF001A80C1 /* Build configuration list for PBXNativeTarget "SeSAC7TestLectureUnitTests" */;
+			buildPhases = (
+				F91BFE3C2EA07DDF001A80C1 /* Sources */,
+				F91BFE3D2EA07DDF001A80C1 /* Frameworks */,
+				F91BFE3E2EA07DDF001A80C1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F91BFE452EA07DDF001A80C1 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				F91BFE412EA07DDF001A80C1 /* SeSAC7TestLectureUnitTests */,
+			);
+			name = SeSAC7TestLectureUnitTests;
+			packageProductDependencies = (
+			);
+			productName = SeSAC7TestLectureUnitTests;
+			productReference = F91BFE402EA07DDF001A80C1 /* SeSAC7TestLectureUnitTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -148,6 +208,10 @@
 						CreatedOnToolsVersion = 16.4;
 						TestTargetID = F91BF4A52E9F3702001A80C1;
 					};
+					F91BFE3F2EA07DDF001A80C1 = {
+						CreatedOnToolsVersion = 16.4;
+						TestTargetID = F91BF4A52E9F3702001A80C1;
+					};
 				};
 			};
 			buildConfigurationList = F91BF4A12E9F3702001A80C1 /* Build configuration list for PBXProject "SeSAC7TestLecture" */;
@@ -159,6 +223,9 @@
 			);
 			mainGroup = F91BF49D2E9F3702001A80C1;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				F9E940582EA090560006B397 /* XCRemoteSwiftPackageReference "Alamofire" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = F91BF4A72E9F3702001A80C1 /* Products */;
 			projectDirPath = "";
@@ -166,6 +233,7 @@
 			targets = (
 				F91BF4A52E9F3702001A80C1 /* SeSAC7TestLecture */,
 				F91BF4C52E9F3AEF001A80C1 /* SeSAC7TestLectureUITests */,
+				F91BFE3F2EA07DDF001A80C1 /* SeSAC7TestLectureUnitTests */,
 			);
 		};
 /* End PBXProject section */
@@ -179,6 +247,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		F91BF4C42E9F3AEF001A80C1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F91BFE3E2EA07DDF001A80C1 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -202,6 +277,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		F91BFE3C2EA07DDF001A80C1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -209,6 +291,11 @@
 			isa = PBXTargetDependency;
 			target = F91BF4A52E9F3702001A80C1 /* SeSAC7TestLecture */;
 			targetProxy = F91BF4CC2E9F3AEF001A80C1 /* PBXContainerItemProxy */;
+		};
+		F91BFE452EA07DDF001A80C1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F91BF4A52E9F3702001A80C1 /* SeSAC7TestLecture */;
+			targetProxy = F91BFE442EA07DDF001A80C1 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -424,6 +511,42 @@
 			};
 			name = Release;
 		};
+		F91BFE462EA07DDF001A80C1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = MWBS4R8DBQ;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.junil.SeSAC7TestLectureUnitTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SeSAC7TestLecture.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/SeSAC7TestLecture";
+			};
+			name = Debug;
+		};
+		F91BFE472EA07DDF001A80C1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = MWBS4R8DBQ;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.junil.SeSAC7TestLectureUnitTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SeSAC7TestLecture.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/SeSAC7TestLecture";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -454,7 +577,35 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		F91BFE482EA07DDF001A80C1 /* Build configuration list for PBXNativeTarget "SeSAC7TestLectureUnitTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F91BFE462EA07DDF001A80C1 /* Debug */,
+				F91BFE472EA07DDF001A80C1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		F9E940582EA090560006B397 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.10.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		F9E940592EA090560006B397 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F9E940582EA090560006B397 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = F91BF49E2E9F3702001A80C1 /* Project object */;
 }
