@@ -43,8 +43,8 @@ func question2(_ matrix: [[Int]]) -> Int {
 // MARK: - 3
 /// 시간복잡도를 작성하고 어떤 값을 Return하고 있는지도 확인해보세요 :)
 /// - Parameter n: 1이상의 정수
-/// - Complexity:?
-/// - Returns: ?
+/// - Complexity:O(1)
+/// - Returns: 거듭제곱이 맞는지
 func question3(_ n: Int) -> Bool {
   n & (n - 1) == 0
 }
@@ -52,8 +52,8 @@ func question3(_ n: Int) -> Bool {
 // MARK: - 4
 /// 시간복잡도를 작성하고 어떤 값을 Return하고 있는지도 확인해보세요 :)
 /// - Parameter cube: n x m x k 형태의 삼중 배열
-/// - Complexity:?
-/// - Returns: ?
+/// - Complexity: O(n x m x k)
+/// - Returns: 3차원 배열의 원소를 모두 더한 값
 func question4(_ cube: [[[Int]]]) -> Int {
   var sum = 0
   for z in 0..<cube.count {
@@ -71,8 +71,8 @@ func question4(_ cube: [[[Int]]]) -> Int {
 /// - Parameters:
 ///   - arr: 오름차순 정렬되어 있는 Int] 타입의 배열
 ///   - target: 찾고자 하는 값
-/// - Complexity:?
-/// - Returns: ?
+/// - Complexity: O(logN)
+/// - Returns: 찾고자 하는 값
 func question5(arr: [Int], target: Int) -> Int {
   var left = 0
   var right = arr.count - 1

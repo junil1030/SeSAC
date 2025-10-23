@@ -9,31 +9,19 @@ import SwiftUI
 
 /* Property, Method, Struct */
 struct RenderView: View {
+    
+    @State private var text = "Juiil"
+    @State private var nickname = "고래밥"
+    
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            JunilView()
-            Text("jack")
-                .font(.largeTitle)
+        VStack {
+            TextField("닉네임을 입력해보세요", text: $text)
+            NicknameView(nickname: $nickname)
                 .background(.yellow)
-                .foregroundStyle(.blue)
-            Text("Finn")
-                .font(.largeTitle)
-                .background(.yellow)
-                .foregroundStyle(.blue)
-            Text("Den")
-                .font(.largeTitle)
-                .background(.yellow)
-                .foregroundStyle(.blue)
-            Text("Hue").font(.largeTitle)
-                .background(.yellow)
-                .foregroundStyle(.blue)
-            Text("Bran").font(.largeTitle)
-                .background(.yellow)
-                .foregroundStyle(.blue)
+            Text("닉네임 추천: \(nickname)")
+                .background(.gray)
         }
-        .padding(.horizontal, 30)
-        .padding(.vertical, 10)
-        .background(.red)
+        JunilView()
     }
     
     func finnView() -> some View {
@@ -42,13 +30,24 @@ struct RenderView: View {
             .background(.yellow)
             .foregroundStyle(.blue)
     }
-    
     var denView: some View {
         Text("Den")
             .font(.largeTitle)
             .background(.yellow)
             .foregroundStyle(.blue)
+    }
+}
 
+struct NicknameView: View {
+    @Binding var nickname: String
+    
+    var body: some View {
+        HStack {
+            Text("닉네임 추천: \(nickname)")
+            Button("추천받기") {
+                nickname = "카스타드 \(Int.random(in: 1...1000))"
+            }
+        }
     }
 }
 
