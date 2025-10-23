@@ -46,31 +46,41 @@ struct GenreView: View {
         GenreModel(image: "pencil", title: "공포", count: 12345),
     ]
     
+    
+    
     var body: some View {
-        VStack {
-            Button("카테고리 추가") {
-                typeArray.insert("Junil", at: 0)
-            }
-            ScrollView(.horizontal) {
-                HStack {
-                    ForEach(typeArray, id: \.self) { item in
-                        TypeCell(title: item)
-                    }
-                    
-                    TypeCell(title: "영화")
-                    TypeCell(title: "드라마")
-                    TypeCell(title: "애니")
-                    TypeCell(title: "추리")
-                    TypeCell(title: "뮤지컬")
+        NavigationView {
+            VStack {
+                Button("카테고리 추가") {
+                    typeArray.insert("Junil", at: 0)
                 }
-            }
-            ScrollView {
-                LazyVStack {
-                    ForEach(genreList, id: \.self) { item in
-                        GenreCell(image: item.image, title: item.title, count: item.count)
+                ScrollView(.horizontal) {
+                    HStack {
+                        ForEach(typeArray, id: \.self) { item in
+                            TypeCell(title: item)
+                        }
+                        
+                        TypeCell(title: "영화")
+                        TypeCell(title: "드라마")
+                        TypeCell(title: "애니")
+                        TypeCell(title: "추리")
+                        TypeCell(title: "뮤지컬")
                     }
                 }
+                ScrollView {
+                    LazyVStack {
+                        ForEach(genreList, id: \.self) { item in
+                            
+                            NavigationLink {
+                                RenderingView()
+                            } label: {
+                                GenreCell(image: item.image, title: item.title, count: item.count)
+                            }
+                        }
+                    }
+                }
             }
+            .navigationTitle("제목")
         }
     }
 }
