@@ -25,7 +25,7 @@ struct CoinView: View {
     var body: some View {
         NavigationView {
             ScrollView(.vertical) {
-                bannerView()
+                horizontalScrollView()
                 listView()
             }
             .navigationTitle("My Coin")
@@ -46,6 +46,20 @@ struct CoinView: View {
                 Money(name: "도지코인", count: 123, like: false),
             ]
         }
+    }
+    
+    func horizontalScrollView() -> some View {
+        ScrollView(.horizontal) {
+            HStack {
+                ForEach(0..<5) { item in
+                    bannerView()
+                        .containerRelativeFrame(.horizontal)
+                }
+            }
+            .scrollTargetLayout()
+        }
+        .scrollTargetBehavior(.viewAligned)
+        .scrollIndicators(.hidden)
     }
     
     func bannerView() -> some View {
