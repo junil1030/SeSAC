@@ -65,7 +65,7 @@ struct BasicWidgetEntryView : View {
     var body: some View {
         VStack {
             HStack {
-                Text("\(UserDefaults.standard.string(forKey: "coin") ?? "없음")")
+                Text("\(UserDefaults.groupShared.string(forKey: "coin") ?? "없음")")
                 Text(entry.date, style: .time)
                     .font(.title)
             }

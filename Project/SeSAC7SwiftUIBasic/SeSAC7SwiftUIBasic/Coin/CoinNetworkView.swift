@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import WidgetKit
 
 struct CoinNetworkView: View {
     
@@ -17,7 +18,7 @@ struct CoinNetworkView: View {
                 listView()
             }
             .navigationTitle(
-                "\(UserDefaults.standard.string(forKey: "coin") ?? "없음")"
+                "\(UserDefaults.groupShared.string(forKey: "coin") ?? "없음")"
             )
         }
         .onAppear {
@@ -43,7 +44,18 @@ struct CoinNetworkView: View {
             ForEach(list) { item in
                 CoinNetworkRow(data: item)
                     .buttonWrapper {
-                        UserDefaults.standard.set(item.koreanName, forKey: "coin")
+                        UserDefaults.groupShared.set(item.koreanName, forKey: "coin")
+                        
+                        WidgetCenter.shared.getCurrentConfigurations { widget in
+                            switch widget {
+                            case .success(let success):
+                            
+                            case .failure(let failure):
+                                
+                            }
+                        }
+                        
+                        WidgetCenter.shared.reloadTimelines(ofKind: "BasicWidget")
                     }
             }
         }

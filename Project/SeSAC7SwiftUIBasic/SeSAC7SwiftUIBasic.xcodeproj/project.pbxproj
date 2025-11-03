@@ -48,6 +48,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		F9202D6D2EB335BC00A5E9AC /* BasicWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BasicWidgetExtension.entitlements; sourceTree = "<group>"; };
 		F93A02AF2EB1B6A400BD819B /* BasicWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BasicWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		F93A02B12EB1B6A500BD819B /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		F93A02B32EB1B6A500BD819B /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
@@ -56,6 +57,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		F9202D712EB3371300A5E9AC /* Exceptions for "SeSAC7SwiftUIBasic" folder in "BasicWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				SharedUserDefaults.swift,
+			);
+			target = F93A02AE2EB1B6A400BD819B /* BasicWidgetExtension */;
+		};
 		F93A02C02EB1B6A700BD819B /* Exceptions for "BasicWidget" folder in "BasicWidgetExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -91,6 +99,9 @@
 		};
 		F93C88592EA5C72400C64510 /* SeSAC7SwiftUIBasic */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				F9202D712EB3371300A5E9AC /* Exceptions for "SeSAC7SwiftUIBasic" folder in "BasicWidgetExtension" target */,
+			);
 			path = SeSAC7SwiftUIBasic;
 			sourceTree = "<group>";
 		};
@@ -137,6 +148,7 @@
 		F93C884E2EA5C72400C64510 = {
 			isa = PBXGroup;
 			children = (
+				F9202D6D2EB335BC00A5E9AC /* BasicWidgetExtension.entitlements */,
 				F93C88592EA5C72400C64510 /* SeSAC7SwiftUIBasic */,
 				F93A02B52EB1B6A500BD819B /* BasicWidget */,
 				F93A02CC2EB1B71A00BD819B /* BasicIntentWidget */,
@@ -336,6 +348,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = BasicWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = MWBS4R8DBQ;
@@ -363,6 +376,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = BasicWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = MWBS4R8DBQ;
@@ -565,6 +579,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = SeSAC7SwiftUIBasic/SeSAC7SwiftUIBasic.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = MWBS4R8DBQ;
@@ -593,6 +608,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = SeSAC7SwiftUIBasic/SeSAC7SwiftUIBasic.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = MWBS4R8DBQ;

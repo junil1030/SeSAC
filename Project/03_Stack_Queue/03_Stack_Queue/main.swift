@@ -10,18 +10,18 @@ import Foundation
 func 메인함수() {
   let main = 10
   함수A()
-  print("function Main Complete")
+  print("function Main Complete \(main)")
 }
 
 func 함수A() {
   let a = 20
   함수B()
-  print("function A Complete")
+  print("function A Complete\(a)")
 }
 
 func 함수B() {
   let b = 30
-  print("function B Complete")
+  print("function B Complete\(b)")
 }
 
 //메인함수()
