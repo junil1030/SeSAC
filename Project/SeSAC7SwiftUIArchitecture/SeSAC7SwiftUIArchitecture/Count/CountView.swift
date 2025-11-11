@@ -8,6 +8,37 @@
 import SwiftUI
 import Combine
 
+class NetworkManager {
+    
+    static func getContents() {
+        var status = Int.random(in: 200...500)
+        
+        if status == 200 {
+            
+        } else if status == 419 {
+            refreshToken()
+        }
+    }
+    
+    static func getComments() {
+        var status = Int.random(in: 200...500)
+        
+        if status == 200 {
+            
+        } else if status == 419 {
+            refreshToken()
+        }
+    }
+    
+    static func refreshToken() {
+        var status = Int.random(in: 200...500)
+        
+        if status == 200 {
+            getContents()
+        }
+    }
+}
+
 struct CountView: View {
     
     @State private var nicknameField = ""

@@ -46,14 +46,14 @@ struct CoinNetworkView: View {
                     .buttonWrapper {
                         UserDefaults.groupShared.set(item.koreanName, forKey: "coin")
                         
-                        WidgetCenter.shared.getCurrentConfigurations { widget in
-                            switch widget {
-                            case .success(let success):
-                            
-                            case .failure(let failure):
-                                
-                            }
-                        }
+//                        WidgetCenter.shared.getCurrentConfigurations { widget in
+//                            switch widget {
+//                            case .success(let success):
+//                            
+//                            case .failure(let failure):
+//                                
+//                            }
+//                        }
                         
                         WidgetCenter.shared.reloadTimelines(ofKind: "BasicWidget")
                     }
