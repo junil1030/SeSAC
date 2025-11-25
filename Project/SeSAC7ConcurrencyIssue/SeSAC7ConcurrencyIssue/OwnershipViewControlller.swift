@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import StoreKit
 
 /*
  Copyable: 5.9+ 값 타입의 복사를 정의

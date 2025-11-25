@@ -6,8 +6,13 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		F9F6BED32ED553F6003F0481 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9F6BED22ED553F5003F0481 /* StoreKit.framework */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		F9401B362ECD5066007E6D5D /* SeSAC7ConcurrencyIssue.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SeSAC7ConcurrencyIssue.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F9F6BED22ED553F5003F0481 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -36,6 +41,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F9F6BED32ED553F6003F0481 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -46,6 +52,7 @@
 			isa = PBXGroup;
 			children = (
 				F9401B382ECD5066007E6D5D /* SeSAC7ConcurrencyIssue */,
+				F9F6BED12ED553F5003F0481 /* Frameworks */,
 				F9401B372ECD5066007E6D5D /* Products */,
 			);
 			sourceTree = "<group>";
@@ -56,6 +63,14 @@
 				F9401B362ECD5066007E6D5D /* SeSAC7ConcurrencyIssue.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		F9F6BED12ED553F5003F0481 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F9F6BED22ED553F5003F0481 /* StoreKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
