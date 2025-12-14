@@ -147,10 +147,82 @@ func bfsAdjMatrix(_ node: Int, _ edges: [[Int]]) {
 ///   - node: node의 개수
 ///   - edges: [from, to] 형태의 2차원 배열
 func bfsAdjList(_ node: Int, _ edges: [[Int]]) {
+    var adjList = Array(repeating: [Int](), count: node + 1)
+    
+    for edge in edges {
+        let from = edge[0]
+        let to = edge[1]
+        
+        adjList[from].append(to)
+        adjList[to].append(from)
+    }
+    
+    var queue = QueueWithArrayPointer<Int>()
+    let front = 1
+    var visited = Array(repeating: false, count: node + 1)
+    
+    queue.push(with: front)
+    visited[front] = true
+    
+    while !queue.isEmpty {
+        let cur = queue.pop()
+        guard let cur = cur else { continue }
+        print(cur)
+        
+        for degree in adjList[cur] {
+            if visited[degree] { continue }
+            visited[degree] = true
+            queue.push(with: degree)
+        }
+    }
 }
 
+//let board1: [[Int]] = [
+//  [1, 2], [2, 3], [3, 4],
+//  [2, 6], [6, 4], [4, 5]
+//]
 
 
 func dfsAdjList(_ node: Int, _ edges: [[Int]]) {
+    var adjList = Array(repeating: [Int](), count: node + 1)
     
+    for edge in edges {
+        let from = edge[0]
+        let to = edge[1]
+        
+        adjList[from].append(to)
+        adjList[to].append(from)
+    }
+    
+    var vis: [Bool] = .init(repeating: false, count: node + 1)
+    var stack: [Int] = []
+    
+    stack.append(1)
+    vis[1] = true
+    
+    while stack.count > 0 {
+        let cur = stack.removeLast()
+        print(cur)
+        
+        for degree in adjList[cur] {
+            if vis[degree] { continue }
+            vis[degree] = true
+            stack.append(degree)
+        }
+    }
+    
+    var visited = Array(repeating: false, count: node + 1)
+    let start = 1
+    dfs(start)
+    
+    func dfs(_ cur: Int) {
+        visited[cur] = true
+        print(cur)
+        
+        for degree in adjList[cur] {
+            if visited[degree] { continue }
+            visited[degree] = true
+            dfs(degree)
+        }
+    }
 }

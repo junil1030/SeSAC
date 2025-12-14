@@ -48,17 +48,28 @@ import Foundation
 //graphAdjList(board1.count, board1)
 
 
+/// bfsAdj
 
-let board1: [[Int]] = [
-  [1, 2], [2, 3], [3, 4],
-  [2, 6], [6, 4], [4, 5]
-]
-bfsAdjMatrix(board1.count, board1)
+//let board1: [[Int]] = [
+//  [1, 2], [2, 3], [3, 4],
+//  [2, 6], [6, 4], [4, 5]
+//]
+//bfsAdjMatrix(board1.count, board1)
+
+
+//let board1: [[Int]] = [
+//  [1, 2], [2, 3], [3, 4],
+//  [2, 6], [6, 4], [4, 5]
+//]
+//bfsAdjList(6, board1)
+//print("\n-------\n")
+//dfsAdjList(6, board1)
 
 
 
-/*
-boardPrint(board: floodBoard)
-floodFill()
-boardPrint(board: floodBoard)
-*/
+//boardPrint(board: floodBoard)
+//print("\n------floodFill------\n")
+//floodFill()
+//boardPrint(board: floodBoard)
+
+q2667()

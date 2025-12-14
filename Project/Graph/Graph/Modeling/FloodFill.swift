@@ -30,7 +30,7 @@ func floodFill() {
   var queue: [(Int, Int)] = []
   var front = 0
 
-  let start = (4, 5)
+  let start = (0, 0)
   queue.append(start)
   vis[start.0][start.1] = true
 
